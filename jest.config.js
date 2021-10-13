@@ -1,8 +1,13 @@
 module.exports = {
+  collectCoverage: true,
+  coverageReporters: ['json', 'html'],
   collectCoverageFrom: [
     '**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/.next/**',
+    '!**/*.config.js',
   ],
   moduleNameMapper: {
     /* Handle CSS imports (with CSS modules)
@@ -26,6 +31,15 @@ module.exports = {
   transformIgnorePatterns: [
     '/node_modules/',
     '^.+\\.module\\.(css|sass|scss)$',
+    '/.next/',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  coverageThreshold: {
+    global: {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+  },
 }
