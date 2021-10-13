@@ -1,8 +1,11 @@
+import React from 'react'
 import type {NextPage} from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+  const [count, setCount] = React.useState(0)
+
   return (
     <div className={styles.container}>
       <Head>
