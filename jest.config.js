@@ -8,6 +8,7 @@ module.exports = {
     '!**/coverage/**',
     '!**/.next/**',
     '!**/*.config.js',
+    '!.lintstagedrc.js',
   ],
   moduleNameMapper: {
     /* Handle CSS imports (with CSS modules)
