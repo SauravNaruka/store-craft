@@ -1,8 +1,9 @@
 module.exports = {
+  resetMocks: true,
   collectCoverage: true,
   coverageReporters: ['json', 'html'],
   collectCoverageFrom: [
-    '**/*.{js,jsx,ts,tsx}',
+    '**/*.{ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/coverage/**',
