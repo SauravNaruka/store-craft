@@ -9,6 +9,7 @@ module.exports = {
     '!**/.next/**',
     '!**/*.config.js',
     '!.lintstagedrc.js',
+    '!lighthouserc.js',
   ],
   moduleNameMapper: {
     /* Handle CSS imports (with CSS modules)
