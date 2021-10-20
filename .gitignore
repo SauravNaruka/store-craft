@@ -33,4 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Lighthouse CI
+.lighthouseci
+
 .eslintcache
