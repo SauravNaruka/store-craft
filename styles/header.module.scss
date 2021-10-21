@@ -9,7 +9,7 @@
   background: hsl(0deg 0% 100% / 60%);
   border-bottom: 1px solid hsl(0deg 0% 100%);
   box-sizing: border-box;
-  backdrop-filter: blur(40px);
+  backdrop-filter: saturate(180%) blur(40px);
 
   nav {
     display: flex;

@@ -11,6 +11,7 @@ module.exports = {
     '!**/*.config.js',
     '!.lintstagedrc.js',
     '!lighthouserc.js',
+    '!<rootDir>/pages/_document.tsx',
   ],
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
