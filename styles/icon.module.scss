@@ -1,0 +1,16 @@
+.icon {
+  @apply m-2;
+}
+
+.iconPrimaryColor {
+  fill: var(--neutral-color-8);
+}
+
+.searchIconPrimary {
+  @apply opacity-0;
+  background-color: var(--white-color);
+}
+
+.searchIconSecondary {
+  fill: var(--neutral-color-6);
+}
