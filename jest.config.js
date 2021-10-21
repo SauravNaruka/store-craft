@@ -11,8 +11,11 @@ module.exports = {
     '!**/*.config.js',
     '!.lintstagedrc.js',
     '!lighthouserc.js',
+    '!<rootDir>/pages/_document.tsx',
   ],
   moduleNameMapper: {
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+
     /* Handle CSS imports (with CSS modules)
       https://jestjs.io/docs/webpack#mocking-css-modules */
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',

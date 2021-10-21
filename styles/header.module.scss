@@ -1,0 +1,21 @@
+.mobileHeader {
+  @apply sticky top-0 w-full flex-none flex;
+
+  padding: 15px 20px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+
+  background: hsl(0deg 0% 100% / 60%);
+  border-bottom: 1px solid hsl(0deg 0% 100%);
+  box-sizing: border-box;
+  backdrop-filter: saturate(180%) blur(40px);
+
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}

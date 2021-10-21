@@ -12,4 +12,9 @@ describe('Home', () => {
 
     expect(heading).toBeInTheDocument()
   })
+
+  test('render of the header', () => {
+    render(<Home />)
+    expect(screen.getByRole('banner')).toBeInTheDocument()
+  })
 })
