@@ -13,6 +13,8 @@ module.exports = {
         'service-worker': 'off',
         'maskable-icon': 'off',
         'splash-screen': 'off',
+        'themed-omnibox': 'off',
+        'csp-xss': 'warn',
       },
     },
   },
