@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Icon} from './Icon'
-import buttonStyles from 'styles/button.module.scss'
+import buttonStyles from '@styles/button.module.scss'
 
 type PropType = {
   name: string

@@ -1,4 +1,4 @@
-import iconStyles from 'styles/icon.module.scss'
+import iconStyles from '@styles/icon.module.scss'
 
 export const MenuIconPath = () => (
   <path

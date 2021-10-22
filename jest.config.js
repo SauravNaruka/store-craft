@@ -3,7 +3,7 @@ module.exports = {
   collectCoverage: true,
   coverageReporters: ['json', 'html'],
   collectCoverageFrom: [
-    '**/*.{ts,tsx}',
+    'src/**/*.{ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/coverage/**',
@@ -13,6 +13,7 @@ module.exports = {
     '!lighthouserc.js',
     '!<rootDir>/pages/_document.tsx',
   ],
+  moduleDirectories: ['node_modules', '<rootDir>/'],
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
 

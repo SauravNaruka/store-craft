@@ -1,11 +1,11 @@
 import React from 'react'
 import type {NextPage} from 'next'
 import Head from 'next/head'
-import {Header} from '@/components/header/Header'
-import {IconButton} from '@/components/IconButton'
-import {SearchInput} from '@/components/SearchInput'
-import {MenuIconPath, CartIconPath} from '@/components/IconPaths'
-import styles from 'styles/common.module.scss'
+import {Header} from 'src/components/header/Header'
+import {IconButton} from 'src/components/IconButton'
+import {SearchInput} from 'src/components/SearchInput'
+import {MenuIconPath, CartIconPath} from 'src/components/IconPaths'
+import styles from '@styles/common.module.scss'
 
 const Home: NextPage = () => {
   return (
