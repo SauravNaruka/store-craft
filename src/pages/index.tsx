@@ -1,13 +1,18 @@
+import {InferGetStaticPropsType, GetStaticProps} from 'next'
 import React from 'react'
-import type {NextPage} from 'next'
 import Head from 'next/head'
-import {Header} from 'src/components/header/Header'
-import {IconButton} from 'src/components/IconButton'
-import {SearchInput} from 'src/components/SearchInput'
-import {MenuIconPath, CartIconPath} from 'src/components/IconPaths'
+import {Header} from '@components/header/Header'
+import {IconButton} from '@components/IconButton'
+import {SearchInput} from '@components/SearchInput'
+import {MenuIconPath, CartIconPath} from '@components/IconPaths'
+import {fetchCollections} from '@api/fetchCollections'
 import styles from '@styles/common.module.scss'
 
-const Home: NextPage = () => {
+export type Collection = {
+  title: string
+}
+
+function Home({collections}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={styles.container}>
       <Head>
@@ -29,10 +34,25 @@ const Home: NextPage = () => {
       </Header>
 
       <main className={styles.main}>
+        <ul>
+          {/* {collections.map((collection: Collection, index: number) => {
+            return <li key={collection.title + index}>{collection.title}</li>
+          })} */}
+        </ul>
         <h1 className={styles.title}>Coming Soon.</h1>
       </main>
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  let collections: Collection[] = (await fetchCollections()) as Collection[]
+
+  return {
+    props: {
+      collections,
+    },
+  }
 }
 
 export default Home

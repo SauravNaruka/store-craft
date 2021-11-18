@@ -1,20 +1,15 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
-import Home from '../pages/index'
+import Home, {getStaticProps} from '../pages/index'
 
-describe('Home', () => {
-  test('renders home page with heading', () => {
-    render(<Home />)
-
-    const heading = screen.getByRole('heading', {
-      name: /Coming Soon/i,
-    })
-
-    expect(heading).toBeInTheDocument()
+describe('Home / index page', () => {
+  test('render of the header', () => {
+    render(<Home collections={[]} />)
+    expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
-  test('render of the header', () => {
-    render(<Home />)
-    expect(screen.getByRole('banner')).toBeInTheDocument()
+  test('static props method', async () => {
+    const props = await getStaticProps()
+    expect(props).toHaveProperty('props.collections')
   })
 })
