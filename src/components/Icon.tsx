@@ -1,5 +1,5 @@
 import * as React from 'react'
-import iconStyles from 'styles/icon.module.scss'
+import iconStyles from '@styles/icon.module.scss'
 
 type PropType = {
   width?: number

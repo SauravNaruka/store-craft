@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import faker from 'faker'
-import {IconButton} from '@/components/IconButton'
+import {IconButton} from 'src/components/IconButton'
 
 describe('IconButton', () => {
   test('render of the button tag with accesable name and css class', () => {
