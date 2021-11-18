@@ -19,8 +19,9 @@
       "@helpers/*": ["src/helpers/*"],
       "@styles/*": ["src/styles/*"],
       "@api/*": ["src/api/*"]
-    }
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/_document.js"],
   "exclude": ["node_modules"]
 }

@@ -12,7 +12,9 @@ export type Collection = {
   title: string
 }
 
-function Home({collections}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Home({
+  collections,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={styles.container}>
       <Head>
@@ -54,5 +56,3 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   }
 }
-
-export default Home
