@@ -1,4 +1,5 @@
-const {GraphQLClient} = require('graphql-request')
+import {GraphQLClient} from 'graphql-request'
+import {getSdk} from '../../generated/storefront.types'
 
 const client = new GraphQLClient(process.env.SHOPIFY_STORE_DOMAIN!, {
   headers: {
@@ -8,8 +9,9 @@ const client = new GraphQLClient(process.env.SHOPIFY_STORE_DOMAIN!, {
   },
 })
 
-const postToShopify = async (query: string, variables?: unknown) => {
+export const postToShopify = async (query: string, variables?: unknown) => {
   return client.request(query, variables)
 }
 
-export {postToShopify}
+const shopifyClient = getSdk(client)
+export default shopifyClient
