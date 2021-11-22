@@ -9,9 +9,9 @@ const client = new GraphQLClient(process.env.SHOPIFY_STORE_DOMAIN!, {
   },
 })
 
-export const postToShopify = async (query: string, variables?: unknown) => {
-  return client.request(query, variables)
-}
+// export const postToShopify = async (query: string, variables?: unknown) => {
+//   return client.request(query, variables)
+// }
 
 const shopifyClient = getSdk(client)
 export default shopifyClient

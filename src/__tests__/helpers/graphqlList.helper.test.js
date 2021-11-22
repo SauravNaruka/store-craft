@@ -1,8 +1,8 @@
 import faker from 'faker'
-import {convertGraphQLListToList} from '../../helpers/graphqlList.helper'
+import {convertGraphqlConnectionTypeToArray} from '../../helpers/graphqlList.helper'
 
 describe('graphQL helper functions', () => {
-  test('convertGraphQLListToList', () => {
+  test('convertGraphqlConnectionTypeToArray', () => {
     const node = faker.random.words()
     const graph = {
       collections: {
@@ -10,17 +10,17 @@ describe('graphQL helper functions', () => {
       },
     }
 
-    const nodes = convertGraphQLListToList(graph)
+    const nodes = convertGraphqlConnectionTypeToArray(graph.collections)
 
     expect(nodes.length).toBe(1)
     expect(nodes[0]).toBe(node)
   })
 
-  test('convertGraphQLListToList with wrong data', () => {
+  test('convertGraphqlConnectionTypeToArray with wrong data', () => {
     const consoleWarnMock = jest.spyOn(console, 'error').mockImplementation()
     const graph = [{node: faker.random.words()}]
     expect(() => {
-      convertGraphQLListToList(graph)
+      convertGraphqlConnectionTypeToArray(graph)
     }).toThrow()
     consoleWarnMock.mockRestore()
   })

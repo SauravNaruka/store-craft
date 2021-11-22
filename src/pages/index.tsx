@@ -34,11 +34,11 @@ export default function Home({
 
       <main className={styles.main}>
         <ul>
-          {collections.map((collection: Collection, index: number) => {
+          {/* {collections.map((collection: Collection, index: number) => {
             return <li key={collection.title + index}>{collection.title}</li>
-          })}
+          })} */}
         </ul>
-        {/* <h1 className={styles.title}>Coming Soon.</h1> */}
+        <h1 className={styles.title}>Coming Soon.</h1>
       </main>
     </div>
   )
