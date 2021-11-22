@@ -1,19 +1,13 @@
-import {gql} from 'graphql-request'
-import {postToShopify} from '@helpers/ShopifyPost.helper'
-import {convertGraphQLListToList} from '@helpers/graphqlList.helper'
+import client from '@api/shopifyClient'
+import {convertGraphqlConnectionTypeToArray} from '@helpers/graphqlList.helper'
+import {Collection} from '@helpers/storefrontTypes'
 
-const query = gql`
-  query Collections {
-    collections(first: 11) {
-      edges {
-        node {
-          title
-        }
-      }
-    }
-  }
-`
-
-export function fetchCollections() {
-  return postToShopify(query).then(convertGraphQLListToList)
+export function fetchCollections(): Promise<Collection[]> {
+  return client
+    .Collections()
+    .then(collectionsQuery =>
+      convertGraphqlConnectionTypeToArray<Collection>(
+        collectionsQuery.collections,
+      ),
+    )
 }

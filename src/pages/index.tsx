@@ -6,11 +6,8 @@ import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
 import {fetchCollections} from '@api/fetchCollections'
+import type {Collection} from '@helpers/storefrontTypes'
 import styles from '@styles/common.module.scss'
-
-export type Collection = {
-  title: string
-}
 
 export default function Home({
   collections,
@@ -48,7 +45,7 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let collections: Collection[] = (await fetchCollections()) as Collection[]
+  let collections: Collection[] = await fetchCollections()
 
   return {
     props: {

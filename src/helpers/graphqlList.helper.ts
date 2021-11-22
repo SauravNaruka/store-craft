@@ -1,17 +1,18 @@
 import * as Logger from '@helpers/logger'
-type GraphQLNode = {
-  node: unknown
+
+type Connection<NodeType> = {
+  edges: CollectionEdge<NodeType>[]
 }
 
-type GraphList = {
-  collections: {
-    edges: GraphQLNode[]
-  }
+type CollectionEdge<NodeType> = {
+  node: NodeType
 }
 
-export function convertGraphQLListToList(graphList: GraphList): unknown[] {
+export function convertGraphqlConnectionTypeToArray<NodeType>(
+  connection: Connection<NodeType>,
+): NodeType[] {
   try {
-    return graphList.collections.edges.map((item: GraphQLNode) => item.node)
+    return connection.edges.map(item => item.node)
   } catch (error) {
     Logger.error(error)
     throw error
