@@ -1,13 +1,17 @@
 import * as React from 'react'
-import styles from '@styles/header.module.scss'
+import commonStyles from '@styles/common.module.scss'
+import headerStyles from '@styles/header.module.scss'
 
 type PropType = {
   children: React.ReactNode
   props?: {[key: string]: unknown}
 }
+
+const defaultClasses = `${headerStyles.mobileHeader} ${commonStyles.backgroundGlassmorphic}`
+
 export function Header({children, ...props}: PropType) {
   return (
-    <header className={styles.mobileHeader} {...props}>
+    <header className={defaultClasses} {...props}>
       <nav>{children}</nav>
     </header>
   )

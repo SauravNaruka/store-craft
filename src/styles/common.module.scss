@@ -17,23 +17,33 @@
 }
 
 .shadowSmall {
-  box-shadow: 0.5px 1px 1px hsl(var(--shadow-color) / 0.7);
+  box-shadow: 0.5px 1px 1px hsl(var(--shadow-color), 0.7);
 }
 
-.shadowSmallToMedium {
+.shadowSmallLightSpread {
+  box-shadow: 0.5px 1px 8px hsl(var(--shadow-color-light), 0.3);
+}
+
+.shadowSmallX {
   box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.25);
 }
 
 .shadowMedium {
-  box-shadow: 1px 2px 2px hsl(var(--shadow-color) / 0.333),
-    2px 4px 4px hsl(var(--shadow-color) / 0.333),
-    3px 6px 6px hsl(var(--shadow-color) / 0.333);
+  box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.333),
+    2px 4px 4px hsl(var(--shadow-color), 0.333),
+    3px 6px 6px hsl(var(--shadow-color), 0.333);
 }
 
 .shadowLarge {
-  box-shadow: 1px 2px 2px hsl(var(--shadow-color) / 0.2),
-    2px 4px 4px hsl(var(--shadow-color) / 0.2),
-    4px 8px 8px hsl(var(--shadow-color) / 0.2),
-    8px 16px 16px hsl(var(--shadow-color) / 0.2),
-    16px 32px 32px hsl(var(--shadow-color) / 0.2);
+  box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.2),
+    2px 4px 4px hsl(var(--shadow-color), 0.2),
+    4px 8px 8px hsl(var(--shadow-color), 0.2),
+    8px 16px 16px hsl(var(--shadow-color), 0.2),
+    16px 32px 32px hsl(var(--shadow-color), 0.2);
+}
+
+.backgroundGlassmorphic {
+  background: hsl(0deg 0% 100% / 60%);
+  backdrop-filter: saturate(180%) blur(40px);
+  border: 1px solid hsl(0deg 0% 100%);
 }

@@ -37,6 +37,10 @@ export default function Home({
       <main className={styles.main}>
         <HStack>
           <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
         </HStack>
         <ul>
           {/* {collections.map((collection: Collection, index: number) => {
