@@ -20,7 +20,8 @@
       "@styles/*": ["src/styles/*"],
       "@api/*": ["src/api/*"]
     },
-    "incremental": true
+    "incremental": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/_document.js"],
   "exclude": ["node_modules"]

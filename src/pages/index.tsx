@@ -10,6 +10,7 @@ import {HStack} from '@components/HStack.server'
 import {Card} from '@components/Card.server'
 import type {Collection} from '@helpers/storefrontTypes'
 import styles from '@styles/common.module.scss'
+import {navigation} from '../cms/navigation'
 
 export default function Home({
   collections,
@@ -36,11 +37,9 @@ export default function Home({
 
       <main className={styles.main}>
         <HStack>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {navigation.map(({title, link, image}) => (
+            <Card key={link} title={title} link={link} image={image} />
+          ))}
         </HStack>
         <ul>
           {/* {collections.map((collection: Collection, index: number) => {

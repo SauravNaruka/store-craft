@@ -7,5 +7,9 @@ type PropType = {
 }
 
 export function HStack({className = Styles.hstack, children}: PropType) {
-  return <div className={className}>{children}</div>
+  return (
+    <div className={className} role="list">
+      {children}
+    </div>
+  )
 }
