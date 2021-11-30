@@ -6,6 +6,7 @@ import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
 import {fetchCollections} from '@api/fetchCollections'
+import {fetchNavigations} from '@api/fetchNavigations'
 import {HStack} from '@components/HStack.server'
 import {Card} from '@components/Card.server'
 import type {Collection} from '@helpers/storefrontTypes'
@@ -55,6 +56,7 @@ export default function Home({
 export const getStaticProps: GetStaticProps = async () => {
   // let collections: Collection[] = await fetchCollections()
   let collections: Collection[] = []
+  let navigations: unknown = await fetchNavigations()
 
   return {
     props: {

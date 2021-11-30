@@ -1,0 +1,5 @@
+query Navigations {
+  allNavigation {
+    title
+  }
+}
