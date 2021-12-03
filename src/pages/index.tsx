@@ -1,21 +1,21 @@
 import React from 'react'
-import {InferGetStaticPropsType, GetStaticProps} from 'next'
+import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {Header} from '@components/header/Header'
 import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
-import {fetchCollections} from '@api/fetchCollections'
-import {fetchNavigations} from '@api/fetchNavigations'
+import {fetchNavigationItems} from '@api/fetchNavigations'
 import {HStack} from '@components/HStack.server'
 import {Card} from '@components/Card.server'
-import type {Collection} from '@helpers/storefrontTypes'
+import type {NavigationItem} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
-import {navigation} from '../cms/navigation'
 
-export default function Home({
-  collections,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+type PropType = {
+  navigationItems: NavigationItem[]
+}
+
+export default function Home({navigationItems}: PropType) {
   return (
     <div className={styles.container}>
       <Head>
@@ -38,29 +38,27 @@ export default function Home({
 
       <main className={styles.main}>
         <HStack>
-          {navigation.map(({title, link, image}) => (
-            <Card key={link} title={title} link={link} image={image} />
+          {navigationItems.map(({title, link, image}, index) => (
+            <Card
+              key={index}
+              title={title ? title : ''}
+              link={link?.url ?? '/'}
+              imageSrc={image?.asset?.url ?? '/'}
+              imageCaption={image?.caption ?? ''}
+            />
           ))}
         </HStack>
-        <ul>
-          {/* {collections.map((collection: Collection, index: number) => {
-            return <li key={collection.title + index}>{collection.title}</li>
-          })} */}
-        </ul>
-        {/* <h1 className={styles.title}>Coming Soon.</h1> */}
       </main>
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  // let collections: Collection[] = await fetchCollections()
-  let collections: Collection[] = []
-  let navigations: unknown = await fetchNavigations()
+  let navigationItems = await fetchNavigationItems()
 
   return {
     props: {
-      collections,
+      navigationItems,
     },
   }
 }

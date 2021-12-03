@@ -1,4 +1,4 @@
 export interface ImageType {
-  src: string | StaticImageData
-  title: string
+  url: string | StaticImageData
+  caption: string
 }

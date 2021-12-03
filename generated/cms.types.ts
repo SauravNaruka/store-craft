@@ -179,6 +179,34 @@ export type Image = {
   hotspot?: Maybe<SanityImageHotspot>
 }
 
+export type ImageBlock = {
+  __typename?: 'ImageBlock'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  asset?: Maybe<SanityImageAsset>
+  /** This will be used as the alt text of the image. Try to convey the feeling of the image rather than literal description */
+  caption?: Maybe<Scalars['String']>
+  crop?: Maybe<SanityImageCrop>
+  hotspot?: Maybe<SanityImageHotspot>
+}
+
+export type ImageBlockFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  asset?: InputMaybe<SanityImageAssetFilter>
+  caption?: InputMaybe<StringFilter>
+  crop?: InputMaybe<SanityImageCropFilter>
+  hotspot?: InputMaybe<SanityImageHotspotFilter>
+}
+
+export type ImageBlockSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  caption?: InputMaybe<SortOrder>
+  crop?: InputMaybe<SanityImageCropSorting>
+  hotspot?: InputMaybe<SanityImageHotspotSorting>
+}
+
 export type ImageFilter = {
   _key?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
@@ -213,23 +241,23 @@ export type Link = {
   __typename?: 'Link'
   _key?: Maybe<Scalars['String']>
   _type?: Maybe<Scalars['String']>
-  /** Use fully qualified URLS for external link */
-  externalUrl?: Maybe<Scalars['String']>
-  /** Select pages for navigation */
-  internalLink?: Maybe<Page>
+  /** Optional internal reference to the page */
+  internalReference?: Maybe<Page>
+  /** Use fully qualified URLs for external link & relative URLs for internal links */
+  url?: Maybe<Scalars['String']>
 }
 
 export type LinkFilter = {
   _key?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
-  externalUrl?: InputMaybe<StringFilter>
-  internalLink?: InputMaybe<PageFilter>
+  internalReference?: InputMaybe<PageFilter>
+  url?: InputMaybe<StringFilter>
 }
 
 export type LinkSorting = {
   _key?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
-  externalUrl?: InputMaybe<SortOrder>
+  url?: InputMaybe<SortOrder>
 }
 
 export type Navigation = Document & {
@@ -245,9 +273,10 @@ export type Navigation = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
+  description?: Maybe<Scalars['String']>
   items?: Maybe<Array<Maybe<NavigationItem>>>
-  navId?: Maybe<Slug>
-  title?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  slug?: Maybe<Slug>
 }
 
 export type NavigationFilter = {
@@ -259,30 +288,34 @@ export type NavigationFilter = {
   _rev?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
-  navId?: InputMaybe<SlugFilter>
-  title?: InputMaybe<StringFilter>
+  description?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+  slug?: InputMaybe<SlugFilter>
 }
 
 export type NavigationItem = {
   __typename?: 'NavigationItem'
   _key?: Maybe<Scalars['String']>
   _type?: Maybe<Scalars['String']>
-  navigationItemUrl?: Maybe<Link>
-  text?: Maybe<Scalars['String']>
+  image?: Maybe<ImageBlock>
+  link?: Maybe<Link>
+  title?: Maybe<Scalars['String']>
 }
 
 export type NavigationItemFilter = {
   _key?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
-  navigationItemUrl?: InputMaybe<LinkFilter>
-  text?: InputMaybe<StringFilter>
+  image?: InputMaybe<ImageBlockFilter>
+  link?: InputMaybe<LinkFilter>
+  title?: InputMaybe<StringFilter>
 }
 
 export type NavigationItemSorting = {
   _key?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
-  navigationItemUrl?: InputMaybe<LinkSorting>
-  text?: InputMaybe<SortOrder>
+  image?: InputMaybe<ImageBlockSorting>
+  link?: InputMaybe<LinkSorting>
+  title?: InputMaybe<SortOrder>
 }
 
 export type NavigationSorting = {
@@ -292,8 +325,9 @@ export type NavigationSorting = {
   _rev?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
-  navId?: InputMaybe<SlugSorting>
-  title?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  slug?: InputMaybe<SlugSorting>
 }
 
 export type Page = Document & {
@@ -347,13 +381,11 @@ export type RootQuery = {
   Page?: Maybe<Page>
   SanityFileAsset?: Maybe<SanityFileAsset>
   SanityImageAsset?: Maybe<SanityImageAsset>
-  SiteConfig?: Maybe<SiteConfig>
   allDocument: Array<Document>
   allNavigation: Array<Navigation>
   allPage: Array<Page>
   allSanityFileAsset: Array<SanityFileAsset>
   allSanityImageAsset: Array<SanityImageAsset>
-  allSiteConfig: Array<SiteConfig>
 }
 
 export type RootQueryDocumentArgs = {
@@ -373,10 +405,6 @@ export type RootQuerySanityFileAssetArgs = {
 }
 
 export type RootQuerySanityImageAssetArgs = {
-  id: Scalars['ID']
-}
-
-export type RootQuerySiteConfigArgs = {
   id: Scalars['ID']
 }
 
@@ -413,13 +441,6 @@ export type RootQueryAllSanityImageAssetArgs = {
   offset?: InputMaybe<Scalars['Int']>
   sort?: InputMaybe<Array<SanityImageAssetSorting>>
   where?: InputMaybe<SanityImageAssetFilter>
-}
-
-export type RootQueryAllSiteConfigArgs = {
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  sort?: InputMaybe<Array<SiteConfigSorting>>
-  where?: InputMaybe<SiteConfigFilter>
 }
 
 export type SanityAssetSourceData = {
@@ -794,57 +815,6 @@ export type Sanity_DocumentFilter = {
   references?: InputMaybe<Scalars['ID']>
 }
 
-export type SiteConfig = Document & {
-  __typename?: 'SiteConfig'
-  /** Date the document was created */
-  _createdAt?: Maybe<Scalars['DateTime']>
-  /** Document ID */
-  _id?: Maybe<Scalars['ID']>
-  _key?: Maybe<Scalars['String']>
-  /** Current document revision */
-  _rev?: Maybe<Scalars['String']>
-  /** Document type */
-  _type?: Maybe<Scalars['String']>
-  /** Date the document was last modified */
-  _updatedAt?: Maybe<Scalars['DateTime']>
-  /** Choose page to be the frontpage */
-  frontpage?: Maybe<Page>
-  /** Select menu for main navigation */
-  mainNav?: Maybe<Navigation>
-  /** Select menu for social navigation */
-  socialNav?: Maybe<Navigation>
-  title?: Maybe<Scalars['String']>
-  /** The main site url. Used to create canonical url */
-  url?: Maybe<Scalars['String']>
-}
-
-export type SiteConfigFilter = {
-  /** Apply filters on document level */
-  _?: InputMaybe<Sanity_DocumentFilter>
-  _createdAt?: InputMaybe<DatetimeFilter>
-  _id?: InputMaybe<IdFilter>
-  _key?: InputMaybe<StringFilter>
-  _rev?: InputMaybe<StringFilter>
-  _type?: InputMaybe<StringFilter>
-  _updatedAt?: InputMaybe<DatetimeFilter>
-  frontpage?: InputMaybe<PageFilter>
-  mainNav?: InputMaybe<NavigationFilter>
-  socialNav?: InputMaybe<NavigationFilter>
-  title?: InputMaybe<StringFilter>
-  url?: InputMaybe<StringFilter>
-}
-
-export type SiteConfigSorting = {
-  _createdAt?: InputMaybe<SortOrder>
-  _id?: InputMaybe<SortOrder>
-  _key?: InputMaybe<SortOrder>
-  _rev?: InputMaybe<SortOrder>
-  _type?: InputMaybe<SortOrder>
-  _updatedAt?: InputMaybe<SortOrder>
-  title?: InputMaybe<SortOrder>
-  url?: InputMaybe<SortOrder>
-}
-
 export type Slug = {
   __typename?: 'Slug'
   _key?: Maybe<Scalars['String']>
@@ -890,20 +860,63 @@ export type StringFilter = {
   nin?: InputMaybe<Array<Scalars['String']>>
 }
 
-export type NavigationsQueryVariables = Exact<{[key: string]: never}>
+export type NavigationsQueryVariables = Exact<{
+  slug?: InputMaybe<Scalars['String']>
+}>
 
 export type NavigationsQuery = {
   __typename?: 'RootQuery'
   allNavigation: Array<{
     __typename?: 'Navigation'
-    title?: string | null | undefined
+    name?: string | null | undefined
+    items?:
+      | Array<
+          | {
+              __typename?: 'NavigationItem'
+              title?: string | null | undefined
+              link?:
+                | {__typename?: 'Link'; url?: string | null | undefined}
+                | null
+                | undefined
+              image?:
+                | {
+                    __typename?: 'ImageBlock'
+                    caption?: string | null | undefined
+                    asset?:
+                      | {
+                          __typename?: 'SanityImageAsset'
+                          url?: string | null | undefined
+                        }
+                      | null
+                      | undefined
+                  }
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+        >
+      | null
+      | undefined
   }>
 }
 
 export const NavigationsDocument = gql`
-  query Navigations {
-    allNavigation {
-      title
+  query Navigations($slug: String) {
+    allNavigation(where: {slug: {current: {eq: $slug}}}) {
+      name
+      items {
+        title
+        link {
+          url
+        }
+        image {
+          caption
+          asset {
+            url
+          }
+        }
+      }
     }
   }
 `

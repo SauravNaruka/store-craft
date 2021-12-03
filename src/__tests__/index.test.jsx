@@ -4,12 +4,12 @@ import Home, {getStaticProps} from '../pages/index'
 
 describe('Home / index page', () => {
   test('render of the header', () => {
-    render(<Home collections={[]} />)
+    render(<Home navigationItems={[]} />)
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
   test('static props method', async () => {
     const props = await getStaticProps()
-    expect(props).toHaveProperty('props.collections')
+    expect(props).toHaveProperty('props.navigationItems')
   })
 })

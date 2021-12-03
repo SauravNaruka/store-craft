@@ -2,12 +2,12 @@ import * as React from 'react'
 import Image from 'next/image'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
-import {ImageType} from 'src/types/interfaces'
 
 type PropType = {
   title: JSX.Element | string
   link: string
-  image: ImageType
+  imageSrc: string
+  imageCaption: string
   className?: string
 }
 
@@ -16,7 +16,8 @@ const defaultClasses = `${cardStyles.card} ${commonStyles.backgroundGlassmorphic
 export function Card({
   title,
   link,
-  image,
+  imageSrc,
+  imageCaption,
   className = defaultClasses,
 }: PropType) {
   return (
@@ -28,7 +29,14 @@ export function Card({
         className={cardStyles.hiddenLink}
       />
       <div className={cardStyles.image}>
-        <Image src={image.src} alt={image.title} width={97} height={85} />
+        <Image
+          src={imageSrc + '?h=100'}
+          alt={imageCaption}
+          width={97}
+          height={85}
+          quality={90}
+          priority
+        />
       </div>
       <div>
         <a href={link}>{title}</a>
