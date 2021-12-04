@@ -6,12 +6,17 @@ describe('Card tests', () => {
   test('accessibility of link card', () => {
     const randomTitle = faker.random.words()
     const randomURL = faker.internet.url()
-    const randomImage = {
-      src: faker.internet.url(),
-      title: faker.random.words(),
-    }
+    const imageSrc = faker.random.word()
+    const imageCaption = faker.random.words()
 
-    render(<Card title={randomTitle} link={randomURL} image={randomImage} />)
+    render(
+      <Card
+        title={randomTitle}
+        link={randomURL}
+        imageSrc={imageSrc}
+        imageCaption={imageCaption}
+      />,
+    )
 
     expect(screen.getByRole('link', {name: randomTitle})).toBeInTheDocument()
     expect(screen.getByText(randomTitle)).toBeInTheDocument()

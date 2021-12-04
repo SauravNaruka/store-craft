@@ -6,8 +6,7 @@ import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
 import {fetchNavigationItems} from '@api/fetchNavigations'
-import {HStack} from '@components/HStack.server'
-import {Card} from '@components/Card.server'
+import {ProductNavigation} from '@components/ProductNavigation.server'
 import type {NavigationItem} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
@@ -37,17 +36,7 @@ export default function Home({navigationItems}: PropType) {
       </Header>
 
       <main className={styles.main}>
-        <HStack>
-          {navigationItems.map(({title, link, image}, index) => (
-            <Card
-              key={index}
-              title={title ? title : ''}
-              link={link?.url ?? '/'}
-              imageSrc={image?.asset?.url ?? '/'}
-              imageCaption={image?.caption ?? ''}
-            />
-          ))}
-        </HStack>
+        <ProductNavigation navigationItems={navigationItems} />
       </main>
     </div>
   )
