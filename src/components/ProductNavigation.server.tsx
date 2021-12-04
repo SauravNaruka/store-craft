@@ -11,30 +11,20 @@ export function ProductNavigation({navigationItems}: PropType) {
   return (
     <HStack>
       {navigationItems.map(({title, link, image}, index) => {
-        if (!isValidLink({title, link, image})) {
-          return null
+        if (link?.url) {
+          return (
+            <Card
+              key={index}
+              title={title ? title : ''}
+              link={link.url}
+              imageSrc={image?.asset?.url}
+              imageCaption={image?.caption}
+            />
+          )
+        } else {
+          return false
         }
-        return (
-          <Card
-            key={index}
-            title={title ? title : ''}
-            link={link?.url ?? '/'}
-            imageSrc={image?.asset?.url ?? '/'}
-            imageCaption={image?.caption ?? ''}
-          />
-        )
       })}
     </HStack>
   )
-}
-
-function isValidLink(navigationItem: NavigationItem): boolean {
-  if (
-    navigationItem?.link?.url &&
-    (navigationItem.image?.asset?.url || navigationItem.title)
-  ) {
-    return true
-  } else {
-    return false
-  }
 }

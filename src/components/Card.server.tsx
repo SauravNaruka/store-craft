@@ -6,8 +6,8 @@ import cardStyles from '@styles/card.module.scss'
 type PropType = {
   title: JSX.Element | string
   link: string
-  imageSrc: string
-  imageCaption: string
+  imageSrc?: string | null
+  imageCaption?: string | null
   className?: string
 }
 
@@ -28,16 +28,18 @@ export function Card({
         href={link}
         className={cardStyles.hiddenLink}
       />
-      <div className={cardStyles.image}>
-        <Image
-          src={imageSrc + '?h=100'}
-          alt={imageCaption}
-          width={97}
-          height={85}
-          quality={90}
-          priority
-        />
-      </div>
+      {imageSrc && imageCaption && (
+        <div className={cardStyles.image}>
+          <Image
+            src={imageSrc + '?h=100'}
+            alt={imageCaption}
+            width={97}
+            height={85}
+            quality={90}
+            priority
+          />
+        </div>
+      )}
       <div>
         <a href={link}>{title}</a>
       </div>
