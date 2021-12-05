@@ -19,6 +19,7 @@ export function ProductNavigation({navigationItems}: PropType) {
               link={link.url}
               imageSrc={image?.asset?.url}
               imageCaption={image?.caption}
+              priority={true}
             />
           )
         } else {

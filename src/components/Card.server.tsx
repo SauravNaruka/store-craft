@@ -8,6 +8,7 @@ type PropType = {
   link: string
   imageSrc?: string | null
   imageCaption?: string | null
+  priority?: boolean
   className?: string
 }
 
@@ -18,6 +19,7 @@ export function Card({
   link,
   imageSrc,
   imageCaption,
+  priority = false,
   className = defaultClasses,
 }: PropType) {
   return (
@@ -31,12 +33,12 @@ export function Card({
       {imageSrc && imageCaption && (
         <div className={cardStyles.image}>
           <Image
-            src={imageSrc + '?h=100'}
+            src={imageSrc + '?h=85'}
             alt={imageCaption}
             width={97}
             height={85}
             quality={90}
-            priority
+            priority={priority}
           />
         </div>
       )}
