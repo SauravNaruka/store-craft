@@ -15,12 +15,16 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@generated/*": ["generated/*"],
       "@helpers/*": ["src/helpers/*"],
       "@styles/*": ["src/styles/*"],
-      "@api/*": ["src/api/*"]
+      "@types/*": ["src/types/*"]
     },
-    "incremental": true
+    "incremental": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/_document.js"],
   "exclude": ["node_modules"]

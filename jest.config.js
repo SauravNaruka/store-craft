@@ -16,9 +16,12 @@ module.exports = {
   ],
   moduleDirectories: ['node_modules', '<rootDir>/'],
   moduleNameMapper: {
-    '^@components/(.*)$': '<rootDir>/src/components/$1',
-    '^@helpers/(.*)$': '<rootDir>/src/helpers/$1',
     '^@api/(.*)$': '<rootDir>/src/api/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@constants/(.*)$': '<rootDir>/src/constants/$1',
+    '^@generated/(.*)$': '<rootDir>/generated/$1',
+    '^@helpers/(.*)$': '<rootDir>/src/helpers/$1',
+    '^@types/(.*)$': '<rootDir>/src/types/$1',
 
     /* Handle CSS imports (with CSS modules)
       https://jestjs.io/docs/webpack#mocking-css-modules */
@@ -47,10 +50,10 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 90,
-      lines: 90,
-      statements: 90,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
     },
   },
 }

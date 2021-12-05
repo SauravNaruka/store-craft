@@ -32,5 +32,7 @@ jobs:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
           SHOPIFY_STOREFRONT_ACCESS_TOKEN:
             ${{ secrets.SHOPIFY_STOREFRONT_ACCESS_TOKEN }}
+          SANITY_STUDIO_ENDPOINT: ${{ secrets.SANITY_STUDIO_ENDPOINT }}
+          SANITY_STUDIO_TOKEN: ${{ secrets.SANITY_STUDIO_TOKEN }}
       - run: npm run test:coverage
       - run: npm run lint

@@ -3,3 +3,12 @@
 export function isError(error: unknown): error is Error {
   return error instanceof Error
 }
+
+export class UnknownDataError extends Error {
+  constructor(msg: string) {
+    super(msg)
+    this.name = 'UnknownDataError'
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, UnknownDataError.prototype)
+  }
+}
