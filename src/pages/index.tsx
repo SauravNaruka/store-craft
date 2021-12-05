@@ -1,17 +1,20 @@
-import {InferGetStaticPropsType, GetStaticProps} from 'next'
 import React from 'react'
+import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {Header} from '@components/header/Header'
 import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
-import {fetchCollections} from '@api/fetchCollections'
-import type {Collection} from '@helpers/storefrontTypes'
+import {fetchNavigationItems} from '@api/fetchNavigations'
+import {ProductNavigation} from '@components/ProductNavigation.server'
+import type {NavigationItem} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
-export default function Home({
-  collections,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+type PropType = {
+  navigationItems: NavigationItem[]
+}
+
+export default function Home({navigationItems}: PropType) {
   return (
     <div className={styles.container}>
       <Head>
@@ -33,23 +36,18 @@ export default function Home({
       </Header>
 
       <main className={styles.main}>
-        <ul>
-          {/* {collections.map((collection: Collection, index: number) => {
-            return <li key={collection.title + index}>{collection.title}</li>
-          })} */}
-        </ul>
-        <h1 className={styles.title}>Coming Soon.</h1>
+        <ProductNavigation navigationItems={navigationItems} />
       </main>
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let collections: Collection[] = await fetchCollections()
+  let navigationItems = await fetchNavigationItems()
 
   return {
     props: {
-      collections,
+      navigationItems,
     },
   }
 }
