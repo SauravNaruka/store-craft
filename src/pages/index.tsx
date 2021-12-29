@@ -6,6 +6,7 @@ import {SearchInput} from '@components/SearchInput'
 import CartIcon from '@components/icons/CartIcon'
 import MenuIcon from '@components/icons/MenuIcon'
 import HomeCarousel from '@components/carousel/HomeCarousel'
+import IconButton from '@components/IconButton'
 import {fetchNavigationItems} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 
@@ -28,7 +29,9 @@ export default function Home({navigationItems}: PropType) {
       </Head>
 
       <Header>
-        <MenuIcon name={'Menu'} />
+        <IconButton name={'Menu'}>
+          <MenuIcon />
+        </IconButton>
         <SearchInput />
         <CartIcon name={'Shopping Cart'} />
       </Header>
