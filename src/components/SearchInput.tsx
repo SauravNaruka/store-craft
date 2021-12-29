@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {TextInput} from './TextInput'
-import {Icon} from './Icon'
-import {SearchIconPath} from './IconPaths'
+import SearchIcon from '@components/icons/SearchIcon'
 import commonStyles from '@styles/common.module.scss'
 import inputStyles from '@styles/input.module.scss'
 
@@ -20,9 +19,7 @@ export function SearchInput() {
         placeholder="Search"
         aria-label="Search for products"
       />
-      <Icon>
-        <SearchIconPath />
-      </Icon>
+      <SearchIcon />
       <input value="Submit" type="submit"></input>
     </form>
   )

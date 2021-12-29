@@ -2,9 +2,9 @@ import * as React from 'react'
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {Header} from '@components/header/Header'
-import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
-import {MenuIconPath, CartIconPath} from '@components/IconPaths'
+import CartIcon from '@components/icons/CartIcon'
+import MenuIcon from '@components/icons/MenuIcon'
 import HomeCarousel from '@components/carousel/HomeCarousel'
 import {fetchNavigationItems} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
@@ -28,13 +28,9 @@ export default function Home({navigationItems}: PropType) {
       </Head>
 
       <Header>
-        <IconButton name={'Menu'}>
-          <MenuIconPath />
-        </IconButton>
+        <MenuIcon name={'Menu'} />
         <SearchInput />
-        <IconButton name={'Shopping Cart'}>
-          <CartIconPath />
-        </IconButton>
+        <CartIcon name={'Shopping Cart'} />
       </Header>
 
       <main className={styles.main}>

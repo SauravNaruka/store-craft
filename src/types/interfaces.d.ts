@@ -1,5 +1,9 @@
 export type BasicType = boolean | string | number
 
+export type IconPropType = React.SVGProps<SVGSVGElement> & {
+  decorativeOnly?: boolean
+}
+
 export type Valueof<T> = T[keyof T]
 
 export interface ImageType {
