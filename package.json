@@ -15,8 +15,10 @@
     "graphql:schema": "graphql-codegen --config codegen.yml -r dotenv/config"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "graphql": "^15.6.1",
     "graphql-request": "^3.6.1",
+    "keen-slider": "^6.3.2",
     "lodash": "^4.17.21",
     "next": "^12.0.4",
     "node-fetch": "^3.0.0",
@@ -30,9 +32,11 @@
     "@graphql-codegen/typescript-operations": "2.2.1",
     "@jackfranklin/test-data-bot": "^1.3.0",
     "@netlify/functions": "^0.7.2",
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/faker": "^5.5.8",
     "@types/lodash": "^4.14.177",
     "@types/react": "17.0.27",

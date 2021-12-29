@@ -6,6 +6,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta name="theme-color" content="#f4f9fa" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1"
+        />
         <link rel="icon" href="/favicon.png" />
       </Head>
       <body>

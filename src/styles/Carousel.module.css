@@ -1,0 +1,40 @@
+.root {
+  @apply relative select-none w-full h-full bg-transparent;
+  overflow: hidden;
+}
+
+.slider {
+  @apply relative transition-opacity duration-150 w-full;
+  height: calc(100% - 25px);
+  opacity: 0;
+}
+
+.showSlider {
+  opacity: 1;
+}
+
+.dotWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  height: 35px;
+}
+.carouselDot {
+  display: block;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  margin: 0px 5px;
+  background-color: #d4d5d9;
+}
+
+.activeDot {
+  background-color: #535766;
+}
+
+.homeCarousel {
+  width: 100vw;
+  height: calc(((100vw) * 9 / 16) + 25px);
+  margin: 10px 0px;
+}

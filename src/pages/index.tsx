@@ -1,12 +1,14 @@
-import React from 'react'
+import * as React from 'react'
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {Header} from '@components/header/Header'
 import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
 import {MenuIconPath, CartIconPath} from '@components/IconPaths'
+import HomeCarousel from '@components/carousel/HomeCarousel'
 import {fetchNavigationItems} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
+
 import type {NavigationItem} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
@@ -37,6 +39,7 @@ export default function Home({navigationItems}: PropType) {
 
       <main className={styles.main}>
         <ProductNavigation navigationItems={navigationItems} />
+        <HomeCarousel navigationItems={navigationItems} />
       </main>
     </div>
   )
