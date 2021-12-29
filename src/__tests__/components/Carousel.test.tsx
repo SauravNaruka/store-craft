@@ -2,6 +2,10 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Carousel from '@components/carousel/Carousel'
 import {CarouselDotButtons} from '@components/carousel/CarouselDotButtons'
+import {
+  CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION,
+  CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY,
+} from '@constants/carousel.constants'
 
 describe('the working of carosel', () => {
   afterEach(() => {
@@ -27,7 +31,7 @@ describe('the working of carosel', () => {
     userEvent.click(buttonTochangeSlide)
 
     expect(screen.getByLabelText('child')).toBeInTheDocument()
-    expect(screen.getByLabelText('test')).toBeInTheDocument()
+    expect(screen.getByLabelText(/test/i)).toBeInTheDocument()
     expect(screen.getAllByRole('tab').length).toBe(2)
   })
 
@@ -40,6 +44,61 @@ describe('the working of carosel', () => {
     )
     jest.advanceTimersByTime(6000)
     expect(setInterval).toHaveBeenCalledTimes(0)
+  })
+
+  test('accessibility message for carousel Part 1', () => {
+    render(
+      <Carousel id="testid" ariaLabel="test">
+        <span aria-label="First child" />
+      </Carousel>,
+    )
+
+    expect(
+      screen.getByLabelText(
+        new RegExp(CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY),
+      ),
+    ).toBeInTheDocument
+
+    expect(
+      screen.getByLabelText(
+        new RegExp(CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION),
+      ),
+    ).toBeInTheDocument
+  })
+
+  test('accessibility message for carousel Part 2', () => {
+    render(
+      <Carousel
+        id="testid"
+        ariaLabel="test"
+        autoplay={false}
+        dotsNavigation={false}
+      >
+        <span aria-label="First child" />
+      </Carousel>,
+    )
+
+    expect(
+      screen.queryByLabelText(
+        new RegExp(CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY),
+      ),
+    ).not.toBeInTheDocument
+
+    expect(
+      screen.queryByLabelText(
+        new RegExp(CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION),
+      ),
+    ).not.toBeInTheDocument
+  })
+
+  test('removing of dots navigation', () => {
+    render(
+      <Carousel id="testid" ariaLabel="test" dotsNavigation={false}>
+        <span aria-label="First child" />
+      </Carousel>,
+    )
+
+    expect(screen.queryAllByRole('tab').length).toBe(0)
   })
 
   test('dots buttons click action', () => {

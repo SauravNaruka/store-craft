@@ -13,7 +13,7 @@ export function HomeCarousel({navigationItems}: PropType) {
     <Carousel
       id="homeCarousel"
       className={styles.homeCarousel}
-      ariaLabel="Slides for existing offers and announcements. Navigate using the slide tabs"
+      ariaLabel="Slides for existing offers and announcements:"
     >
       {navigationItems.map(({link, image}, index) => {
         if (image?.asset?.url && image?.caption && link?.url)

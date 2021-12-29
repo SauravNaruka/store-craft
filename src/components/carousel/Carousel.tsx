@@ -3,6 +3,10 @@ import cn from 'classnames'
 import {useKeenSlider} from 'keen-slider/react'
 import {useInterval} from '@hooks/useInterval'
 import {CarouselDotButtons} from './CarouselDotButtons'
+import {
+  CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION,
+  CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY,
+} from '@constants/carousel.constants'
 import 'keen-slider/keen-slider.min.css'
 import styles from '@styles/Carousel.module.css'
 
@@ -11,6 +15,7 @@ export type PropType = {
   ariaLabel: string
   autoplay?: boolean
   autoPlayDelay?: number
+  dotsNavigation?: boolean
   className?: string
   children: React.ReactNode | React.ReactNode[]
 }
@@ -20,6 +25,7 @@ export function Carousel({
   ariaLabel,
   autoplay = true,
   autoPlayDelay = 6000,
+  dotsNavigation = true,
   className,
   children,
 }: PropType): JSX.Element {
@@ -84,7 +90,11 @@ export function Carousel({
       ref={sliderContainerRef}
       className={`${styles.root} ${className ?? ''}`}
       role="region"
-      aria-label={ariaLabel}
+      aria-label={`${ariaLabel}: ${getAccessibilityMessage(
+        autoplay,
+        autoPlayDelay,
+        dotsNavigation,
+      )}`}
     >
       <div
         ref={ref}
@@ -111,14 +121,44 @@ export function Carousel({
           )
         })}
       </div>
-      <CarouselDotButtons
-        id={id}
-        numberOfslides={React.Children.count(children)}
-        activeSlideIndex={currentSlide}
-        onClick={index => slider.current?.moveToIdx(index)}
-      />
+      {dotsNavigation && (
+        <CarouselDotButtons
+          id={id}
+          numberOfslides={React.Children.count(children)}
+          activeSlideIndex={currentSlide}
+          onClick={index => slider.current?.moveToIdx(index)}
+        />
+      )}
     </section>
   )
+}
+
+function getAccessibilityMessage(
+  autoPlay: boolean,
+  duration: number,
+  hasDots: boolean,
+) {
+  return `${getAutoPlayMessage(autoPlay, duration)} ${getNavigationMessage(
+    hasDots,
+  )}`
+}
+
+function getAutoPlayMessage(autoPlay: boolean, duration: number) {
+  if (autoPlay) {
+    return `${CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY} ${
+      duration / 1000
+    } seconds`
+  } else {
+    return ''
+  }
+}
+
+function getNavigationMessage(hasDots: boolean) {
+  if (hasDots) {
+    return CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION
+  } else {
+    return ''
+  }
 }
 
 export default Carousel

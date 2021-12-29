@@ -24,6 +24,7 @@ export function CarouselDotButtons({
             title={`Slide ${slideIndex + 1}`}
             aria-setsize={numberOfslides}
             aria-posinset={slideIndex + 1}
+            aria-current={slideIndex === activeSlideIndex}
             onClick={() => clickHandler(slideIndex)}
           >
             <span
