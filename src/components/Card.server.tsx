@@ -33,11 +33,10 @@ export function Card({
       {imageSrc && imageCaption && (
         <div className={cardStyles.image}>
           <Image
-            src={imageSrc + '?h=85'}
+            src={imageSrc}
             alt={imageCaption}
             width={97}
-            height={85}
-            quality={90}
+            height={97}
             priority={priority}
           />
         </div>

@@ -1,12 +1,14 @@
-import React from 'react'
+import * as React from 'react'
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {Header} from '@components/header/Header'
-import {IconButton} from '@components/IconButton'
 import {SearchInput} from '@components/SearchInput'
-import {MenuIconPath, CartIconPath} from '@components/IconPaths'
+import CartIcon from '@components/icons/CartIcon'
+import MenuIcon from '@components/icons/MenuIcon'
+import IconButton from '@components/IconButton'
 import {fetchNavigationItems} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
+
 import type {NavigationItem} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
@@ -27,12 +29,10 @@ export default function Home({navigationItems}: PropType) {
 
       <Header>
         <IconButton name={'Menu'}>
-          <MenuIconPath />
+          <MenuIcon />
         </IconButton>
         <SearchInput />
-        <IconButton name={'Shopping Cart'}>
-          <CartIconPath />
-        </IconButton>
+        <CartIcon name={'Shopping Cart'} />
       </Header>
 
       <main className={styles.main}>
