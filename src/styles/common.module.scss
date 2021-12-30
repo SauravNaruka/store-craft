@@ -1,15 +1,10 @@
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
 .main {
-  padding: 5rem 0;
+  padding: 5rem 0 0 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -46,4 +41,8 @@
   background: hsl(0deg 0% 100% / 60%);
   backdrop-filter: saturate(180%) blur(40px);
   border: 1px solid hsl(0deg 0% 100%);
+}
+
+.srOnly {
+  @apply sr-only;
 }

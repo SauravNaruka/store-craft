@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {Card} from './Card.server'
 import {HStack} from './HStack.server'
 import type {NavigationItem} from '@generated/cms.types'

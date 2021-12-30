@@ -21,6 +21,7 @@ module.exports = {
     '^@constants/(.*)$': '<rootDir>/src/constants/$1',
     '^@generated/(.*)$': '<rootDir>/generated/$1',
     '^@helpers/(.*)$': '<rootDir>/src/helpers/$1',
+    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@types/(.*)$': '<rootDir>/src/types/$1',
 
     /* Handle CSS imports (with CSS modules)
