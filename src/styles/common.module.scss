@@ -44,21 +44,5 @@
 }
 
 .srOnly {
-  display: block;
-  position: absolute !important;
-  overflow: hidden !important;
-  height: 1px !important;
-  width: 1px !important;
-  border: 0 !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  line-height: 0;
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  -webkit-clip-path: inset(50%) !important;
-  clip-path: inset(50%) !important;
-  font-size: 0;
-  white-space: nowrap !important;
-  color: transparent;
-  background: 0 0;
-  cursor: pointer;
+  @apply sr-only;
 }

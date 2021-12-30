@@ -49,12 +49,6 @@ export function Carousel({
     autoplay ? autoPlayDelay : null,
   )
 
-  React.useEffect(() => {
-    slider.current?.on('slideChanged', () => {
-      resetInterval()
-    })
-  }, [resetInterval, slider])
-
   // Stop the history navigation gesture on touch devices
   React.useEffect(() => {
     const preventNavigation = (event: TouchEvent) => {
@@ -76,7 +70,7 @@ export function Carousel({
 
     const slider = sliderContainerRef.current!
 
-    slider.addEventListener('touchstart', preventNavigation)
+    slider.addEventListener('touchstart', preventNavigation, {passive: true})
 
     return () => {
       if (slider) {
@@ -106,17 +100,26 @@ export function Carousel({
       >
         {React.Children.map(children, (child, index) => {
           // Add the keen-slider__slide className to children
+          const isSlideActive = currentSlide === index
           return (
             <span
               key={`${id}_slide_key_${index}`}
               role="tabpanel"
               aria-labelledby={`${id}_slide_${index}`}
               className="keen-slider__slide"
-              {...(currentSlide !== index
-                ? {'aria-hidden': true, tabIndex: -1}
-                : {})}
+              {...(!isSlideActive ? {'aria-hidden': true, tabIndex: -1} : {})}
             >
-              {child}
+              {React.isValidElement(child)
+                ? {
+                    ...child,
+                    props: {
+                      ...child.props,
+                      ...(!isSlideActive
+                        ? {'aria-hidden': true, tabIndex: -1}
+                        : {}),
+                    },
+                  }
+                : child}
             </span>
           )
         })}
@@ -126,7 +129,10 @@ export function Carousel({
           id={id}
           numberOfslides={React.Children.count(children)}
           activeSlideIndex={currentSlide}
-          onClick={index => slider.current?.moveToIdx(index)}
+          onClick={index => {
+            slider.current?.moveToIdx(index)
+            resetInterval()
+          }}
         />
       )}
     </section>

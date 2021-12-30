@@ -1,4 +1,5 @@
 import cn from 'classnames'
+import commonStyles from '@styles/common.module.scss'
 import styles from '@styles/Carousel.module.css'
 
 type CarouselDotButtons = {
@@ -15,28 +16,27 @@ export function CarouselDotButtons({
   onClick: clickHandler,
 }: CarouselDotButtons) {
   return (
-    <ul role="tablist" className={styles.dotWrapper}>
+    <div role="tablist" className={styles.dotWrapper}>
       {[...Array(numberOfslides)].map((_, slideIndex) => (
-        <li key={slideIndex}>
-          <button
-            id={`${id}_slide_${slideIndex}`}
-            role="tab"
-            title={`Slide ${slideIndex + 1}`}
-            aria-setsize={numberOfslides}
-            aria-posinset={slideIndex + 1}
-            aria-current={slideIndex === activeSlideIndex}
-            onClick={() => clickHandler(slideIndex)}
-          >
-            <span
-              className={cn({
-                [styles.carouselDot]: true,
-                [styles.activeDot]: slideIndex === activeSlideIndex,
-              })}
-            />
-            <span className="sr-only">View slide {slideIndex + 1}</span>
-          </button>
-        </li>
+        <button
+          key={slideIndex}
+          id={`${id}_slide_${slideIndex}`}
+          role="tab"
+          title={`Slide ${slideIndex + 1}`}
+          aria-setsize={numberOfslides}
+          aria-posinset={slideIndex + 1}
+          aria-current={slideIndex === activeSlideIndex}
+          className={cn({
+            [styles.carouselDot]: true,
+            [styles.activeDot]: slideIndex === activeSlideIndex,
+          })}
+          onClick={() => clickHandler(slideIndex)}
+        >
+          <span className={commonStyles.srOnly}>
+            View slide {slideIndex + 1}
+          </span>
+        </button>
       ))}
-    </ul>
+    </div>
   )
 }

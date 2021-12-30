@@ -11,16 +11,15 @@ type PropType = {
 export function HomeCarousel({navigationItems}: PropType) {
   return (
     <Carousel
-      id="homeCarousel"
+      id="homeCarousel_child"
       className={styles.homeCarousel}
-      ariaLabel="Slides for existing offers and announcements:"
+      ariaLabel="Slides for existing offers and announcements"
     >
       {navigationItems.map(({link, image}, index) => {
         if (image?.asset?.url && image?.caption && link?.url)
           return (
             <a key={`homeCarousel_${index}`} href={link.url}>
               <Image
-                key={`HomeCarousel_${index}`}
                 src={image.asset.url}
                 alt={image.caption}
                 layout="fill"
