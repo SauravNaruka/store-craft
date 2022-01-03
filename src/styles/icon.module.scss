@@ -3,14 +3,13 @@
 }
 
 .iconPrimaryColor {
-  fill: var(--neutral-color-8);
+  fill: var(--color-primary-3);
 }
 
 .searchIconPrimary {
   @apply opacity-0;
-  background-color: var(--white-color);
 }
 
 .searchIconSecondary {
-  fill: var(--neutral-color-6);
+  fill: var(--color-neutral-7);
 }

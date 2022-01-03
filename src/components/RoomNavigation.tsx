@@ -1,38 +1,40 @@
 import * as React from 'react'
-import {Card} from './cards/Card.server'
-import Cards from './cards/NavigationCards'
-import {HStack} from './HStack.server'
+import Cards from '@components/cards/NavigationCards'
+import {Card} from '@components/cards/Card.server'
 import type {NavigationItem} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
 
 const style = {
-  rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
-  imageClass: `${cardStyles.glassmorphicImage} ${cardStyles.productNavigationImage}`,
-  linkTextClass: cardStyles.glassmorphicLink,
+  rootClass: cardStyles.minimalCard,
+  imageClass: `${cardStyles.minimalImage} ${cardStyles.roomNavigationImage}`,
+  linkTextClass: cardStyles.minimalLink,
 }
-
 type PropType = {
   navigationItems: NavigationItem[]
 }
 
-export function ProductNavigation({navigationItems}: PropType) {
+export function RoomNavigation({navigationItems}: PropType) {
   return (
-    <HStack>
+    <section
+      role="list"
+      className={`${commonStyles.twoColumnGrid} ${cardStyles.minimalCardSection}`}
+    >
       <Cards navigationItems={navigationItems}>
-        {({title, link, imageUrl, imageCaption, index}) => (
+        {({title, subtitle, link, imageUrl, imageCaption, index}) => (
           <Card
             key={index}
             title={title}
+            subtitle={subtitle}
             link={link}
             src={imageUrl}
             alt={imageCaption}
+            priority={false}
             aspectRatio={{width: 4, height: 3}}
-            priority={true}
             style={style}
           />
         )}
       </Cards>
-    </HStack>
+    </section>
   )
 }

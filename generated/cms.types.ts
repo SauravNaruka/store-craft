@@ -299,6 +299,7 @@ export type NavigationItem = {
   _type?: Maybe<Scalars['String']>
   image?: Maybe<ImageBlock>
   link?: Maybe<Link>
+  subtitle?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
 }
 
@@ -307,6 +308,7 @@ export type NavigationItemFilter = {
   _type?: InputMaybe<StringFilter>
   image?: InputMaybe<ImageBlockFilter>
   link?: InputMaybe<LinkFilter>
+  subtitle?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
 }
 
@@ -315,6 +317,7 @@ export type NavigationItemSorting = {
   _type?: InputMaybe<SortOrder>
   image?: InputMaybe<ImageBlockSorting>
   link?: InputMaybe<LinkSorting>
+  subtitle?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
 }
 
@@ -874,6 +877,7 @@ export type NavigationsQuery = {
           | {
               __typename?: 'NavigationItem'
               title?: string | null | undefined
+              subtitle?: string | null | undefined
               link?:
                 | {__typename?: 'Link'; url?: string | null | undefined}
                 | null
@@ -907,6 +911,7 @@ export const NavigationsDocument = gql`
       name
       items {
         title
+        subtitle
         link {
           url
         }

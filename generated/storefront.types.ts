@@ -127,7 +127,11 @@ export type Article = HasMetafields &
     image?: Maybe<Image>
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /** The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel. */
     onlineStoreUrl?: Maybe<Scalars['URL']>
@@ -320,7 +324,11 @@ export type Blog = HasMetafields &
     id: Scalars['ID']
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /** The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel. */
     onlineStoreUrl?: Maybe<Scalars['URL']>
@@ -424,7 +432,7 @@ export enum CardBrand {
   Visa = 'VISA',
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
 export type Cart = Node & {
   __typename?: 'Cart'
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
@@ -437,7 +445,7 @@ export type Cart = Node & {
   createdAt: Scalars['DateTime']
   /** The discount codes that have been applied to the cart. */
   discountCodes: Array<CartDiscountCode>
-  /** The estimated costs that the buyer will pay at checkout. */
+  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. */
   estimatedCost: CartEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -449,7 +457,7 @@ export type Cart = Node & {
   updatedAt: Scalars['DateTime']
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
 export type CartLinesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
@@ -552,7 +560,7 @@ export type CartDiscountCodesUpdatePayload = {
   userErrors: Array<CartUserError>
 }
 
-/** Possible error codes that could be returned by CartUserError. */
+/** Possible error codes that can be returned by `CartUserError`. */
 export enum CartErrorCode {
   /** The input value is invalid. */
   Invalid = 'INVALID',
@@ -600,7 +608,7 @@ export type CartLine = Node & {
   attributes: Array<Attribute>
   /** The discounts that have been applied to the cart line. */
   discountAllocations: Array<CartDiscountAllocation>
-  /** The estimated cost of the merchandise that the buyer will pay for at checkout. */
+  /** The estimated cost of the merchandise that the buyer will pay for at checkout. The estimated costs are subject to change and changes will be reflected at checkout. */
   estimatedCost: CartLineEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -1181,7 +1189,7 @@ export type CheckoutEmailUpdateV2Payload = {
   userErrors: Array<UserError>
 }
 
-/** Possible error codes that could be returned by CheckoutUserError. */
+/** Possible error codes that can be returned by `CheckoutUserError`. */
 export enum CheckoutErrorCode {
   /** Checkout is already completed. */
   AlreadyCompleted = 'ALREADY_COMPLETED',
@@ -1515,7 +1523,11 @@ export type Collection = HasMetafields &
     image?: Maybe<Image>
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /** The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel. */
     onlineStoreUrl?: Maybe<Scalars['URL']>
@@ -2598,7 +2610,11 @@ export type Customer = HasMetafields & {
   lastName?: Maybe<Scalars['String']>
   /** Returns a metafield found by namespace and key. */
   metafield?: Maybe<Metafield>
-  /** A paginated list of metafields associated with the resource. */
+  /**
+   * A paginated list of metafields associated with the resource.
+   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   *
+   */
   metafields: MetafieldConnection
   /** The orders associated with the customer. */
   orders: OrderConnection
@@ -2836,7 +2852,7 @@ export type CustomerDefaultAddressUpdatePayload = {
   userErrors: Array<UserError>
 }
 
-/** Possible error codes that could be returned by CustomerUserError. */
+/** Possible error codes that can be returned by `CustomerUserError`. */
 export enum CustomerErrorCode {
   /** Customer already enabled. */
   AlreadyEnabled = 'ALREADY_ENABLED',
@@ -3119,7 +3135,10 @@ export type ExternalVideo = Media &
     __typename?: 'ExternalVideo'
     /** A word or phrase to share the nature or contents of a media. */
     alt?: Maybe<Scalars['String']>
-    /** The URL. */
+    /**
+     * The URL.
+     * @deprecated Use `originUrl` instead
+     */
     embeddedUrl: Scalars['URL']
     /** The host of the external video. */
     host: MediaHost
@@ -3214,7 +3233,11 @@ export type GeoCoordinateInput = {
 export type HasMetafields = {
   /** Returns a metafield found by namespace and key. */
   metafield?: Maybe<Metafield>
-  /** A paginated list of metafields associated with the resource. */
+  /**
+   * A paginated list of metafields associated with the resource.
+   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   *
+   */
   metafields: MetafieldConnection
 }
 
@@ -4322,7 +4345,11 @@ export type Order = HasMetafields &
     lineItems: OrderLineItemConnection
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /**
      * Unique identifier for the order that appears on the order.
@@ -4589,7 +4616,11 @@ export type Page = HasMetafields &
     id: Scalars['ID']
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /** The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel. */
     onlineStoreUrl?: Maybe<Scalars['URL']>
@@ -4790,7 +4821,11 @@ export type Product = HasMetafields &
     media: MediaConnection
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /** The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel. */
     onlineStoreUrl?: Maybe<Scalars['URL']>
@@ -5149,11 +5184,18 @@ export type ProductVariant = HasMetafields &
     currentlyNotInStock: Scalars['Boolean']
     /** A globally-unique identifier. */
     id: Scalars['ID']
-    /** Image associated with the product variant. This field falls back to the product image if no image is available. */
+    /**
+     * Image associated with the product variant. This field falls back to the product image if no image is available.
+     *
+     */
     image?: Maybe<Image>
     /** Returns a metafield found by namespace and key. */
     metafield?: Maybe<Metafield>
-    /** A paginated list of metafields associated with the resource. */
+    /**
+     * A paginated list of metafields associated with the resource.
+     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     *
+     */
     metafields: MetafieldConnection
     /**
      * List of prices and compare-at prices in the presentment currencies for this shop.
@@ -5852,7 +5894,11 @@ export type Shop = HasMetafields & {
   description?: Maybe<Scalars['String']>
   /** Returns a metafield found by namespace and key. */
   metafield?: Maybe<Metafield>
-  /** A paginated list of metafields associated with the resource. */
+  /**
+   * A paginated list of metafields associated with the resource.
+   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   *
+   */
   metafields: MetafieldConnection
   /** A string representing the way currency is formatted when the currency isn’t specified. */
   moneyFormat: Scalars['String']
@@ -5996,7 +6042,11 @@ export type ShopPolicy = Node & {
   url: Scalars['URL']
 }
 
-/** Describes the availability of a product variant at a particular location. */
+/**
+ * The availability of a product variant at a particular location.
+ * Local pick-up must be enabled in the  store's shipping settings, otherwise this will return an empty result.
+ *
+ */
 export type StoreAvailability = {
   __typename?: 'StoreAvailability'
   /** Whether or not this product variant is in-stock at this location. */

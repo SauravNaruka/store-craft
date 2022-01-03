@@ -40,7 +40,7 @@ describe('product navigations tests', () => {
           {
             title: 'Some Title',
             link: {url: '/some-url'},
-            image: undefined,
+            image: {asset: {url: faker.internet.url()}, caption: 'some text'},
           },
           {
             title: undefined,
@@ -53,6 +53,6 @@ describe('product navigations tests', () => {
 
     expect(screen.queryByRole('link', {name: 'Some Title'})).toBeInTheDocument()
     const links = await screen.findAllByRole('link')
-    expect(links).toHaveLength(2)
+    expect(links).toHaveLength(1)
   })
 })

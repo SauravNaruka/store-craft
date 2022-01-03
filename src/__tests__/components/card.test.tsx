@@ -1,6 +1,12 @@
 import {render, screen} from '@testing-library/react'
 import faker from 'faker'
-import {Card} from 'src/components/Card.server'
+import {Card} from '@components/cards/Card.server'
+
+const style = {
+  rootClass: '',
+  imageClass: '',
+  linkTextClass: '',
+}
 
 describe('Card tests', () => {
   test('accessibility of link card', () => {
@@ -13,8 +19,10 @@ describe('Card tests', () => {
       <Card
         title={randomTitle}
         link={randomURL}
-        imageSrc={imageSrc}
-        imageCaption={imageCaption}
+        src={imageSrc}
+        alt={imageCaption}
+        aspectRatio={{width: 4, height: 3}}
+        style={style}
       />,
     )
 

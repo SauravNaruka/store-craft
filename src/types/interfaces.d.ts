@@ -11,4 +11,4 @@ export interface ImageType {
   caption: string
 }
 
-export type AspectRatio = {width: 1; height: 1} | {width: 16; height: 9}
+export type AspectRatio = {width: 4; height: 3} | {width: 16; height: 9}

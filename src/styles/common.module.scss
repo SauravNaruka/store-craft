@@ -46,3 +46,12 @@
 .srOnly {
   @apply sr-only;
 }
+
+.twoColumnGrid {
+  margin: 20px 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 20px;
+  width: 100vw;
+}

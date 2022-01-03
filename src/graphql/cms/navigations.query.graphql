@@ -3,6 +3,7 @@ query Navigations($slug: String) {
     name
     items {
       title
+      subtitle
       link {
         url
       }

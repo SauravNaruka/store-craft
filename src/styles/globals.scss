@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'color-palette.css';
+@import 'font-size.css';
 
 html,
 body {
@@ -8,7 +10,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: var(--neutral-color-9);
+  font-size: var(--font-size-medium-x);
+  background-color: var(--color-primary-11);
 }
 
 a {
@@ -18,14 +21,4 @@ a {
 
 * {
   box-sizing: border-box;
-}
-
-:root {
-  --neutral-color-6: hsl(0deg 0% 62%);
-  --neutral-color-8: hsl(198deg 32% 47%);
-  --neutral-color-9: hsl(192deg 38% 97%);
-  --white-color: hsl(0deg 0% 100%);
-
-  --shadow-color: 192, 0%, 50%;
-  --shadow-color-light: 51, 9%, 69%;
 }
