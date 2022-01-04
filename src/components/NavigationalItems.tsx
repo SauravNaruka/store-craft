@@ -1,5 +1,5 @@
 import * as React from 'react'
-import type {NavigationItem} from '@generated/cms.types'
+import type {Navigation, NavigationItem} from '@generated/cms.types'
 
 type CardCallbackProp = {
   title: string
@@ -11,11 +11,14 @@ type CardCallbackProp = {
 }
 
 type PropType = {
-  navigationItems: NavigationItem[]
+  navigation: Navigation
   children: (props: CardCallbackProp) => React.ReactNode
 }
 
-export function NavigationCards({navigationItems, children: render}: PropType) {
+export function NavigationalItems({navigation, children: render}: PropType) {
+  const navigationItems: NavigationItem[] = navigation?.items?.length
+    ? (navigation.items as NavigationItem[])
+    : []
   return (
     <>
       {navigationItems.map(({title, subtitle, link, image}, index) => {
@@ -36,4 +39,4 @@ export function NavigationCards({navigationItems, children: render}: PropType) {
   )
 }
 
-export default NavigationCards
+export default NavigationalItems

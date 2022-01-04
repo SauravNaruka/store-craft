@@ -5,19 +5,15 @@ import Home, {getStaticProps} from '../pages/index'
 describe('Home / index page', () => {
   test('render of the header', () => {
     render(
-      <Home
-        productNavigationItems={[]}
-        heroNavigationItems={[]}
-        roomNavigationItems={[]}
-      />,
+      <Home productNavigation={[]} heroNavigation={[]} roomNavigation={[]} />,
     )
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
   test('static props method', async () => {
     const props = await getStaticProps()
-    expect(props).toHaveProperty('props.productNavigationItems')
-    expect(props).toHaveProperty('props.heroNavigationItems')
-    expect(props).toHaveProperty('props.roomNavigationItems')
+    expect(props).toHaveProperty('props.productNavigation')
+    expect(props).toHaveProperty('props.heroNavigation')
+    expect(props).toHaveProperty('props.roomNavigation')
   })
 })

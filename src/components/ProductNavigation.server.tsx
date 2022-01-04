@@ -1,8 +1,8 @@
 import * as React from 'react'
-import {Card} from './cards/Card.server'
-import Cards from './cards/NavigationCards'
+import {Card} from './Card.server'
+import NavigationalItems from './NavigationalItems'
 import {HStack} from './HStack.server'
-import type {NavigationItem} from '@generated/cms.types'
+import type {Navigation} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
 
@@ -13,13 +13,13 @@ const style = {
 }
 
 type PropType = {
-  navigationItems: NavigationItem[]
+  navigation: Navigation
 }
 
-export function ProductNavigation({navigationItems}: PropType) {
+export function ProductNavigation({navigation}: PropType) {
   return (
     <HStack>
-      <Cards navigationItems={navigationItems}>
+      <NavigationalItems navigation={navigation}>
         {({title, link, imageUrl, imageCaption, index}) => (
           <Card
             key={index}
@@ -32,7 +32,7 @@ export function ProductNavigation({navigationItems}: PropType) {
             style={style}
           />
         )}
-      </Cards>
+      </NavigationalItems>
     </HStack>
   )
 }

@@ -1,55 +1,54 @@
 import {render, screen} from '@testing-library/react'
-import {ProductNavigation} from '../../components/ProductNavigation.server'
-import {buildNavigationItem} from '../../__mocks__/fetchNavigations.mock'
-import type {NavigationItem} from '../../../generated/cms.types'
+import first from 'lodash/first.js'
 import faker from 'faker'
+import {ProductNavigation} from '../../components/ProductNavigation.server'
+import {buildAndGetFirstNaigation} from '../../__mocks__/fetchNavigations.mock'
+import type {Navigation, NavigationItem} from '../../../generated/cms.types'
 
 describe('product navigations tests', () => {
   test('navigation to have links', () => {
-    const navigationItems: NavigationItem[] = Array(3)
-      .fill(undefined)
-      .map(() => buildNavigationItem())
+    const navigation: Navigation = buildAndGetFirstNaigation()
 
-    render(<ProductNavigation navigationItems={navigationItems} />)
-
+    render(<ProductNavigation navigation={navigation} />)
+    const firstNavigationItem = first(navigation.items) as NavigationItem
     expect(
-      screen.getByRole('link', {name: navigationItems[0].title!}),
+      screen.getByRole('link', {
+        name: firstNavigationItem.title!,
+      }),
     ).toBeInTheDocument()
   })
 
   test('navigation item dont render without a valid link', () => {
-    render(
-      <ProductNavigation
-        navigationItems={[
-          {
-            title: 'Some Title',
-            link: undefined,
-            image: undefined,
-          },
-        ]}
-      />,
-    )
+    const navigation = {
+      items: [
+        {
+          title: 'Some Title',
+          link: undefined,
+          image: undefined,
+        },
+      ],
+    }
+    render(<ProductNavigation navigation={navigation} />)
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
   test('navigation item render with a valid link but partial data', async () => {
-    render(
-      <ProductNavigation
-        navigationItems={[
-          {
-            title: 'Some Title',
-            link: {url: '/some-url'},
-            image: {asset: {url: faker.internet.url()}, caption: 'some text'},
-          },
-          {
-            title: undefined,
-            link: {url: '/some-url2'},
-            image: {asset: {url: faker.internet.url()}, caption: 'some text'},
-          },
-        ]}
-      />,
-    )
+    const navigation = {
+      items: [
+        {
+          title: 'Some Title',
+          link: {url: '/some-url'},
+          image: {asset: {url: faker.internet.url()}, caption: 'some text'},
+        },
+        {
+          title: undefined,
+          link: {url: '/some-url2'},
+          image: {asset: {url: faker.internet.url()}, caption: 'some text'},
+        },
+      ],
+    }
+    render(<ProductNavigation navigation={navigation} />)
 
     expect(screen.queryByRole('link', {name: 'Some Title'})).toBeInTheDocument()
     const links = await screen.findAllByRole('link')

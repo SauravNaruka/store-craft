@@ -1,7 +1,7 @@
 import * as React from 'react'
-import Cards from '@components/cards/NavigationCards'
-import {Card} from '@components/cards/Card.server'
-import type {NavigationItem} from '@generated/cms.types'
+import NavigationalItems from '@components/NavigationalItems'
+import {Card} from '@components/Card.server'
+import type {Navigation} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
 
@@ -11,16 +11,16 @@ const style = {
   linkTextClass: cardStyles.minimalLink,
 }
 type PropType = {
-  navigationItems: NavigationItem[]
+  navigation: Navigation
 }
 
-export function RoomNavigation({navigationItems}: PropType) {
+export function RoomNavigation({navigation}: PropType) {
   return (
     <section
       role="list"
       className={`${commonStyles.twoColumnGrid} ${cardStyles.minimalCardSection}`}
     >
-      <Cards navigationItems={navigationItems}>
+      <NavigationalItems navigation={navigation}>
         {({title, subtitle, link, imageUrl, imageCaption, index}) => (
           <Card
             key={index}
@@ -34,7 +34,7 @@ export function RoomNavigation({navigationItems}: PropType) {
             style={style}
           />
         )}
-      </Cards>
+      </NavigationalItems>
     </section>
   )
 }

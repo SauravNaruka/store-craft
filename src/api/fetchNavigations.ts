@@ -3,18 +3,18 @@ import client from '@api/cmsClient'
 import * as logger from '@helpers/logger'
 import {UnknownDataError} from '@helpers/error.helper'
 
-import type {NavigationItem, NavigationsQuery} from '@generated/cms.types'
+import type {Navigation, NavigationsQuery} from '@generated/cms.types'
 
 type NavigationsQueryWithSlug = NavigationsQuery & {
   slug: string
 }
-export async function fetchNavigationItems(
+export async function fetchNavigationById(
   navigationID: string,
-): Promise<NavigationItem[]> {
+): Promise<Navigation> {
   try {
     const navigations = await client.Navigations({slug: navigationID})
 
-    return getNavigationItemsFromNavigations({
+    return getFirstNavigation({
       ...navigations,
       slug: navigationID,
     })
@@ -24,17 +24,13 @@ export async function fetchNavigationItems(
   }
 }
 
-function getNavigationItemsFromNavigations({
+function getFirstNavigation({
   allNavigation,
   slug,
-}: NavigationsQueryWithSlug): NavigationItem[] {
+}: NavigationsQueryWithSlug): Navigation {
   const navigation = first(allNavigation)
-
-  if (navigation && navigation.items) {
-    const navigationItems: NavigationItem[] = navigation.items
-      .filter(Boolean)
-      .map(item => item as NavigationItem)
-    return navigationItems
+  if (navigation) {
+    return navigation as Navigation
   }
 
   throw new UnknownDataError(

@@ -8,26 +8,26 @@ import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HomeCarousel from '@components/carousel/HomeCarousel'
 import {RoomNavigation} from '@components/RoomNavigation'
-import {fetchNavigationItems} from '@api/fetchNavigations'
+import {fetchNavigationById} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
   ROOM_NAVIGATION,
 } from '@constants/navigation.constants'
-import type {NavigationItem} from '@generated/cms.types'
+import type {Navigation} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
 type PropType = {
-  productNavigationItems: NavigationItem[]
-  heroNavigationItems: NavigationItem[]
-  roomNavigationItems: NavigationItem[]
+  productNavigation: Navigation
+  heroNavigation: Navigation
+  roomNavigation: Navigation
 }
 
 export default function Home({
-  productNavigationItems,
-  heroNavigationItems,
-  roomNavigationItems,
+  productNavigation,
+  heroNavigation,
+  roomNavigation,
 }: PropType) {
   return (
     <div className={styles.container}>
@@ -48,24 +48,24 @@ export default function Home({
       </Header>
 
       <main className={styles.main}>
-        <ProductNavigation navigationItems={productNavigationItems} />
-        <HomeCarousel navigationItems={heroNavigationItems} />
-        <RoomNavigation navigationItems={roomNavigationItems} />
+        <ProductNavigation navigation={productNavigation} />
+        <HomeCarousel navigation={heroNavigation} />
+        <RoomNavigation navigation={roomNavigation} />
       </main>
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let productNavigationItems = await fetchNavigationItems(PRODUCT_NAVIGATION)
-  let heroNavigationItems = await fetchNavigationItems(HERO_NAVIGATION)
-  let roomNavigationItems = await fetchNavigationItems(ROOM_NAVIGATION)
+  let productNavigation = await fetchNavigationById(PRODUCT_NAVIGATION)
+  let heroNavigation = await fetchNavigationById(HERO_NAVIGATION)
+  let roomNavigation = await fetchNavigationById(ROOM_NAVIGATION)
 
   return {
     props: {
-      productNavigationItems,
-      heroNavigationItems,
-      roomNavigationItems,
+      productNavigation,
+      heroNavigation,
+      roomNavigation,
     },
   }
 }
