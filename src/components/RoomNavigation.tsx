@@ -17,11 +17,12 @@ type PropType = {
 
 export function RoomNavigation({navigation}: PropType) {
   return (
-    <section
-      className={`${cardStyles.minimalCardSection} ${navigationStyles.roomNavigationRoot}`}
-    >
+    <section className={navigationStyles.roomNavigationRoot}>
       <h2>{navigation.title ?? ''}</h2>
-      <div role="list" className={commonStyles.grid2c}>
+      <div
+        role="list"
+        className={`${commonStyles.grid2c} ${cardStyles.minimalCardSection}`}
+      >
         <NavigationalItems navigation={navigation}>
           {({title, subtitle, link, imageUrl, imageCaption, index}) => (
             <Card
