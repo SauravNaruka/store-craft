@@ -22,3 +22,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+h2 {
+  font-size: var(--font-size-medium-xx);
+  line-height: var(--font-size-medium-xx);
+  letter-spacing: 0.2rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 5px 0px 10px;
+}

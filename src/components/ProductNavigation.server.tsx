@@ -5,10 +5,11 @@ import {HStack} from './HStack.server'
 import type {Navigation} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
+import navigationStyles from '@styles/navigation.module.css'
 
 const style = {
   rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
-  imageClass: `${cardStyles.glassmorphicImage} ${cardStyles.productNavigationImage}`,
+  imageClass: `${cardStyles.glassmorphicImage} ${navigationStyles.productNavigationImage}`,
   linkTextClass: cardStyles.glassmorphicLink,
 }
 

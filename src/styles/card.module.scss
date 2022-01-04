@@ -33,7 +33,6 @@
 }
 
 .minimalCardSection {
-  background-color: var(--color-neutral-10);
 }
 
 .minimalCardSection div:nth-child(odd) div {
@@ -69,14 +68,4 @@
   width: 100%;
   height: 100%;
   z-index: 9;
-}
-
-.productNavigationImage {
-  width: 97px;
-  height: 85px;
-}
-
-.roomNavigationImage {
-  width: 172px;
-  height: 129px;
 }
