@@ -1,5 +1,5 @@
 .productNavigationRoot {
-  padding: 0px 0px 5px 15px;
+  padding: 20px 0px;
 }
 .productNavigationImage {
 }
@@ -10,4 +10,12 @@
 }
 
 .roomNavigationImage {
+}
+
+.heroNavigationStyles {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vw;
 }

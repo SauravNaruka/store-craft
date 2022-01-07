@@ -6,7 +6,7 @@ import MenuIcon from '@components/icons/MenuIcon'
 import IconButton from '@components/IconButton'
 import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
-import HomeCarousel from '@components/carousel/HomeCarousel'
+import HeroSection from '@components/HeroSection.server'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {fetchNavigationById} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
@@ -49,7 +49,7 @@ export default function Home({
 
       <main className={styles.main}>
         <ProductNavigation navigation={productNavigation} />
-        <HomeCarousel navigation={heroNavigation} />
+        <HeroSection navigation={heroNavigation} />
         <RoomNavigation navigation={roomNavigation} />
       </main>
     </div>

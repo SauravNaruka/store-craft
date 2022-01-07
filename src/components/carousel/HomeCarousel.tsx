@@ -16,7 +16,7 @@ export function HomeCarousel({navigation}: PropType) {
   return (
     <Carousel
       id="homeCarousel_child"
-      className={`${carouselStyles.homeCarousel} ${commonStyles.pageSection}`}
+      className={`${carouselStyles.homeCarousel}`}
       ariaLabel="Slides for existing offers and announcements"
     >
       {navigationItems.map(({link, image}, index) => {
