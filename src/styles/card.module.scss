@@ -4,21 +4,19 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  height: 138px;
+  height: auto;
   padding: 5px 5px 12px;
   border-radius: 16px;
   margin-right: 20px;
 }
 
 .glassmorphicImage {
-  position: inherit;
+  position: relative;
   border-radius: 12px;
   overflow: hidden;
   background: hsl(30deg 25% 90% / 20%);
   box-shadow: 0px 1.62377px 3.24753px hsl(0deg 0% 0% / 15%);
-}
-
-.glassmorphicLink {
+  height: 72px;
 }
 
 .minimalCard {
@@ -43,11 +41,15 @@
 }
 
 .minimalImage {
-  position: inherit;
+  display: block;
+  position: relative;
   overflow: hidden;
+  width: 172px;
+  height: 129px;
 }
 
-.minimalLink {
+.minimalLink,
+.glassmorphicLink {
   display: flex;
   flex-direction: column;
   justify-content: center;

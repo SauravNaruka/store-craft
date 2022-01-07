@@ -9,9 +9,9 @@ export type ImageComponentProps = ImageProps & {
 
 export function sanityImageLoader(
   aspectRatio: AspectRatio,
-  {src, width}: ImageLoaderProps,
+  {src, width, quality}: ImageLoaderProps,
 ): string {
-  return makeImageUrl(src).width(width, aspectRatio).quality(75).url()
+  return makeImageUrl(src).width(width, aspectRatio).quality(quality).url()
 }
 
 export default function Image({aspectRatio, ...rest}: ImageComponentProps) {

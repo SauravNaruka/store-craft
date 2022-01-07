@@ -17,7 +17,9 @@ type PropType = {
 
 export function RoomNavigation({navigation}: PropType) {
   return (
-    <section className={navigationStyles.roomNavigationRoot}>
+    <section
+      className={`${navigationStyles.roomNavigationRoot} ${commonStyles.pageSection}`}
+    >
       <h2>{navigation.title ?? ''}</h2>
       <div
         role="list"
@@ -32,7 +34,8 @@ export function RoomNavigation({navigation}: PropType) {
               link={link}
               src={imageUrl}
               alt={imageCaption}
-              priority={false}
+              width={172}
+              height={129}
               aspectRatio={{width: 4, height: 3}}
               style={style}
             />

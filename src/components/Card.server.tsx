@@ -34,13 +34,7 @@ export function Card({
       />
       {src && alt && (
         <div className={style.imageClass}>
-          <Image
-            src={src}
-            alt={alt}
-            layout="fill"
-            unoptimized={false}
-            {...rest}
-          />
+          <Image src={src} alt={alt} {...rest} />
         </div>
       )}
       <a className={style.linkTextClass} href={link}>
