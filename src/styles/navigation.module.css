@@ -1,0 +1,21 @@
+.productNavigationRoot {
+  padding: 20px 0px;
+}
+.productNavigationImage {
+}
+
+.roomNavigationRoot {
+  background-color: var(--color-neutral-10);
+  padding: 0px;
+}
+
+.roomNavigationImage {
+}
+
+.heroNavigationStyles {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: calc(100vw * 3 / 4);
+}

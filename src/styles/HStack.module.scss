@@ -1,0 +1,14 @@
+.hstack {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100vw;
+  padding-left: 15px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

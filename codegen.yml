@@ -1,0 +1,20 @@
+overwrite: true
+generates:
+  generated/storefront.types.ts:
+    schema:
+      - ${SHOPIFY_STORE_DOMAIN}:
+          headers:
+            X-Shopify-Storefront-Access-Token: ${SHOPIFY_STOREFRONT_ACCESS_TOKEN}
+    documents: 'src/graphql/shopify/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'
+  generated/cms.types.ts:
+    schema:
+      - ${SANITY_STUDIO_ENDPOINT}
+    documents: 'src/graphql/cms/**/*.graphql'
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'

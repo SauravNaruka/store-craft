@@ -1,0 +1,60 @@
+.container {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+.main {
+  padding: 5rem 0 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shadowSmall {
+  box-shadow: 0.5px 1px 1px hsl(var(--shadow-color), 0.7);
+}
+
+.shadowSmallLightSpread {
+  box-shadow: 0.5px 1px 8px hsl(var(--shadow-color-light), 0.3);
+}
+
+.shadowSmallX {
+  box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.25);
+}
+
+.shadowMedium {
+  box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.333),
+    2px 4px 4px hsl(var(--shadow-color), 0.333),
+    3px 6px 6px hsl(var(--shadow-color), 0.333);
+}
+
+.shadowLarge {
+  box-shadow: 1px 2px 2px hsl(var(--shadow-color), 0.2),
+    2px 4px 4px hsl(var(--shadow-color), 0.2),
+    4px 8px 8px hsl(var(--shadow-color), 0.2),
+    8px 16px 16px hsl(var(--shadow-color), 0.2),
+    16px 32px 32px hsl(var(--shadow-color), 0.2);
+}
+
+.backgroundGlassmorphic {
+  background: hsl(0deg 0% 100% / 60%);
+  backdrop-filter: saturate(180%) blur(40px);
+  border: 1px solid hsl(0deg 0% 100%);
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
+.grid2c {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 20px;
+  width: 100vw;
+}
+
+.pageSection {
+  margin: 30px 0px 0px;
+}
