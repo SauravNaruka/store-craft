@@ -1,49 +1,46 @@
 import * as React from 'react'
-import Image from 'next/image'
-import commonStyles from '@styles/common.module.scss'
+import Image, {ImageComponentProps} from '@components/Image'
 import cardStyles from '@styles/card.module.scss'
 
-type PropType = {
-  title: JSX.Element | string
-  link: string
-  imageSrc?: string | null
-  imageCaption?: string | null
-  priority?: boolean
-  className?: string
+type CardStyle = {
+  rootClass: string
+  imageClass: string
+  linkTextClass: string
 }
 
-const defaultClasses = `${cardStyles.card} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`
+type PropType = ImageComponentProps & {
+  title: JSX.Element | string
+  subtitle?: string | null
+  link: string
+  style: CardStyle
+}
 
 export function Card({
   title,
+  subtitle,
   link,
-  imageSrc,
-  imageCaption,
-  priority = false,
-  className = defaultClasses,
+  src,
+  alt,
+  style,
+  ...rest
 }: PropType) {
   return (
-    <div className={className} role="listitem">
+    <div className={style.rootClass} role="listitem">
       <a
         aria-hidden="true"
         tabIndex={-1}
         href={link}
         className={cardStyles.hiddenLink}
       />
-      {imageSrc && imageCaption && (
-        <div className={cardStyles.image}>
-          <Image
-            src={imageSrc}
-            alt={imageCaption}
-            width={97}
-            height={97}
-            priority={priority}
-          />
+      {src && alt && (
+        <div className={style.imageClass}>
+          <Image src={src} alt={alt} {...rest} />
         </div>
       )}
-      <div>
-        <a href={link}>{title}</a>
-      </div>
+      <a className={style.linkTextClass} href={link}>
+        <span>{title}</span>
+        {subtitle && <span>{subtitle}</span>}
+      </a>
     </div>
   )
 }

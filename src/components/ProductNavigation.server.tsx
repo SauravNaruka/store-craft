@@ -1,31 +1,43 @@
 import * as React from 'react'
 import {Card} from './Card.server'
+import NavigationalItems from './NavigationalItems'
 import {HStack} from './HStack.server'
-import type {NavigationItem} from '@generated/cms.types'
+import type {Navigation} from '@generated/cms.types'
+import commonStyles from '@styles/common.module.scss'
+import cardStyles from '@styles/card.module.scss'
+import navigationStyles from '@styles/navigation.module.css'
 
-type PropType = {
-  navigationItems: NavigationItem[]
+const style = {
+  rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
+  imageClass: `${cardStyles.glassmorphicImage} ${navigationStyles.productNavigationImage}`,
+  linkTextClass: cardStyles.glassmorphicLink,
 }
 
-export function ProductNavigation({navigationItems}: PropType) {
+type PropType = {
+  navigation: Navigation
+}
+
+export function ProductNavigation({navigation}: PropType) {
   return (
-    <HStack>
-      {navigationItems.map(({title, link, image}, index) => {
-        if (link?.url) {
-          return (
+    <section>
+      <HStack className={navigationStyles.productNavigationRoot}>
+        <NavigationalItems navigation={navigation}>
+          {({title, link, imageUrl, imageCaption, index}) => (
             <Card
               key={index}
-              title={title ? title : ''}
-              link={link.url}
-              imageSrc={image?.asset?.url}
-              imageCaption={image?.caption}
+              title={title}
+              link={link}
+              src={imageUrl}
+              alt={imageCaption}
+              width={96}
+              height={72}
+              aspectRatio={{width: 4, height: 3}}
               priority={true}
+              style={style}
             />
-          )
-        } else {
-          return false
-        }
-      })}
-    </HStack>
+          )}
+        </NavigationalItems>
+      </HStack>
+    </section>
   )
 }

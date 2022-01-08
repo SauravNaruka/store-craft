@@ -2,33 +2,38 @@ import first from 'lodash/first.js'
 import client from '@api/cmsClient'
 import * as logger from '@helpers/logger'
 import {UnknownDataError} from '@helpers/error.helper'
-import {PRODUCT_NAVIGATION} from '@constants/navigation.constants'
-import type {NavigationItem, NavigationsQuery} from '@generated/cms.types'
 
-export async function fetchNavigationItems(): Promise<NavigationItem[]> {
+import type {Navigation, NavigationsQuery} from '@generated/cms.types'
+
+type NavigationsQueryWithSlug = NavigationsQuery & {
+  slug: string
+}
+export async function fetchNavigationById(
+  navigationID: string,
+): Promise<Navigation> {
   try {
-    const navigations = await client.Navigations({slug: PRODUCT_NAVIGATION})
+    const navigations = await client.Navigations({slug: navigationID})
 
-    return getNavigationItemsFromNavigations(navigations)
+    return getFirstNavigation({
+      ...navigations,
+      slug: navigationID,
+    })
   } catch (error) {
     logger.error(error)
     throw error
   }
 }
 
-function getNavigationItemsFromNavigations({
+function getFirstNavigation({
   allNavigation,
-}: NavigationsQuery): NavigationItem[] {
+  slug,
+}: NavigationsQueryWithSlug): Navigation {
   const navigation = first(allNavigation)
-
-  if (navigation && navigation.items) {
-    const navigationItems: NavigationItem[] = navigation.items
-      .filter(Boolean)
-      .map(item => item as NavigationItem)
-    return navigationItems
+  if (navigation) {
+    return navigation as Navigation
   }
 
   throw new UnknownDataError(
-    `Uknown response from the request client.Navigations for variable ${PRODUCT_NAVIGATION}`,
+    `Uknown response from the request client.Navigations for variable ${slug}`,
   )
 }

@@ -274,9 +274,12 @@ export type Navigation = Document & {
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
   description?: Maybe<Scalars['String']>
+  image?: Maybe<ImageBlock>
   items?: Maybe<Array<Maybe<NavigationItem>>>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Slug>
+  subtitle?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
 }
 
 export type NavigationFilter = {
@@ -289,8 +292,11 @@ export type NavigationFilter = {
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
   description?: InputMaybe<StringFilter>
+  image?: InputMaybe<ImageBlockFilter>
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
+  subtitle?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
 }
 
 export type NavigationItem = {
@@ -299,6 +305,7 @@ export type NavigationItem = {
   _type?: Maybe<Scalars['String']>
   image?: Maybe<ImageBlock>
   link?: Maybe<Link>
+  subtitle?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
 }
 
@@ -307,6 +314,7 @@ export type NavigationItemFilter = {
   _type?: InputMaybe<StringFilter>
   image?: InputMaybe<ImageBlockFilter>
   link?: InputMaybe<LinkFilter>
+  subtitle?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
 }
 
@@ -315,6 +323,7 @@ export type NavigationItemSorting = {
   _type?: InputMaybe<SortOrder>
   image?: InputMaybe<ImageBlockSorting>
   link?: InputMaybe<LinkSorting>
+  subtitle?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
 }
 
@@ -326,8 +335,11 @@ export type NavigationSorting = {
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
   description?: InputMaybe<SortOrder>
+  image?: InputMaybe<ImageBlockSorting>
   name?: InputMaybe<SortOrder>
   slug?: InputMaybe<SlugSorting>
+  subtitle?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
 }
 
 export type Page = Document & {
@@ -869,11 +881,25 @@ export type NavigationsQuery = {
   allNavigation: Array<{
     __typename?: 'Navigation'
     name?: string | null | undefined
+    title?: string | null | undefined
+    subtitle?: string | null | undefined
+    image?:
+      | {
+          __typename?: 'ImageBlock'
+          caption?: string | null | undefined
+          asset?:
+            | {__typename?: 'SanityImageAsset'; url?: string | null | undefined}
+            | null
+            | undefined
+        }
+      | null
+      | undefined
     items?:
       | Array<
           | {
               __typename?: 'NavigationItem'
               title?: string | null | undefined
+              subtitle?: string | null | undefined
               link?:
                 | {__typename?: 'Link'; url?: string | null | undefined}
                 | null
@@ -905,8 +931,17 @@ export const NavigationsDocument = gql`
   query Navigations($slug: String) {
     allNavigation(where: {slug: {current: {eq: $slug}}}) {
       name
+      title
+      subtitle
+      image {
+        caption
+        asset {
+          url
+        }
+      }
       items {
         title
+        subtitle
         link {
           url
         }

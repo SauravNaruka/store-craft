@@ -1,22 +1,34 @@
 import * as React from 'react'
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
-import {Header} from '@components/header/Header'
-import {SearchInput} from '@components/SearchInput'
 import CartIcon from '@components/icons/CartIcon'
 import MenuIcon from '@components/icons/MenuIcon'
 import IconButton from '@components/IconButton'
-import {fetchNavigationItems} from '@api/fetchNavigations'
+import {Header} from '@components/header/Header'
+import {SearchInput} from '@components/SearchInput'
+import HeroSection from '@components/HeroSection.server'
+import {RoomNavigation} from '@components/RoomNavigation'
+import {fetchNavigationById} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
-
-import type {NavigationItem} from '@generated/cms.types'
+import {
+  PRODUCT_NAVIGATION,
+  HERO_NAVIGATION,
+  ROOM_NAVIGATION,
+} from '@constants/navigation.constants'
+import type {Navigation} from '@generated/cms.types'
 import styles from '@styles/common.module.scss'
 
 type PropType = {
-  navigationItems: NavigationItem[]
+  productNavigation: Navigation
+  heroNavigation: Navigation
+  roomNavigation: Navigation
 }
 
-export default function Home({navigationItems}: PropType) {
+export default function Home({
+  productNavigation,
+  heroNavigation,
+  roomNavigation,
+}: PropType) {
   return (
     <div className={styles.container}>
       <Head>
@@ -36,18 +48,24 @@ export default function Home({navigationItems}: PropType) {
       </Header>
 
       <main className={styles.main}>
-        <ProductNavigation navigationItems={navigationItems} />
+        <ProductNavigation navigation={productNavigation} />
+        <HeroSection navigation={heroNavigation} />
+        <RoomNavigation navigation={roomNavigation} />
       </main>
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let navigationItems = await fetchNavigationItems()
+  let productNavigation = await fetchNavigationById(PRODUCT_NAVIGATION)
+  let heroNavigation = await fetchNavigationById(HERO_NAVIGATION)
+  let roomNavigation = await fetchNavigationById(ROOM_NAVIGATION)
 
   return {
     props: {
-      navigationItems,
+      productNavigation,
+      heroNavigation,
+      roomNavigation,
     },
   }
 }

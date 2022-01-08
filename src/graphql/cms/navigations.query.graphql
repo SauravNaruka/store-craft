@@ -1,8 +1,17 @@
 query Navigations($slug: String) {
   allNavigation(where: {slug: {current: {eq: $slug}}}) {
     name
+    title
+    subtitle
+    image {
+      caption
+      asset {
+        url
+      }
+    }
     items {
       title
+      subtitle
       link {
         url
       }

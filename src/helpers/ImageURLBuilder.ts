@@ -60,10 +60,8 @@ export class ImageURLBuilder {
     return this
   }
 
-  public quality(quality: number | undefined) {
-    if (quality) {
-      this.withOption('quality', quality)
-    }
+  public quality(quality: number | undefined = 50) {
+    this.withOption('quality', quality)
     return this
   }
 

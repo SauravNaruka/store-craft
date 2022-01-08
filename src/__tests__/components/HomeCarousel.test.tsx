@@ -1,17 +1,20 @@
 import {render, screen} from '@testing-library/react'
 import faker from 'faker'
 import {HomeCarousel} from '@components/carousel/HomeCarousel'
-import {buildNavigationItem} from 'src/__mocks__/fetchNavigations.mock'
-import type {NavigationItem} from '@generated/cms.types'
+import {
+  buildAndGetFirstNaigation,
+  NUMBER_OF_NAVIGATIONITEMS,
+} from 'src/__mocks__/fetchNavigations.mock'
+import type {Navigation, NavigationItem} from '@generated/cms.types'
 
 describe('the working of Home carousel', () => {
   test('home carousel', () => {
-    const navigationItems: NavigationItem[] = Array(3)
-      .fill(undefined)
-      .map(() => buildNavigationItem())
+    const navigation: Navigation = buildAndGetFirstNaigation()
 
-    render(<HomeCarousel navigationItems={navigationItems} />)
-    expect(screen.getAllByRole('link', {hidden: true}).length).toBe(3)
+    render(<HomeCarousel navigation={navigation} />)
+    expect(screen.getAllByRole('link', {hidden: true}).length).toBe(
+      NUMBER_OF_NAVIGATIONITEMS,
+    )
   })
 
   test('home carousel with empty value', () => {
@@ -28,7 +31,7 @@ describe('the working of Home carousel', () => {
       },
     ]
 
-    render(<HomeCarousel navigationItems={navigationItems} />)
+    render(<HomeCarousel navigation={{items: navigationItems}} />)
     expect(screen.queryAllByRole('link', {hidden: true}).length).toBe(0)
   })
 })
