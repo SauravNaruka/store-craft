@@ -54,7 +54,7 @@ describe('Tests for image url builder', () => {
         .url(),
     ).not.toMatch(/w=/i)
 
-    expect(makeImageUrl(imageUrl).quality(undefined).url()).not.toMatch(/q=/i)
+    expect(makeImageUrl(imageUrl).quality().url()).toMatch(/q=/i)
   })
 
   test('sanityImageLoader function', () => {

@@ -30,7 +30,7 @@ export function HeroSection({navigation}: PropType) {
                 layout="fill"
                 objectFit="cover"
                 priority={true}
-                aspectRatio={{width: 1, height: 1}}
+                aspectRatio={{width: 4, height: 3}}
               />
             </a>
           )
