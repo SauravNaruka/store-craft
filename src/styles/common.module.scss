@@ -46,3 +46,15 @@
 .srOnly {
   @apply sr-only;
 }
+
+.grid2c {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 15px;
+  grid-row-gap: 20px;
+  width: 100vw;
+}
+
+.pageSection {
+  margin: 30px 0px 0px;
+}

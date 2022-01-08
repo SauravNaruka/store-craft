@@ -1,14 +1,17 @@
 import * as React from 'react'
-import Styles from '@styles/HStack.module.scss'
+import hstackStyles from '@styles/HStack.module.scss'
 
 type PropType = {
   className?: string
   children?: React.ReactNode
 }
 
-export function HStack({className = Styles.hstack, children}: PropType) {
+export function HStack({className, children}: PropType) {
   return (
-    <div className={className} role="list">
+    <div
+      className={`${hstackStyles.hstack} ${className ? className : ''}`}
+      role="list"
+    >
       {children}
     </div>
   )

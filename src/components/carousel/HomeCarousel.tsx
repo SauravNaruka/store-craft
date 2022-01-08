@@ -1,18 +1,22 @@
 import * as React from 'react'
 import Carousel from '@components/carousel/Carousel'
 import Image from '@components/Image'
-import type {NavigationItem} from '@generated/cms.types'
-import styles from '@styles/Carousel.module.css'
+import type {Navigation, NavigationItem} from '@generated/cms.types'
+import carouselStyles from '@styles/Carousel.module.css'
+import commonStyles from '@styles/common.module.scss'
 
 type PropType = {
-  navigationItems: NavigationItem[]
+  navigation: Navigation
 }
 
-export function HomeCarousel({navigationItems}: PropType) {
+export function HomeCarousel({navigation}: PropType) {
+  const navigationItems: NavigationItem[] = navigation?.items?.length
+    ? (navigation.items as NavigationItem[])
+    : []
   return (
     <Carousel
       id="homeCarousel_child"
-      className={styles.homeCarousel}
+      className={`${carouselStyles.homeCarousel}`}
       ariaLabel="Slides for existing offers and announcements"
     >
       {navigationItems.map(({link, image}, index) => {
@@ -23,6 +27,7 @@ export function HomeCarousel({navigationItems}: PropType) {
                 src={image.asset.url}
                 alt={image.caption}
                 layout="fill"
+                objectFit="cover"
                 unoptimized={false}
                 priority={index === 0 ? true : false}
                 aspectRatio={{width: 16, height: 9}}
