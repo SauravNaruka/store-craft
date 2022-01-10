@@ -1,7 +1,6 @@
 import {graphql} from 'msw'
-import {fetchNavigationById} from '@api/fetchNavigations'
+import {fetchNavigation} from '@api/fetchNavigations'
 import {server} from '../../__mocks__/server'
-import {UnknownDataError} from '@helpers/error.helper'
 
 describe('fetch navigation by id', () => {
   test('error in api response', async () => {
@@ -14,7 +13,7 @@ describe('fetch navigation by id', () => {
       }),
     )
 
-    await expect(fetchNavigationById('product-navigation')).rejects.toThrow()
+    await expect(fetchNavigation('product-navigation')).rejects.toThrow()
   })
 
   test('empty api response', async () => {
@@ -24,8 +23,6 @@ describe('fetch navigation by id', () => {
       }),
     )
 
-    await expect(fetchNavigationById('product-navigation')).rejects.toThrow(
-      UnknownDataError,
-    )
+    await expect(fetchNavigation('product-navigation')).rejects.toThrow()
   })
 })

@@ -1,0 +1,45 @@
+query Collection(
+  $handle: String!
+  $numberOfProducts: Int
+  $numberOfImages: Int
+  $cursor: String
+) {
+  collection(handle: $handle) {
+    title
+    id
+    products(first: $numberOfProducts, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          id
+          title
+          description
+          compareAtPriceRange {
+            maxVariantPrice {
+              amount
+            }
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+            }
+          }
+          images(first: $numberOfImages) {
+            edges {
+              node {
+                url
+                altText
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

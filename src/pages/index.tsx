@@ -8,26 +8,31 @@ import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
 import {RoomNavigation} from '@components/RoomNavigation'
-import {fetchNavigationById} from '@api/fetchNavigations'
 import {ProductNavigation} from '@components/ProductNavigation.server'
+import {fetchNavigation} from '@api/fetchNavigations'
+import {fetchCollection} from '@api/fetchCollection'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
   ROOM_NAVIGATION,
 } from '@constants/navigation.constants'
+import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
 import type {Navigation} from '@generated/cms.types'
+import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.scss'
 
 type PropType = {
   productNavigation: Navigation
   heroNavigation: Navigation
   roomNavigation: Navigation
+  featuredProducts: Collection
 }
 
 export default function Home({
   productNavigation,
   heroNavigation,
   roomNavigation,
+  featuredProducts,
 }: PropType) {
   return (
     <div className={styles.container}>
@@ -57,15 +62,22 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let productNavigation = await fetchNavigationById(PRODUCT_NAVIGATION)
-  let heroNavigation = await fetchNavigationById(HERO_NAVIGATION)
-  let roomNavigation = await fetchNavigationById(ROOM_NAVIGATION)
+  let productNavigation = await fetchNavigation(PRODUCT_NAVIGATION)
+  let heroNavigation = await fetchNavigation(HERO_NAVIGATION)
+  let roomNavigation = await fetchNavigation(ROOM_NAVIGATION)
+
+  let featuredProducts = await fetchCollection({
+    handle: FEATURED_PRODUCTS_HANDLE,
+    numberOfProducts: 10,
+    numberOfImages: 1,
+  })
 
   return {
     props: {
       productNavigation,
       heroNavigation,
       roomNavigation,
+      featuredProducts,
     },
   }
 }

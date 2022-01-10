@@ -39,6 +39,23 @@ export type Scalars = {
    *
    */
   HTML: any
+  /**
+   * A [JSON](https://www.json.org/json-en.html) object.
+   *
+   * Example value:
+   * `{
+   *   "product": {
+   *     "id": "gid://shopify/Product/1346443542550",
+   *     "title": "White T-shirt",
+   *     "options": [{
+   *       "name": "Size",
+   *       "values": ["M", "L"]
+   *     }]
+   *   }
+   * }`
+   *
+   */
+  JSON: any
   /** A monetary value string without a currency symbol or code. Example value: `"100.57"`. */
   Money: any
   /**
@@ -63,7 +80,7 @@ export type ApiVersion = {
   displayName: Scalars['String']
   /** The unique identifier of an ApiVersion. All supported API versions have a date-based (YYYY-MM) or `unstable` handle. */
   handle: Scalars['String']
-  /** Whether the version is actively supported by Shopify. Supported API versions are guaranteed to be stable. Unsupported API versions include unstable, release candidate, and end-of-life versions that are marked as unsupported. For more information, refer to [Versioning](https://shopify.dev/concepts/about-apis/versioning). */
+  /** Whether the version is actively supported by Shopify. Supported API versions are guaranteed to be stable. Unsupported API versions include unstable, release candidate, and end-of-life versions that are marked as unsupported. For more information, refer to [Versioning](https://shopify.dev/api/usage/versioning). */
   supported: Scalars['Boolean']
 }
 
@@ -143,11 +160,6 @@ export type Article = HasMetafields &
     tags: Array<Scalars['String']>
     /** The article’s name. */
     title: Scalars['String']
-    /**
-     * The url pointing to the article accessible from the web.
-     * @deprecated Use `onlineStoreUrl` instead
-     */
-    url: Scalars['URL']
   }
 
 /** An article in an online store blog. */
@@ -167,14 +179,6 @@ export type ArticleContentArgs = {
 /** An article in an online store blog. */
 export type ArticleExcerptArgs = {
   truncateAt?: InputMaybe<Scalars['Int']>
-}
-
-/** An article in an online store blog. */
-export type ArticleImageArgs = {
-  crop?: InputMaybe<CropRegion>
-  maxHeight?: InputMaybe<Scalars['Int']>
-  maxWidth?: InputMaybe<Scalars['Int']>
-  scale?: InputMaybe<Scalars['Int']>
 }
 
 /** An article in an online store blog. */
@@ -336,11 +340,6 @@ export type Blog = HasMetafields &
     seo?: Maybe<Seo>
     /** The blogs’s title. */
     title: Scalars['String']
-    /**
-     * The url pointing to the blog accessible from the web.
-     * @deprecated Use `onlineStoreUrl` instead
-     */
-    url: Scalars['URL']
   }
 
 /** An online store blog. */
@@ -748,11 +747,6 @@ export type Checkout = Node & {
   currencyCode: CurrencyCode
   /** A list of extra information that is added to the checkout. */
   customAttributes: Array<Attribute>
-  /**
-   * The customer associated with the checkout.
-   * @deprecated This field will always return null. If you have an authentication token for the customer, you can use the `customer` field on the query root to retrieve it.
-   */
-  customer?: Maybe<Customer>
   /** Discounts that have been applied on the checkout. */
   discountApplications: DiscountApplicationConnection
   /** The email attached to this checkout. */
@@ -1545,14 +1539,6 @@ export type CollectionDescriptionArgs = {
 }
 
 /** A collection represents a grouping of products that a shop owner can create to organize them or make their shops easier to browse. */
-export type CollectionImageArgs = {
-  crop?: InputMaybe<CropRegion>
-  maxHeight?: InputMaybe<Scalars['Int']>
-  maxWidth?: InputMaybe<Scalars['Int']>
-  scale?: InputMaybe<Scalars['Int']>
-}
-
-/** A collection represents a grouping of products that a shop owner can create to organize them or make their shops easier to browse. */
 export type CollectionMetafieldArgs = {
   key: Scalars['String']
   namespace: Scalars['String']
@@ -1572,6 +1558,7 @@ export type CollectionMetafieldsArgs = {
 export type CollectionProductsArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
+  filters?: InputMaybe<Array<ProductFilter>>
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   reverse?: InputMaybe<Scalars['Boolean']>
@@ -2208,7 +2195,7 @@ export type CreditCardPaymentInput = {
   amount: Scalars['Money']
   /** The billing address for the payment. */
   billingAddress: MailingAddressInput
-  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests). */
+  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
   idempotencyKey: Scalars['String']
   /** Executes the payment in test mode if possible. Defaults to `false`. */
   test?: InputMaybe<Scalars['Boolean']>
@@ -2224,7 +2211,7 @@ export type CreditCardPaymentInput = {
 export type CreditCardPaymentInputV2 = {
   /** The billing address for the payment. */
   billingAddress: MailingAddressInput
-  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests). */
+  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
   idempotencyKey: Scalars['String']
   /** The amount and currency of the payment. */
   paymentAmount: MoneyInput
@@ -3150,6 +3137,45 @@ export type ExternalVideo = Media &
     previewImage?: Maybe<Image>
   }
 
+/** A filter that is supported on the parent field. */
+export type Filter = {
+  __typename?: 'Filter'
+  /** A unique identifier. */
+  id: Scalars['String']
+  /** A human-friendly string for this filter. */
+  label: Scalars['String']
+  /** An enumeration that denotes the type of data this filter represents. */
+  type: FilterType
+  /** The list of values for this filter. */
+  values: Array<FilterValue>
+}
+
+/** Denotes the type of data this filter group represents. */
+export enum FilterType {
+  /** A list of selectable values. */
+  List = 'LIST',
+  /** A range of prices. */
+  PriceRange = 'PRICE_RANGE',
+}
+
+/** A selectable value within a filter. */
+export type FilterValue = {
+  __typename?: 'FilterValue'
+  /** The number of results that match this filter value. */
+  count: Scalars['Int']
+  /** A unique identifier. */
+  id: Scalars['String']
+  /**
+   * An input object that can be used to filter by this value on the parent field.
+   *
+   * The value is provided as a helper for building dynamic filtering UI. For example, if you have a list of selected `FilterValue` objects, you can combine their respective `input` values to use in a subsequent query.
+   *
+   */
+  input: Scalars['JSON']
+  /** A human-friendly string for this filter value. */
+  label: Scalars['String']
+}
+
 /** Represents a single fulfillment in an order. */
 export type Fulfillment = {
   __typename?: 'Fulfillment'
@@ -3288,6 +3314,27 @@ export type Image = {
    * @deprecated Use `url(transform:)` instead
    */
   transformedSrc: Scalars['URL']
+  /**
+   * The location of the image as a URL.
+   *
+   * If no transform options are specified, then the original image will be preserved including any pre-applied transforms.
+   *
+   * All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
+   *
+   * If you need multiple variations of the same image, then you can use [GraphQL field aliases](https://graphql.org/learn/queries/#aliases). For example:
+   *
+   * ```graphql
+   * {
+   *   ... on Image {
+   *     original: url
+   *     thumbnail: url(transform: { maxWidth: 80, maxHeight: 80 })
+   *     retina: url(transform: { scale: 2 })
+   *   }
+   * }
+   * ```
+   *
+   */
+  url: Scalars['URL']
   /** The original width of the image in pixels. Returns `null` if the image is not hosted by Shopify. */
   width?: Maybe<Scalars['Int']>
 }
@@ -3299,6 +3346,11 @@ export type ImageTransformedSrcArgs = {
   maxWidth?: InputMaybe<Scalars['Int']>
   preferredContentType?: InputMaybe<ImageContentType>
   scale?: InputMaybe<Scalars['Int']>
+}
+
+/** Represents an image resource. */
+export type ImageUrlArgs = {
+  transform?: InputMaybe<ImageTransformInput>
 }
 
 /**
@@ -3335,6 +3387,38 @@ export type ImageEdge = {
   node: Image
 }
 
+/**
+ * The available options for transforming an image.
+ *
+ * All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
+ *
+ */
+export type ImageTransformInput = {
+  /** Crop the image according to the specified region. */
+  crop?: InputMaybe<CropRegion>
+  /**
+   * Image height in pixels between 1 and 5760.
+   *
+   */
+  maxHeight?: InputMaybe<Scalars['Int']>
+  /**
+   * Image width in pixels between 1 and 5760.
+   *
+   */
+  maxWidth?: InputMaybe<Scalars['Int']>
+  /**
+   * Convert the source image into the preferred content type.
+   * Supported conversions: `.svg` to `.png`, any file type to `.jpg`, and any file type to `.webp`.
+   *
+   */
+  preferredContentType?: InputMaybe<ImageContentType>
+  /**
+   * Image size multiplier for high-resolution retina displays. Must be within 1..3.
+   *
+   */
+  scale?: InputMaybe<Scalars['Int']>
+}
+
 /** Information about the localized experiences configured for the shop. */
 export type Localization = {
   __typename?: 'Localization'
@@ -3356,7 +3440,7 @@ export type Location = Node & {
 }
 
 /**
- * Represents the address of the location.
+ * Represents the address of a location.
  *
  */
 export type LocationAddress = {
@@ -3369,9 +3453,9 @@ export type LocationAddress = {
   city?: Maybe<Scalars['String']>
   /** The country of the location. */
   country?: Maybe<Scalars['String']>
-  /** The two-letter country code of the location. */
+  /** The country code of the location. */
   countryCode?: Maybe<Scalars['String']>
-  /** A formatted version of the location address. */
+  /** A formatted version of the address for the location. */
   formatted: Array<Scalars['String']>
   /** The latitude coordinates of the location. */
   latitude?: Maybe<Scalars['Float']>
@@ -3382,8 +3466,7 @@ export type LocationAddress = {
   /** The province of the location. */
   province?: Maybe<Scalars['String']>
   /**
-   * The code for the region of the address, such as the province, state, or district.
-   * For example QC for Quebec, Canada.
+   * The code for the province, state, or district of the address of the location.
    *
    */
   provinceCode?: Maybe<Scalars['String']>
@@ -3692,6 +3775,8 @@ export type Metafield = Node & {
   namespace: Scalars['String']
   /** The parent object that the metafield belongs to. */
   parentResource: MetafieldParentResource
+  /** Returns a reference object if the metafield definition's type is a resource reference. */
+  reference?: Maybe<MetafieldReference>
   /**
    * The type name of the metafield.
    * See the list of [supported types](https://shopify.dev/apps/metafields/definitions/types).
@@ -3702,11 +3787,6 @@ export type Metafield = Node & {
   updatedAt: Scalars['DateTime']
   /** The value of a metafield. */
   value: Scalars['String']
-  /**
-   * Represents the metafield value type.
-   * @deprecated `valueType` is deprecated and replaced by `type` in API version 2021-07.
-   */
-  valueType: MetafieldValueType
 }
 
 /**
@@ -3733,6 +3813,24 @@ export type MetafieldEdge = {
   node: Metafield
 }
 
+/**
+ * A filter used to view a subset of products in a collection matching a specific metafield value.
+ *
+ * Only the following metafield types are currently supported:
+ * - `number_integer`
+ * - `number_decimal`
+ * - `single_line_text_field`
+ *
+ */
+export type MetafieldFilter = {
+  /** The key of the metafield to filter on. */
+  key: Scalars['String']
+  /** The namespace of the metafield to filter on. */
+  namespace: Scalars['String']
+  /** The value of the metafield. */
+  value: Scalars['String']
+}
+
 /** A resource that the metafield belongs to. */
 export type MetafieldParentResource =
   | Article
@@ -3745,17 +3843,11 @@ export type MetafieldParentResource =
   | ProductVariant
   | Shop
 
-/** Metafield value types. */
-export enum MetafieldValueType {
-  /** A boolean metafield. */
-  Boolean = 'BOOLEAN',
-  /** An integer metafield. */
-  Integer = 'INTEGER',
-  /** A json string metafield. */
-  JsonString = 'JSON_STRING',
-  /** A string metafield. */
-  String = 'STRING',
-}
+/**
+ * Returns the resource which is being referred to by a metafield.
+ *
+ */
+export type MetafieldReference = MediaImage | Page | Product | ProductVariant
 
 /** Represents a Shopify hosted 3D model. */
 export type Model3d = Media &
@@ -3806,30 +3898,6 @@ export type MoneyV2 = {
   currencyCode: CurrencyCode
 }
 
-/**
- * An auto-generated type for paginating through multiple MoneyV2s.
- *
- */
-export type MoneyV2Connection = {
-  __typename?: 'MoneyV2Connection'
-  /** A list of edges. */
-  edges: Array<MoneyV2Edge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-}
-
-/**
- * An auto-generated type which holds one MoneyV2 and a cursor during pagination.
- *
- */
-export type MoneyV2Edge = {
-  __typename?: 'MoneyV2Edge'
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String']
-  /** The item at the end of MoneyV2Edge. */
-  node: MoneyV2
-}
-
 /** The schema’s entry-point for mutations. This acts as the public, top-level API from which all mutation queries must start. */
 export type Mutation = {
   __typename?: 'Mutation'
@@ -3863,7 +3931,7 @@ export type Mutation = {
    * @deprecated Use `checkoutCompleteWithCreditCardV2` instead
    */
   checkoutCompleteWithCreditCard?: Maybe<CheckoutCompleteWithCreditCardPayload>
-  /** Completes a checkout using a credit card token from Shopify's card vault. Before you can complete checkouts using CheckoutCompleteWithCreditCardV2, you need to  [_request payment processing_](https://help.shopify.com/api/guides/sales-channel-sdk/getting-started#request-payment-processing). */
+  /** Completes a checkout using a credit card token from Shopify's card vault. Before you can complete checkouts using CheckoutCompleteWithCreditCardV2, you need to  [_request payment processing_](https://shopify.dev/apps/channels/getting-started#request-payment-processing). */
   checkoutCompleteWithCreditCardV2?: Maybe<CheckoutCompleteWithCreditCardV2Payload>
   /**
    * Completes a checkout with a tokenized payment.
@@ -4630,11 +4698,6 @@ export type Page = HasMetafields &
     title: Scalars['String']
     /** The timestamp of the latest page update. */
     updatedAt: Scalars['DateTime']
-    /**
-     * The url pointing to the page accessible from the web.
-     * @deprecated Use `onlineStoreUrl` instead
-     */
-    url: Scalars['URL']
   }
 
 /** Shopify merchants can create pages to hold static HTML content. Each Page object represents a custom page on the online store. */
@@ -4730,7 +4793,7 @@ export type Payment = Node & {
   /**
    * A client-side generated token to identify a payment and perform idempotent operations.
    * For more information, refer to
-   * [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests).
+   * [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests).
    *
    */
   idempotencyKey?: Maybe<Scalars['String']>
@@ -4777,6 +4840,14 @@ export enum PaymentTokenType {
   Vault = 'VAULT',
 }
 
+/** A filter used to view a subset of products in a collection matching a specific price range. */
+export type PriceRangeFilter = {
+  /** The maximum price in the range. Empty indicates no max price. */
+  max?: InputMaybe<Scalars['Float']>
+  /** The minimum price in the range. Defaults to zero. */
+  min?: InputMaybe<Scalars['Float']>
+}
+
 /** The value of the percentage pricing object. */
 export type PricingPercentageValue = {
   __typename?: 'PricingPercentageValue'
@@ -4808,6 +4879,13 @@ export type Product = HasMetafields &
     /** The description of the product, complete with HTML formatting. */
     descriptionHtml: Scalars['HTML']
     /**
+     * The featured image for the product.
+     *
+     * This field is functionally equivalent to `images(first: 1)`.
+     *
+     */
+    featuredImage?: Maybe<Image>
+    /**
      * A human-friendly unique string for the Product automatically generated from its title.
      * They are used by the Liquid templating language to refer to objects.
      *
@@ -4831,11 +4909,6 @@ export type Product = HasMetafields &
     onlineStoreUrl?: Maybe<Scalars['URL']>
     /** List of product options. */
     options: Array<ProductOption>
-    /**
-     * List of price ranges in the presentment currencies for this shop.
-     * @deprecated Use `@inContext` instead.
-     */
-    presentmentPriceRanges: ProductPriceRangeConnection
     /** The price range. */
     priceRange: ProductPriceRange
     /** A categorization that a product can be tagged with, commonly used for filtering and searching. */
@@ -4906,13 +4979,9 @@ export type ProductDescriptionArgs = {
 export type ProductImagesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
-  crop?: InputMaybe<CropRegion>
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
-  maxHeight?: InputMaybe<Scalars['Int']>
-  maxWidth?: InputMaybe<Scalars['Int']>
   reverse?: InputMaybe<Scalars['Boolean']>
-  scale?: InputMaybe<Scalars['Int']>
   sortKey?: InputMaybe<ProductImageSortKeys>
 }
 
@@ -4957,19 +5026,6 @@ export type ProductMetafieldsArgs = {
  */
 export type ProductOptionsArgs = {
   first?: InputMaybe<Scalars['Int']>
-}
-
-/**
- * A product represents an individual item for sale in a Shopify store. Products are often physical, but they don't have to be.
- * For example, a digital download (such as a movie, music or ebook file) also qualifies as a product, as do services (such as equipment rental, work for hire, customization of another product or an extended warranty).
- */
-export type ProductPresentmentPriceRangesArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  presentmentCurrencies?: InputMaybe<Array<CurrencyCode>>
-  reverse?: InputMaybe<Scalars['Boolean']>
 }
 
 /**
@@ -5038,6 +5094,8 @@ export type ProductConnection = {
   __typename?: 'ProductConnection'
   /** A list of edges. */
   edges: Array<ProductEdge>
+  /** A list of available filters. */
+  filters: Array<Filter>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
 }
@@ -5052,6 +5110,24 @@ export type ProductEdge = {
   cursor: Scalars['String']
   /** The item at the end of ProductEdge. */
   node: Product
+}
+
+/** A filter used to view a subset of products in a collection. */
+export type ProductFilter = {
+  /** Filter on if the product is available for sale. */
+  available?: InputMaybe<Scalars['Boolean']>
+  /** A range of prices to filter with-in. */
+  price?: InputMaybe<PriceRangeFilter>
+  /** A product metafield to filter on. */
+  productMetafield?: InputMaybe<MetafieldFilter>
+  /** The product type to filter on. */
+  productType?: InputMaybe<Scalars['String']>
+  /** The product vendor to filter on. */
+  productVendor?: InputMaybe<Scalars['String']>
+  /** A variant metafield to filter on. */
+  variantMetafield?: InputMaybe<MetafieldFilter>
+  /** A variant option to filter on. */
+  variantOption?: InputMaybe<VariantOptionFilter>
 }
 
 /** The set of valid sort keys for the ProductImage query. */
@@ -5111,30 +5187,6 @@ export type ProductPriceRange = {
   minVariantPrice: MoneyV2
 }
 
-/**
- * An auto-generated type for paginating through multiple ProductPriceRanges.
- *
- */
-export type ProductPriceRangeConnection = {
-  __typename?: 'ProductPriceRangeConnection'
-  /** A list of edges. */
-  edges: Array<ProductPriceRangeEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-}
-
-/**
- * An auto-generated type which holds one ProductPriceRange and a cursor during pagination.
- *
- */
-export type ProductPriceRangeEdge = {
-  __typename?: 'ProductPriceRangeEdge'
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String']
-  /** The item at the end of ProductPriceRangeEdge. */
-  node: ProductPriceRange
-}
-
 /** The set of valid sort keys for the Product query. */
 export enum ProductSortKeys {
   /** Sort by the `best_selling` value. */
@@ -5166,13 +5218,10 @@ export enum ProductSortKeys {
 export type ProductVariant = HasMetafields &
   Node & {
     __typename?: 'ProductVariant'
-    /**
-     * Indicates if the product variant is in stock.
-     * @deprecated Use `availableForSale` instead
-     */
-    available?: Maybe<Scalars['Boolean']>
     /** Indicates if the product variant is available for sale. */
     availableForSale: Scalars['Boolean']
+    /** The barcode (for example, ISBN, UPC, or GTIN) associated with the variant. */
+    barcode?: Maybe<Scalars['String']>
     /**
      * The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPrice` is higher than `price`.
      * @deprecated Use `compareAtPriceV2` instead
@@ -5197,16 +5246,6 @@ export type ProductVariant = HasMetafields &
      *
      */
     metafields: MetafieldConnection
-    /**
-     * List of prices and compare-at prices in the presentment currencies for this shop.
-     * @deprecated Use `@inContext` instead.
-     */
-    presentmentPrices: ProductVariantPricePairConnection
-    /**
-     * List of unit prices in the presentment currencies for this shop.
-     * @deprecated Use `@inContext` instead.
-     */
-    presentmentUnitPrices: MoneyV2Connection
     /**
      * The product variant’s price.
      * @deprecated Use `priceV2` instead
@@ -5241,14 +5280,6 @@ export type ProductVariant = HasMetafields &
   }
 
 /** A product variant represents a different version of a product, such as differing sizes or differing colors. */
-export type ProductVariantImageArgs = {
-  crop?: InputMaybe<CropRegion>
-  maxHeight?: InputMaybe<Scalars['Int']>
-  maxWidth?: InputMaybe<Scalars['Int']>
-  scale?: InputMaybe<Scalars['Int']>
-}
-
-/** A product variant represents a different version of a product, such as differing sizes or differing colors. */
 export type ProductVariantMetafieldArgs = {
   key: Scalars['String']
   namespace: Scalars['String']
@@ -5261,26 +5292,6 @@ export type ProductVariantMetafieldsArgs = {
   first?: InputMaybe<Scalars['Int']>
   last?: InputMaybe<Scalars['Int']>
   namespace?: InputMaybe<Scalars['String']>
-  reverse?: InputMaybe<Scalars['Boolean']>
-}
-
-/** A product variant represents a different version of a product, such as differing sizes or differing colors. */
-export type ProductVariantPresentmentPricesArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  presentmentCurrencies?: InputMaybe<Array<CurrencyCode>>
-  reverse?: InputMaybe<Scalars['Boolean']>
-}
-
-/** A product variant represents a different version of a product, such as differing sizes or differing colors. */
-export type ProductVariantPresentmentUnitPricesArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  presentmentCurrencies?: InputMaybe<Array<CurrencyCode>>
   reverse?: InputMaybe<Scalars['Boolean']>
 }
 
@@ -5324,42 +5335,6 @@ export type ProductVariantEdge = {
   cursor: Scalars['String']
   /** The item at the end of ProductVariantEdge. */
   node: ProductVariant
-}
-
-/**
- * The compare-at price and price of a variant sharing a currency.
- *
- */
-export type ProductVariantPricePair = {
-  __typename?: 'ProductVariantPricePair'
-  /** The compare-at price of the variant with associated currency. */
-  compareAtPrice?: Maybe<MoneyV2>
-  /** The price of the variant with associated currency. */
-  price: MoneyV2
-}
-
-/**
- * An auto-generated type for paginating through multiple ProductVariantPricePairs.
- *
- */
-export type ProductVariantPricePairConnection = {
-  __typename?: 'ProductVariantPricePairConnection'
-  /** A list of edges. */
-  edges: Array<ProductVariantPricePairEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-}
-
-/**
- * An auto-generated type which holds one ProductVariantPricePair and a cursor during pagination.
- *
- */
-export type ProductVariantPricePairEdge = {
-  __typename?: 'ProductVariantPricePairEdge'
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String']
-  /** The item at the end of ProductVariantPricePairEdge. */
-  node: ProductVariantPricePair
 }
 
 /** The set of valid sort keys for the ProductVariant query. */
@@ -5623,11 +5598,6 @@ export type ScriptDiscountApplication = DiscountApplication & {
   __typename?: 'ScriptDiscountApplication'
   /** The method by which the discount's value is allocated to its entitled items. */
   allocationMethod: DiscountApplicationAllocationMethod
-  /**
-   * The description of the application as defined by the Script.
-   * @deprecated Use `title` instead
-   */
-  description: Scalars['String']
   /** Which lines of targetType that the discount is allocated over. */
   targetSelection: DiscountApplicationTargetSelection
   /** The type of line that the discount is applicable towards. */
@@ -5865,31 +5835,6 @@ export type ShippingRate = {
 /** Shop represents a collection of the general settings and information about the shop. */
 export type Shop = HasMetafields & {
   __typename?: 'Shop'
-  /**
-   * List of the shop' articles.
-   * @deprecated Use `QueryRoot.articles` instead.
-   */
-  articles: ArticleConnection
-  /**
-   * List of the shop' blogs.
-   * @deprecated Use `QueryRoot.blogs` instead.
-   */
-  blogs: BlogConnection
-  /**
-   * Find a collection by its handle.
-   * @deprecated Use `QueryRoot.collectionByHandle` instead.
-   */
-  collectionByHandle?: Maybe<Collection>
-  /**
-   * List of the shop’s collections.
-   * @deprecated Use `QueryRoot.collections` instead.
-   */
-  collections: CollectionConnection
-  /**
-   * The three-letter code for the currency that the shop accepts.
-   * @deprecated Use `paymentSettings` instead
-   */
-  currencyCode: CurrencyCode
   /** A description of the shop. */
   description?: Maybe<Scalars['String']>
   /** Returns a metafield found by namespace and key. */
@@ -5910,79 +5855,16 @@ export type Shop = HasMetafields & {
   primaryDomain: Domain
   /** The shop’s privacy policy. */
   privacyPolicy?: Maybe<ShopPolicy>
-  /**
-   * Find a product by its handle.
-   * @deprecated Use `QueryRoot.productByHandle` instead.
-   */
-  productByHandle?: Maybe<Product>
-  /**
-   * A list of tags that have been added to products.
-   * Additional access scope required: unauthenticated_read_product_tags.
-   *
-   * @deprecated Use `QueryRoot.productTags` instead.
-   */
-  productTags: StringConnection
-  /**
-   * List of the shop’s product types.
-   * @deprecated Use `QueryRoot.productTypes` instead.
-   */
-  productTypes: StringConnection
-  /**
-   * List of the shop’s products.
-   * @deprecated Use `QueryRoot.products` instead.
-   */
-  products: ProductConnection
   /** The shop’s refund policy. */
   refundPolicy?: Maybe<ShopPolicy>
   /** The shop’s shipping policy. */
   shippingPolicy?: Maybe<ShopPolicy>
   /** Countries that the shop ships to. */
   shipsToCountries: Array<CountryCode>
-  /**
-   * The shop’s Shopify Payments account id.
-   * @deprecated Use `paymentSettings` instead
-   */
-  shopifyPaymentsAccountId?: Maybe<Scalars['String']>
+  /** The shop’s subscription policy. */
+  subscriptionPolicy?: Maybe<ShopPolicyWithDefault>
   /** The shop’s terms of service. */
   termsOfService?: Maybe<ShopPolicy>
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopArticlesArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  query?: InputMaybe<Scalars['String']>
-  reverse?: InputMaybe<Scalars['Boolean']>
-  sortKey?: InputMaybe<ArticleSortKeys>
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopBlogsArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  query?: InputMaybe<Scalars['String']>
-  reverse?: InputMaybe<Scalars['Boolean']>
-  sortKey?: InputMaybe<BlogSortKeys>
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopCollectionByHandleArgs = {
-  handle: Scalars['String']
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopCollectionsArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  query?: InputMaybe<Scalars['String']>
-  reverse?: InputMaybe<Scalars['Boolean']>
-  sortKey?: InputMaybe<CollectionSortKeys>
 }
 
 /** Shop represents a collection of the general settings and information about the shop. */
@@ -6001,32 +5883,6 @@ export type ShopMetafieldsArgs = {
   reverse?: InputMaybe<Scalars['Boolean']>
 }
 
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopProductByHandleArgs = {
-  handle: Scalars['String']
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopProductTagsArgs = {
-  first: Scalars['Int']
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopProductTypesArgs = {
-  first: Scalars['Int']
-}
-
-/** Shop represents a collection of the general settings and information about the shop. */
-export type ShopProductsArgs = {
-  after?: InputMaybe<Scalars['String']>
-  before?: InputMaybe<Scalars['String']>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  query?: InputMaybe<Scalars['String']>
-  reverse?: InputMaybe<Scalars['Boolean']>
-  sortKey?: InputMaybe<ProductSortKeys>
-}
-
 /** Policy that a merchant has configured for their store, such as their refund or privacy policy. */
 export type ShopPolicy = Node & {
   __typename?: 'ShopPolicy'
@@ -6037,6 +5893,26 @@ export type ShopPolicy = Node & {
   /** A globally-unique identifier. */
   id: Scalars['ID']
   /** Policy’s title. */
+  title: Scalars['String']
+  /** Public URL to the policy. */
+  url: Scalars['URL']
+}
+
+/**
+ * A policy for the store that comes with a default value, such as a subscription policy.
+ * If the merchant hasn't configured a policy for their store, then the policy will return the default value.
+ * Otherwise, the policy will return the merchant-configured value.
+ *
+ */
+export type ShopPolicyWithDefault = {
+  __typename?: 'ShopPolicyWithDefault'
+  /** The text of the policy. Maximum size: 64KB. */
+  body: Scalars['String']
+  /** The handle of the policy. */
+  handle: Scalars['String']
+  /** The unique identifier of the policy. A default policy doesn't have an ID. */
+  id?: Maybe<Scalars['ID']>
+  /** The title of the policy. */
   title: Scalars['String']
   /** Public URL to the policy. */
   url: Scalars['URL']
@@ -6115,7 +5991,7 @@ export type TokenizedPaymentInput = {
   amount: Scalars['Money']
   /** The billing address for the payment. */
   billingAddress: MailingAddressInput
-  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests). */
+  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
   idempotencyKey: Scalars['String']
   /** Public Hash Key used for AndroidPay payments only. */
   identifier?: InputMaybe<Scalars['String']>
@@ -6135,7 +6011,7 @@ export type TokenizedPaymentInput = {
 export type TokenizedPaymentInputV2 = {
   /** The billing address for the payment. */
   billingAddress: MailingAddressInput
-  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests). */
+  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
   idempotencyKey: Scalars['String']
   /** Public Hash Key used for AndroidPay payments only. */
   identifier?: InputMaybe<Scalars['String']>
@@ -6157,7 +6033,7 @@ export type TokenizedPaymentInputV2 = {
 export type TokenizedPaymentInputV3 = {
   /** The billing address for the payment. */
   billingAddress: MailingAddressInput
-  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/concepts/about-apis/idempotent-requests). */
+  /** A unique client generated key used to avoid duplicate charges. When a duplicate payment is found, the original is returned instead of creating a new one. For more information, refer to [Idempotent requests](https://shopify.dev/api/usage/idempotent-requests). */
   idempotencyKey: Scalars['String']
   /** Public Hash Key used for AndroidPay payments only. */
   identifier?: InputMaybe<Scalars['String']>
@@ -6297,6 +6173,14 @@ export type UserError = DisplayableError & {
   message: Scalars['String']
 }
 
+/** A filter used to view a subset of products in a collection matching a specific variant option. */
+export type VariantOptionFilter = {
+  /** The name of the variant option to filter on. */
+  name: Scalars['String']
+  /** The value of the variant option to filter on. */
+  value: Scalars['String']
+}
+
 /** Represents a Shopify hosted video. */
 export type Video = Media &
   Node & {
@@ -6340,25 +6224,106 @@ export enum WeightUnit {
   Pounds = 'POUNDS',
 }
 
-export type CollectionsQueryVariables = Exact<{[key: string]: never}>
+export type CollectionQueryVariables = Exact<{
+  handle: Scalars['String']
+  numberOfProducts?: InputMaybe<Scalars['Int']>
+  numberOfImages?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<Scalars['String']>
+}>
 
-export type CollectionsQuery = {
+export type CollectionQuery = {
   __typename?: 'QueryRoot'
-  collections: {
-    __typename?: 'CollectionConnection'
-    edges: Array<{
-      __typename?: 'CollectionEdge'
-      node: {__typename?: 'Collection'; title: string}
-    }>
-  }
+  collection?:
+    | {
+        __typename?: 'Collection'
+        title: string
+        id: string
+        products: {
+          __typename?: 'ProductConnection'
+          pageInfo: {
+            __typename?: 'PageInfo'
+            hasNextPage: boolean
+            hasPreviousPage: boolean
+          }
+          edges: Array<{
+            __typename?: 'ProductEdge'
+            cursor: string
+            node: {
+              __typename?: 'Product'
+              id: string
+              title: string
+              description: string
+              compareAtPriceRange: {
+                __typename?: 'ProductPriceRange'
+                maxVariantPrice: {__typename?: 'MoneyV2'; amount: any}
+              }
+              priceRange: {
+                __typename?: 'ProductPriceRange'
+                minVariantPrice: {__typename?: 'MoneyV2'; amount: any}
+              }
+              images: {
+                __typename?: 'ImageConnection'
+                edges: Array<{
+                  __typename?: 'ImageEdge'
+                  node: {
+                    __typename?: 'Image'
+                    url: any
+                    altText?: string | null | undefined
+                    width?: number | null | undefined
+                    height?: number | null | undefined
+                  }
+                }>
+              }
+            }
+          }>
+        }
+      }
+    | null
+    | undefined
 }
 
-export const CollectionsDocument = gql`
-  query Collections {
-    collections(first: 10) {
-      edges {
-        node {
-          title
+export const CollectionDocument = gql`
+  query Collection(
+    $handle: String!
+    $numberOfProducts: Int
+    $numberOfImages: Int
+    $cursor: String
+  ) {
+    collection(handle: $handle) {
+      title
+      id
+      products(first: $numberOfProducts, after: $cursor) {
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+        }
+        edges {
+          cursor
+          node {
+            id
+            title
+            description
+            compareAtPriceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+            }
+            images(first: $numberOfImages) {
+              edges {
+                node {
+                  url
+                  altText
+                  width
+                  height
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -6377,17 +6342,17 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
-    Collections(
-      variables?: CollectionsQueryVariables,
+    Collection(
+      variables: CollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<CollectionsQuery> {
+    ): Promise<CollectionQuery> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.request<CollectionsQuery>(CollectionsDocument, variables, {
+          client.request<CollectionQuery>(CollectionDocument, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'Collections',
+        'Collection',
       )
     },
   }
