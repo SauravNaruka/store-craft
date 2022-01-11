@@ -1,6 +1,6 @@
-import {getCollectionsHandler} from './getCollections.mock'
 import {getNavigationsHandler} from './fetchNavigations.mock'
+import {getCollectionHandler} from './fetchCollection.mock'
 
-const handlers = [getCollectionsHandler, getNavigationsHandler]
+const handlers = [getNavigationsHandler, getCollectionHandler]
 
 export {handlers}

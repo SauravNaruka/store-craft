@@ -15,5 +15,6 @@ describe('Home / index page', () => {
     expect(props).toHaveProperty('props.productNavigation')
     expect(props).toHaveProperty('props.heroNavigation')
     expect(props).toHaveProperty('props.roomNavigation')
+    expect(props).toHaveProperty('props.featuredCollection')
   })
 })

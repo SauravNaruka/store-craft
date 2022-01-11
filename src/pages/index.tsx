@@ -25,14 +25,14 @@ type PropType = {
   productNavigation: Navigation
   heroNavigation: Navigation
   roomNavigation: Navigation
-  featuredProducts: Collection
+  featuredCollection: Collection
 }
 
 export default function Home({
   productNavigation,
   heroNavigation,
   roomNavigation,
-  featuredProducts,
+  featuredCollection,
 }: PropType) {
   return (
     <div className={styles.container}>
@@ -66,18 +66,19 @@ export const getStaticProps: GetStaticProps = async () => {
   let heroNavigation = await fetchNavigation(HERO_NAVIGATION)
   let roomNavigation = await fetchNavigation(ROOM_NAVIGATION)
 
-  let featuredProducts = await fetchCollection({
+  let featuredCollection = await fetchCollection({
     handle: FEATURED_PRODUCTS_HANDLE,
     numberOfProducts: 10,
     numberOfImages: 1,
   })
+  console.log(featuredCollection)
 
   return {
     props: {
       productNavigation,
       heroNavigation,
       roomNavigation,
-      featuredProducts,
+      featuredCollection,
     },
   }
 }
