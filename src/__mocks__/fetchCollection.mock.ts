@@ -8,7 +8,7 @@ export const getCollectionHandler = graphql.query(
   },
 )
 
-const product = aProduct({
+export const product = aProduct({
   collections: undefined,
   metafield: null,
   metafields: undefined,
@@ -19,7 +19,7 @@ const product = aProduct({
   variants: undefined,
 })
 
-const collection = aCollection({
+export const collection = aCollection({
   metafield: null,
   metafields: undefined,
   products: {

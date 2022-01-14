@@ -7,6 +7,7 @@ import IconButton from '@components/IconButton'
 import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
+import FeaturedProducts from '@components/FeaturedProducts.server'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {fetchNavigation} from '@api/fetchNavigations'
@@ -55,6 +56,7 @@ export default function Home({
       <main className={styles.main}>
         <ProductNavigation navigation={productNavigation} />
         <HeroSection navigation={heroNavigation} />
+        <FeaturedProducts collection={featuredCollection} />
         <RoomNavigation navigation={roomNavigation} />
       </main>
     </div>
@@ -71,7 +73,6 @@ export const getStaticProps: GetStaticProps = async () => {
     numberOfProducts: 10,
     numberOfImages: 1,
   })
-  console.log(featuredCollection)
 
   return {
     props: {

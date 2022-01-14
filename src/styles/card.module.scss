@@ -5,9 +5,10 @@
   justify-content: space-between;
   position: relative;
   height: auto;
+  width: 106px;
   padding: 5px 5px 12px;
   border-radius: 16px;
-  margin-right: 20px;
+  margin: 5px 10px;
 }
 
 .glassmorphicImage {
@@ -17,6 +18,7 @@
   background: hsl(30deg 25% 90% / 20%);
   box-shadow: 0px 1.62377px 3.24753px hsl(0deg 0% 0% / 15%);
   height: 72px;
+  width: 96px;
 }
 
 .minimalCard {
@@ -50,17 +52,19 @@
 
 .minimalLink,
 .glassmorphicLink {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 5px;
-  font-size: var(--font-size-medium-xx);
+  padding-top: 10px;
+  font-size: var(--font-size-small-x);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - 10px);
+  text-align: center;
 }
 
 .minimalLink span:nth-child(2) {
   font-size: var(--font-size-small-xx);
   text-decoration: underline;
+  display: block;
 }
 
 .hiddenLink {

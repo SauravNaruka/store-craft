@@ -5,8 +5,8 @@ query Collection(
   $cursor: String
 ) {
   collection(handle: $handle) {
-    title
     id
+    title
     products(first: $numberOfProducts, after: $cursor) {
       pageInfo {
         hasNextPage
@@ -16,27 +16,42 @@ query Collection(
         cursor
         node {
           id
+          handle
           title
           description
           compareAtPriceRange {
             maxVariantPrice {
               amount
+              currencyCode
+            }
+            minVariantPrice {
+              amount
+              currencyCode
             }
           }
           priceRange {
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
             minVariantPrice {
               amount
+              currencyCode
             }
           }
           images(first: $numberOfImages) {
             edges {
               node {
-                url
+                url: url(transform: {maxWidth: 96, maxHeight: 72})
                 altText
                 width
                 height
               }
             }
+          }
+          seo {
+            title
+            description
           }
         }
       }

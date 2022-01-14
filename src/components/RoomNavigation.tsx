@@ -18,7 +18,7 @@ type PropType = {
 export function RoomNavigation({navigation}: PropType) {
   return (
     <section
-      className={`${navigationStyles.roomNavigationRoot} ${commonStyles.pageSection}`}
+      className={`${commonStyles.pageSection} ${navigationStyles.roomNavigationRoot} `}
     >
       <h2>{navigation.title ?? ''}</h2>
       <div

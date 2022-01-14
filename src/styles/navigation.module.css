@@ -1,12 +1,8 @@
-.productNavigationRoot {
-  padding: 20px 0px;
-}
 .productNavigationImage {
 }
 
 .roomNavigationRoot {
   background-color: var(--color-neutral-10);
-  padding: 0px;
 }
 
 .roomNavigationImage {

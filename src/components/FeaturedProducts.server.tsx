@@ -1,8 +1,9 @@
 import * as React from 'react'
-import {Card} from './Card.server'
-import NavigationalItems from './NavigationalItems'
 import {HStack} from './HStack.server'
-import type {Navigation} from '@generated/cms.types'
+import Products from './Products'
+import {Card} from './Card.server'
+import {getNodesFromConnection} from '@helpers/connection.helper'
+import type {Collection, Product} from 'generated/storefront.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
 import navigationStyles from '@styles/navigation.module.css'
@@ -14,17 +15,29 @@ const style = {
 }
 
 type PropType = {
-  navigation: Navigation
+  collection: Collection
 }
-
-export function ProductNavigation({navigation}: PropType) {
+export function FeaturedProducts({collection}: PropType) {
+  const products = getNodesFromConnection<Product>(collection.products)
   return (
     <section className={commonStyles.pageSection}>
+      <h2 className={commonStyles.leftHeader}>{collection.title}</h2>
       <HStack>
-        <NavigationalItems navigation={navigation}>
-          {({title, link, imageUrl, imageCaption, index}) => (
+        <Products products={products}>
+          {({
+            id,
+            link,
+            title,
+            subtitle,
+            imageUrl,
+            imageCaption,
+            originalAmount,
+            amount,
+            currencyCode,
+            seo,
+          }) => (
             <Card
-              key={index}
+              key={id}
               title={title}
               link={link}
               src={imageUrl}
@@ -36,8 +49,10 @@ export function ProductNavigation({navigation}: PropType) {
               style={style}
             />
           )}
-        </NavigationalItems>
+        </Products>
       </HStack>
     </section>
   )
 }
+
+export default FeaturedProducts

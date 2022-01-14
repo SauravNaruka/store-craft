@@ -6236,8 +6236,8 @@ export type CollectionQuery = {
   collection?:
     | {
         __typename?: 'Collection'
-        title: string
         id: string
+        title: string
         products: {
           __typename?: 'ProductConnection'
           pageInfo: {
@@ -6251,15 +6251,34 @@ export type CollectionQuery = {
             node: {
               __typename?: 'Product'
               id: string
+              handle: string
               title: string
               description: string
               compareAtPriceRange: {
                 __typename?: 'ProductPriceRange'
-                maxVariantPrice: {__typename?: 'MoneyV2'; amount: any}
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
               }
               priceRange: {
                 __typename?: 'ProductPriceRange'
-                minVariantPrice: {__typename?: 'MoneyV2'; amount: any}
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
               }
               images: {
                 __typename?: 'ImageConnection'
@@ -6267,12 +6286,17 @@ export type CollectionQuery = {
                   __typename?: 'ImageEdge'
                   node: {
                     __typename?: 'Image'
-                    url: any
                     altText?: string | null | undefined
                     width?: number | null | undefined
                     height?: number | null | undefined
+                    url: any
                   }
                 }>
+              }
+              seo: {
+                __typename?: 'SEO'
+                title?: string | null | undefined
+                description?: string | null | undefined
               }
             }
           }>
@@ -6290,8 +6314,8 @@ export const CollectionDocument = gql`
     $cursor: String
   ) {
     collection(handle: $handle) {
-      title
       id
+      title
       products(first: $numberOfProducts, after: $cursor) {
         pageInfo {
           hasNextPage
@@ -6301,27 +6325,42 @@ export const CollectionDocument = gql`
           cursor
           node {
             id
+            handle
             title
             description
             compareAtPriceRange {
               maxVariantPrice {
                 amount
+                currencyCode
+              }
+              minVariantPrice {
+                amount
+                currencyCode
               }
             }
             priceRange {
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
               minVariantPrice {
                 amount
+                currencyCode
               }
             }
             images(first: $numberOfImages) {
               edges {
                 node {
-                  url
+                  url: url(transform: {maxWidth: 96, maxHeight: 72})
                   altText
                   width
                   height
                 }
               }
+            }
+            seo {
+              title
+              description
             }
           }
         }
