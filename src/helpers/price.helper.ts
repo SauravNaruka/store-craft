@@ -1,4 +1,8 @@
-import type {ProductPriceRange, MoneyV2} from 'generated/storefront.types'
+import type {
+  ProductPriceRange,
+  MoneyV2,
+  CurrencyCode,
+} from 'generated/storefront.types'
 import type {Price} from '../types/interfaces'
 
 export function getMaxPriceFromProductPriceRange(
@@ -18,4 +22,12 @@ export function getVariantPriceFromProductPriceRange(money: MoneyV2): Price {
   const currencyCode = money.currencyCode
 
   return {amount, currencyCode}
+}
+
+export function formatAmount(amount: number, currencyCode: CurrencyCode) {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: currencyCode,
+    maximumFractionDigits: 0,
+  }).format(amount)
 }

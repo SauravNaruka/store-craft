@@ -3,6 +3,7 @@ import {HStack} from './HStack.server'
 import Products from './Products'
 import {Card} from './Card.server'
 import {getNodesFromConnection} from '@helpers/connection.helper'
+import {formatAmount} from '@helpers/price.helper'
 import type {Collection, Product} from 'generated/storefront.types'
 import commonStyles from '@styles/common.module.scss'
 import cardStyles from '@styles/card.module.scss'
@@ -11,7 +12,7 @@ import navigationStyles from '@styles/navigation.module.css'
 const style = {
   rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
   imageClass: `${cardStyles.glassmorphicImage} ${navigationStyles.productNavigationImage}`,
-  linkTextClass: cardStyles.glassmorphicLink,
+  linkTextClass: `${cardStyles.glassmorphicLink} ${navigationStyles.textLeft}`,
 }
 
 type PropType = {
@@ -39,6 +40,14 @@ export function FeaturedProducts({collection}: PropType) {
             <Card
               key={id}
               title={title}
+              subtitle={
+                <div className={navigationStyles.navigationalPrice}>
+                  <span>{formatAmount(amount, currencyCode)}</span>
+                  {originalAmount && (
+                    <del>{formatAmount(originalAmount, currencyCode)}</del>
+                  )}
+                </div>
+              }
               link={link}
               src={imageUrl}
               alt={imageCaption}

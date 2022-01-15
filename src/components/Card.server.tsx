@@ -10,7 +10,7 @@ type CardStyle = {
 
 type PropType = ImageComponentProps & {
   title: JSX.Element | string
-  subtitle?: string | null
+  subtitle?: JSX.Element | string | null
   link: string
   style: CardStyle
 }
