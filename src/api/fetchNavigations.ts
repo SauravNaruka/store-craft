@@ -1,39 +1,28 @@
 import first from 'lodash/first.js'
-import client from '@api/cmsClient'
+import client from '@api/clientSainty'
 import * as logger from '@helpers/logger'
-import {UnknownDataError} from '@helpers/error.helper'
+import {API_RESPONSE_ERROR} from '@constants/errors.constants'
+import type {Navigation, NavigationsQueryVariables} from '@generated/cms.types'
 
-import type {Navigation, NavigationsQuery} from '@generated/cms.types'
-
-type NavigationsQueryWithSlug = NavigationsQuery & {
-  slug: string
-}
-export async function fetchNavigationById(
-  navigationID: string,
-): Promise<Navigation> {
+export async function fetchNavigation(id: string): Promise<Navigation> {
   try {
-    const navigations = await client.Navigations({slug: navigationID})
-
-    return getFirstNavigation({
-      ...navigations,
-      slug: navigationID,
-    })
+    const navigation = await fetchNavigationQuery({slug: id})
+    return navigation
   } catch (error) {
     logger.error(error)
     throw error
   }
 }
 
-function getFirstNavigation({
-  allNavigation,
-  slug,
-}: NavigationsQueryWithSlug): Navigation {
-  const navigation = first(allNavigation)
-  if (navigation) {
-    return navigation as Navigation
-  }
+function fetchNavigationQuery({slug}: NavigationsQueryVariables) {
+  return client.Navigations({slug}).then(navigationsQuery => {
+    const navigation = first(navigationsQuery.allNavigation)
+    if (navigation) {
+      return navigation as Navigation
+    }
 
-  throw new UnknownDataError(
-    `Uknown response from the request client.Navigations for variable ${slug}`,
-  )
+    throw new Error(
+      `${API_RESPONSE_ERROR}. request at client.Navigations for variable ${slug}`,
+    )
+  })
 }

@@ -19,8 +19,8 @@ type PropType = {
 
 export function ProductNavigation({navigation}: PropType) {
   return (
-    <section>
-      <HStack className={navigationStyles.productNavigationRoot}>
+    <section className={commonStyles.pageSection}>
+      <HStack>
         <NavigationalItems navigation={navigation}>
           {({title, link, imageUrl, imageCaption, index}) => (
             <Card
