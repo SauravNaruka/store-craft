@@ -1,5 +1,5 @@
 import * as React from 'react'
-import hstackStyles from '@styles/HStack.module.scss'
+import hstackStyles from '@styles/HStack.module.css'
 
 type PropType = {
   className?: string

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Image, {ImageComponentProps} from '@components/Image'
-import cardStyles from '@styles/card.module.scss'
+import cardStyles from '@styles/card.module.css'
 
 type CardStyle = {
   rootClass: string

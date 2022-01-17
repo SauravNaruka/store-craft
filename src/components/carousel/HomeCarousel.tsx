@@ -3,7 +3,6 @@ import Carousel from '@components/carousel/Carousel'
 import Image from '@components/Image'
 import type {Navigation, NavigationItem} from '@generated/cms.types'
 import carouselStyles from '@styles/Carousel.module.css'
-import commonStyles from '@styles/common.module.scss'
 
 type PropType = {
   navigation: Navigation

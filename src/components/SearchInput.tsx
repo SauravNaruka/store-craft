@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {TextInput} from './TextInput'
 import SearchIcon from '@components/icons/SearchIcon'
-import commonStyles from '@styles/common.module.scss'
-import inputStyles from '@styles/input.module.scss'
+import commonStyles from '@styles/common.module.css'
+import inputStyles from '@styles/input.module.css'
 
 const styles = [inputStyles.searchInput, commonStyles.shadowSmallX].join(' ')
 

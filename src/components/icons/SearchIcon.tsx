@@ -1,6 +1,6 @@
 import {getIconCommanProps} from '@helpers/iconProp.helper'
 import type {IconPropType} from '../../types/interfaces'
-import iconStyles from '@styles/icon.module.scss'
+import iconStyles from '@styles/icon.module.css'
 
 export const SearchIcon = (props: IconPropType) => (
   <svg {...props} {...getIconCommanProps(props)}>

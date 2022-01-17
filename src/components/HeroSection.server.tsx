@@ -3,7 +3,7 @@ import Image from '@components/Image'
 import NavigationalItems from './NavigationalItems'
 import type {Navigation} from '@generated/cms.types'
 import navigationStyles from '@styles/navigation.module.css'
-import commonStyles from '@styles/common.module.scss'
+import commonStyles from '@styles/common.module.css'
 
 type PropType = {
   navigation: Navigation

@@ -1,5 +1,5 @@
 import cn from 'classnames'
-import commonStyles from '@styles/common.module.scss'
+import commonStyles from '@styles/common.module.css'
 import styles from '@styles/Carousel.module.css'
 
 type CarouselDotButtons = {

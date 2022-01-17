@@ -2,8 +2,8 @@ import * as React from 'react'
 import NavigationalItems from '@components/NavigationalItems'
 import {Card} from '@components/Card.server'
 import type {Navigation} from '@generated/cms.types'
-import commonStyles from '@styles/common.module.scss'
-import cardStyles from '@styles/card.module.scss'
+import commonStyles from '@styles/common.module.css'
+import cardStyles from '@styles/card.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 
 const style = {
