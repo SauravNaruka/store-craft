@@ -1,6 +1,6 @@
 import * as React from 'react'
-import commonStyles from '@styles/common.module.scss'
-import headerStyles from '@styles/header.module.scss'
+import commonStyles from '@styles/common.module.css'
+import headerStyles from '@styles/header.module.css'
 
 type PropType = {
   children: React.ReactNode

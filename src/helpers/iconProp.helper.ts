@@ -1,4 +1,4 @@
-import iconStyles from '@styles/icon.module.scss'
+import iconStyles from '@styles/icon.module.css'
 import type {IconPropType} from '../types/interfaces'
 
 export function getIconCommanProps({

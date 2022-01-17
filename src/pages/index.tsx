@@ -20,7 +20,7 @@ import {
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
 import type {Navigation} from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
-import styles from '@styles/common.module.scss'
+import styles from '@styles/common.module.css'
 
 type PropType = {
   productNavigation: Navigation
@@ -64,11 +64,11 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  let productNavigation = await fetchNavigation(PRODUCT_NAVIGATION)
-  let heroNavigation = await fetchNavigation(HERO_NAVIGATION)
-  let roomNavigation = await fetchNavigation(ROOM_NAVIGATION)
+  const productNavigation = await fetchNavigation(PRODUCT_NAVIGATION)
+  const heroNavigation = await fetchNavigation(HERO_NAVIGATION)
+  const roomNavigation = await fetchNavigation(ROOM_NAVIGATION)
 
-  let featuredCollection = await fetchCollection({
+  const featuredCollection = await fetchCollection({
     handle: FEATURED_PRODUCTS_HANDLE,
     numberOfProducts: 10,
     numberOfImages: 1,

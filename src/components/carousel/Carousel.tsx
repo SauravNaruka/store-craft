@@ -68,6 +68,7 @@ export function Carousel({
         event.preventDefault()
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const slider = sliderContainerRef.current!
 
     slider.addEventListener('touchstart', preventNavigation, {passive: true})

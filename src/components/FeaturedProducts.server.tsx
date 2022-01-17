@@ -5,8 +5,8 @@ import {Card} from './Card.server'
 import {getNodesFromConnection} from '@helpers/connection.helper'
 import {formatAmount} from '@helpers/price.helper'
 import type {Collection, Product} from 'generated/storefront.types'
-import commonStyles from '@styles/common.module.scss'
-import cardStyles from '@styles/card.module.scss'
+import commonStyles from '@styles/common.module.css'
+import cardStyles from '@styles/card.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 
 const style = {
@@ -29,13 +29,13 @@ export function FeaturedProducts({collection}: PropType) {
             id,
             link,
             title,
-            subtitle,
+            // subtitle,
             imageUrl,
             imageCaption,
             originalAmount,
             amount,
             currencyCode,
-            seo,
+            // seo,
           }) => (
             <Card
               key={id}
