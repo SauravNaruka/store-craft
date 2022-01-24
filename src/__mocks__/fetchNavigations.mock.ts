@@ -21,7 +21,7 @@ export function buildAndGetFirstNaigation() {
   return first(navigations.allNavigation) as Navigation
 }
 
-const buildNavigationResponse = build<NavigationsQuery>({
+export const buildNavigationResponse = build<NavigationsQuery>({
   fields: {
     allNavigation: [
       {

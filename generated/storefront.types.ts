@@ -431,7 +431,7 @@ export enum CardBrand {
   Visa = 'VISA',
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
 export type Cart = Node & {
   __typename?: 'Cart'
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
@@ -456,7 +456,7 @@ export type Cart = Node & {
   updatedAt: Scalars['DateTime']
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
 export type CartLinesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>

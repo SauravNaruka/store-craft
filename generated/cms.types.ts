@@ -21,6 +21,73 @@ export type Scalars = {
   Date: any
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any
+}
+
+export type Author = Document & {
+  __typename?: 'Author'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  bioRaw?: Maybe<Scalars['JSON']>
+  image?: Maybe<ImageBlock>
+  name?: Maybe<Scalars['String']>
+  slug?: Maybe<Slug>
+}
+
+export type AuthorFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  image?: InputMaybe<ImageBlockFilter>
+  name?: InputMaybe<StringFilter>
+  slug?: InputMaybe<SlugFilter>
+}
+
+export type AuthorReference = {
+  __typename?: 'AuthorReference'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  author?: Maybe<Author>
+}
+
+export type AuthorReferenceFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  author?: InputMaybe<AuthorFilter>
+}
+
+export type AuthorReferenceOrSpan = AuthorReference | Span
+
+export type AuthorReferenceSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+}
+
+export type AuthorSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  image?: InputMaybe<ImageBlockSorting>
+  name?: InputMaybe<SortOrder>
+  slug?: InputMaybe<SlugSorting>
 }
 
 export type Block = {
@@ -31,6 +98,8 @@ export type Block = {
   list?: Maybe<Scalars['String']>
   style?: Maybe<Scalars['String']>
 }
+
+export type BlockOrImageBlock = Block | ImageBlock
 
 export type BooleanFilter = {
   /** Checks if the value is equal to the given input. */
@@ -134,6 +203,49 @@ export type FloatFilter = {
   neq?: InputMaybe<Scalars['Float']>
 }
 
+export type Footer = Document & {
+  __typename?: 'Footer'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  handle?: Maybe<Slug>
+  /** Only used internally in the CMS */
+  name?: Maybe<Scalars['String']>
+  navigations?: Maybe<Array<Maybe<Navigation>>>
+}
+
+export type FooterFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  handle?: InputMaybe<SlugFilter>
+  name?: InputMaybe<StringFilter>
+}
+
+export type FooterSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SlugSorting>
+  name?: InputMaybe<SortOrder>
+}
+
 export type Geopoint = {
   __typename?: 'Geopoint'
   _key?: Maybe<Scalars['String']>
@@ -157,6 +269,49 @@ export type GeopointSorting = {
   alt?: InputMaybe<SortOrder>
   lat?: InputMaybe<SortOrder>
   lng?: InputMaybe<SortOrder>
+}
+
+export type GlobalConfig = Document & {
+  __typename?: 'GlobalConfig'
+  SEO?: Maybe<Seo>
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  /** This theme will deploy to any branch/deploy previews, easily view the whole theme while doing development */
+  stagingTheme?: Maybe<Theme>
+  theme?: Maybe<Theme>
+}
+
+export type GlobalConfigFilter = {
+  SEO?: InputMaybe<SeoFilter>
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  stagingTheme?: InputMaybe<ThemeFilter>
+  theme?: InputMaybe<ThemeFilter>
+}
+
+export type GlobalConfigSorting = {
+  SEO?: InputMaybe<SeoSorting>
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
 }
 
 export type IdFilter = {
@@ -386,21 +541,141 @@ export type PageSorting = {
   title?: InputMaybe<SortOrder>
 }
 
+export type Post = Document & {
+  __typename?: 'Post'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  authors?: Maybe<Array<Maybe<AuthorReference>>>
+  bodyRaw?: Maybe<Scalars['JSON']>
+  categories?: Maybe<Array<Maybe<PostCategory>>>
+  mainImage?: Maybe<ImageBlock>
+  /** This can be used to schedule post for publishing */
+  publishedAt?: Maybe<Scalars['DateTime']>
+  seo?: Maybe<Seo>
+  slug?: Maybe<Slug>
+  /** Titles should be catchy, descriptive, and not too long */
+  title?: Maybe<Scalars['String']>
+}
+
+export type PostCategory = Document & {
+  __typename?: 'PostCategory'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  description?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+}
+
+export type PostCategoryFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  description?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type PostCategorySorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+}
+
+export type PostFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  mainImage?: InputMaybe<ImageBlockFilter>
+  publishedAt?: InputMaybe<DatetimeFilter>
+  seo?: InputMaybe<SeoFilter>
+  slug?: InputMaybe<SlugFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type PostSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  mainImage?: InputMaybe<ImageBlockSorting>
+  publishedAt?: InputMaybe<SortOrder>
+  seo?: InputMaybe<SeoSorting>
+  slug?: InputMaybe<SlugSorting>
+  title?: InputMaybe<SortOrder>
+}
+
 export type RootQuery = {
   __typename?: 'RootQuery'
+  Author?: Maybe<Author>
   Document?: Maybe<Document>
+  Footer?: Maybe<Footer>
+  GlobalConfig?: Maybe<GlobalConfig>
   Navigation?: Maybe<Navigation>
   Page?: Maybe<Page>
+  Post?: Maybe<Post>
+  PostCategory?: Maybe<PostCategory>
   SanityFileAsset?: Maybe<SanityFileAsset>
   SanityImageAsset?: Maybe<SanityImageAsset>
+  Theme?: Maybe<Theme>
+  allAuthor: Array<Author>
   allDocument: Array<Document>
+  allFooter: Array<Footer>
+  allGlobalConfig: Array<GlobalConfig>
   allNavigation: Array<Navigation>
   allPage: Array<Page>
+  allPost: Array<Post>
+  allPostCategory: Array<PostCategory>
   allSanityFileAsset: Array<SanityFileAsset>
   allSanityImageAsset: Array<SanityImageAsset>
+  allTheme: Array<Theme>
+}
+
+export type RootQueryAuthorArgs = {
+  id: Scalars['ID']
 }
 
 export type RootQueryDocumentArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryFooterArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryGlobalConfigArgs = {
   id: Scalars['ID']
 }
 
@@ -412,6 +687,14 @@ export type RootQueryPageArgs = {
   id: Scalars['ID']
 }
 
+export type RootQueryPostArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryPostCategoryArgs = {
+  id: Scalars['ID']
+}
+
 export type RootQuerySanityFileAssetArgs = {
   id: Scalars['ID']
 }
@@ -420,11 +703,36 @@ export type RootQuerySanityImageAssetArgs = {
   id: Scalars['ID']
 }
 
+export type RootQueryThemeArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryAllAuthorArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<AuthorSorting>>
+  where?: InputMaybe<AuthorFilter>
+}
+
 export type RootQueryAllDocumentArgs = {
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
   sort?: InputMaybe<Array<DocumentSorting>>
   where?: InputMaybe<DocumentFilter>
+}
+
+export type RootQueryAllFooterArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<FooterSorting>>
+  where?: InputMaybe<FooterFilter>
+}
+
+export type RootQueryAllGlobalConfigArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<GlobalConfigSorting>>
+  where?: InputMaybe<GlobalConfigFilter>
 }
 
 export type RootQueryAllNavigationArgs = {
@@ -441,6 +749,20 @@ export type RootQueryAllPageArgs = {
   where?: InputMaybe<PageFilter>
 }
 
+export type RootQueryAllPostArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<PostSorting>>
+  where?: InputMaybe<PostFilter>
+}
+
+export type RootQueryAllPostCategoryArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<PostCategorySorting>>
+  where?: InputMaybe<PostCategoryFilter>
+}
+
 export type RootQueryAllSanityFileAssetArgs = {
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
@@ -453,6 +775,13 @@ export type RootQueryAllSanityImageAssetArgs = {
   offset?: InputMaybe<Scalars['Int']>
   sort?: InputMaybe<Array<SanityImageAssetSorting>>
   where?: InputMaybe<SanityImageAssetFilter>
+}
+
+export type RootQueryAllThemeArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<ThemeSorting>>
+  where?: InputMaybe<ThemeFilter>
 }
 
 export type SanityAssetSourceData = {
@@ -827,6 +1156,27 @@ export type Sanity_DocumentFilter = {
   references?: InputMaybe<Scalars['ID']>
 }
 
+export type Seo = {
+  __typename?: 'Seo'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  excerptRaw?: Maybe<Scalars['JSON']>
+  keywords?: Maybe<Array<Maybe<Scalars['String']>>>
+  title?: Maybe<Scalars['String']>
+}
+
+export type SeoFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type SeoSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+}
+
 export type Slug = {
   __typename?: 'Slug'
   _key?: Maybe<Scalars['String']>
@@ -870,6 +1220,117 @@ export type StringFilter = {
   /** Checks if the value is not equal to the given input. */
   neq?: InputMaybe<Scalars['String']>
   nin?: InputMaybe<Array<Scalars['String']>>
+}
+
+export type Theme = Document & {
+  __typename?: 'Theme'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  /** Build complex menus from the module area, assign them here to update the menu everywhere */
+  footerMenu?: Maybe<Footer>
+  /** Select the page you want to be the homepage on the marketing site. */
+  homepage?: Maybe<Page>
+  themeTitle?: Maybe<Scalars['String']>
+}
+
+export type ThemeFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  footerMenu?: InputMaybe<FooterFilter>
+  homepage?: InputMaybe<PageFilter>
+  themeTitle?: InputMaybe<StringFilter>
+}
+
+export type ThemeSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  themeTitle?: InputMaybe<SortOrder>
+}
+
+export type FooterQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type FooterQuery = {
+  __typename?: 'RootQuery'
+  Footer?:
+    | {
+        __typename?: 'Footer'
+        navigations?:
+          | Array<
+              | {
+                  __typename?: 'Navigation'
+                  name?: string | null | undefined
+                  title?: string | null | undefined
+                  subtitle?: string | null | undefined
+                  description?: string | null | undefined
+                  items?:
+                    | Array<
+                        | {
+                            __typename?: 'NavigationItem'
+                            title?: string | null | undefined
+                            subtitle?: string | null | undefined
+                            link?:
+                              | {
+                                  __typename?: 'Link'
+                                  url?: string | null | undefined
+                                }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                      >
+                    | null
+                    | undefined
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
+export type GlobalConfigsQueryVariables = Exact<{[key: string]: never}>
+
+export type GlobalConfigsQuery = {
+  __typename?: 'RootQuery'
+  allGlobalConfig: Array<{
+    __typename?: 'GlobalConfig'
+    _id?: string | null | undefined
+    theme?:
+      | {
+          __typename?: 'Theme'
+          footerMenu?:
+            | {__typename?: 'Footer'; _id?: string | null | undefined}
+            | null
+            | undefined
+        }
+      | null
+      | undefined
+  }>
 }
 
 export type NavigationsQueryVariables = Exact<{
@@ -927,6 +1388,37 @@ export type NavigationsQuery = {
   }>
 }
 
+export const FooterDocument = gql`
+  query Footer($id: ID!) {
+    Footer(id: $id) {
+      navigations {
+        name
+        title
+        subtitle
+        description
+        items {
+          title
+          subtitle
+          link {
+            url
+          }
+        }
+      }
+    }
+  }
+`
+export const GlobalConfigsDocument = gql`
+  query GlobalConfigs {
+    allGlobalConfig {
+      _id
+      theme {
+        footerMenu {
+          _id
+        }
+      }
+    }
+  }
+`
 export const NavigationsDocument = gql`
   query Navigations($slug: String) {
     allNavigation(where: {slug: {current: {eq: $slug}}}) {
@@ -968,6 +1460,32 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    Footer(
+      variables: FooterQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<FooterQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<FooterQuery>(FooterDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'Footer',
+      )
+    },
+    GlobalConfigs(
+      variables?: GlobalConfigsQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<GlobalConfigsQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<GlobalConfigsQuery>(GlobalConfigsDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'GlobalConfigs',
+      )
+    },
     Navigations(
       variables?: NavigationsQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
