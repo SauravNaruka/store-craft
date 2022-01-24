@@ -1,0 +1,10 @@
+query GlobalConfigs {
+  allGlobalConfig {
+    _id
+    theme {
+      footerMenu {
+        _id
+      }
+    }
+  }
+}

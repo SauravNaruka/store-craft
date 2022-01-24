@@ -1,0 +1,17 @@
+query Footer($id: ID!) {
+  Footer(id: $id) {
+    navigations {
+      name
+      title
+      subtitle
+      description
+      items {
+        title
+        subtitle
+        link {
+          url
+        }
+      }
+    }
+  }
+}
