@@ -33,3 +33,11 @@ h2 {
   margin: 0px 0px 10px;
   color: var(--color-neutral-1);
 }
+
+h3 {
+  font-size: var(--font-size-medium-x);
+  line-height: var(--font-size-medium-xx);
+  letter-spacing: 0.2rem;
+  margin: 0px 0px 10px;
+  color: var(--color-neutral-2);
+}

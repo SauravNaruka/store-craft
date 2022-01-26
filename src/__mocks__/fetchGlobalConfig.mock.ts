@@ -9,7 +9,7 @@ export const getGlobalConfig = graphql.query(
   },
 )
 
-const buildGlobalConfigsResponse = build<GlobalConfigsQuery>({
+export const buildGlobalConfigsResponse = build<GlobalConfigsQuery>({
   fields: {
     allGlobalConfig: [
       {

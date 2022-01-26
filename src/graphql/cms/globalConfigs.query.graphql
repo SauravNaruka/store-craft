@@ -1,7 +1,11 @@
 query GlobalConfigs {
   allGlobalConfig {
-    _id
     theme {
+      footerMenu {
+        _id
+      }
+    }
+    stagingTheme {
       footerMenu {
         _id
       }

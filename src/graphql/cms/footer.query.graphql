@@ -11,6 +11,12 @@ query Footer($id: ID!) {
         link {
           url
         }
+        image {
+          caption
+          asset {
+            url
+          }
+        }
       }
     }
   }

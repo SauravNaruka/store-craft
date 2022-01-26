@@ -1296,6 +1296,20 @@ export type FooterQuery = {
                                 }
                               | null
                               | undefined
+                            image?:
+                              | {
+                                  __typename?: 'ImageBlock'
+                                  caption?: string | null | undefined
+                                  asset?:
+                                    | {
+                                        __typename?: 'SanityImageAsset'
+                                        url?: string | null | undefined
+                                      }
+                                    | null
+                                    | undefined
+                                }
+                              | null
+                              | undefined
                           }
                         | null
                         | undefined
@@ -1319,8 +1333,17 @@ export type GlobalConfigsQuery = {
   __typename?: 'RootQuery'
   allGlobalConfig: Array<{
     __typename?: 'GlobalConfig'
-    _id?: string | null | undefined
     theme?:
+      | {
+          __typename?: 'Theme'
+          footerMenu?:
+            | {__typename?: 'Footer'; _id?: string | null | undefined}
+            | null
+            | undefined
+        }
+      | null
+      | undefined
+    stagingTheme?:
       | {
           __typename?: 'Theme'
           footerMenu?:
@@ -1402,6 +1425,12 @@ export const FooterDocument = gql`
           link {
             url
           }
+          image {
+            caption
+            asset {
+              url
+            }
+          }
         }
       }
     }
@@ -1410,8 +1439,12 @@ export const FooterDocument = gql`
 export const GlobalConfigsDocument = gql`
   query GlobalConfigs {
     allGlobalConfig {
-      _id
       theme {
+        footerMenu {
+          _id
+        }
+      }
+      stagingTheme {
         footerMenu {
           _id
         }

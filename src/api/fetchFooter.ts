@@ -1,7 +1,28 @@
 import client from '@api/clientSainty'
 import * as logger from '@helpers/logger'
 import {API_RESPONSE_ERROR} from '@constants/errors.constants'
-import type {Footer, FooterQueryVariables} from '@generated/cms.types'
+import type {
+  Footer,
+  FooterQueryVariables,
+  Navigation,
+} from '@generated/cms.types'
+
+export async function fetchFooterNavigation(
+  args: FooterQueryVariables,
+): Promise<Navigation[]> {
+  try {
+    const footer = await fetchFooter(args)
+    const navigations = footer?.navigations ?? null
+    if (navigations) {
+      return navigations as Navigation[]
+    }
+
+    throw new Error('No navigation for footer')
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
 
 export async function fetchFooter(args: FooterQueryVariables): Promise<Footer> {
   try {
