@@ -46,8 +46,8 @@
   display: block;
   position: relative;
   overflow: hidden;
-  width: 172px;
-  height: 129px;
+  width: calc(50vw - 20px);
+  height: calc((50vw - 20px) * 3 / 4);
 }
 
 .minimalLink,

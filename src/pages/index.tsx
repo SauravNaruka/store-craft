@@ -44,15 +44,12 @@ export default function Home({
   return (
     <div className={styles.container}>
       <Head>
+        <meta name="robots" content="INDEX,FOLLOW" />
         <title>Crafty Wing</title>
         <meta
           name="description"
           content="Luxury Wood Furniture Online. Buy Hardwood furniture Online or from store near you in Jaipur. Get Sheesham furniture for the homes of your dream."
         />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        ></meta>
       </Head>
 
       <Header>

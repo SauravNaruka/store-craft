@@ -34,8 +34,10 @@ export function RoomNavigation({navigation}: PropType) {
               link={link}
               src={imageUrl}
               alt={imageCaption}
-              width={172}
-              height={129}
+              layout="fill"
+              objectFit="contain"
+              objectPosition="50% 50%"
+              sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
               aspectRatio={{width: 4, height: 3}}
               style={style}
             />
