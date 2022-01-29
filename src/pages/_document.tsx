@@ -5,14 +5,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="theme-color" content="#f4f9fa" />
-        <link rel="icon" href="/favicon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=optional"
           rel="stylesheet"
         />
+        <meta name="theme-color" content="#f4f9fa" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
       <body>
         <Main />
