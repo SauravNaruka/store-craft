@@ -15,14 +15,14 @@ import {getFooterID, getTheme} from '@helpers/globalConfig.helper'
 import {fetchNavigation} from '@api/fetchNavigations'
 import {fetchCollection} from '@api/fetchCollection'
 import {fetchGlobalConfig} from '@api/fetchGlobalConfig'
-import {fetchFooterNavigation} from '@api/fetchFooter'
+import {fetchFooter} from '@api/fetchFooter'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
   ROOM_NAVIGATION,
 } from '@constants/navigation.constants'
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
-import type {Navigation} from '@generated/cms.types'
+import type {Navigation, Footer as FooterType} from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.css'
 
@@ -30,7 +30,7 @@ type PropType = {
   productNavigation: Navigation
   heroNavigation: Navigation
   roomNavigation: Navigation
-  footerNavigations: Navigation[]
+  footer: FooterType
   featuredCollection: Collection
 }
 
@@ -38,7 +38,7 @@ export default function Home({
   productNavigation,
   heroNavigation,
   roomNavigation,
-  footerNavigations,
+  footer,
   featuredCollection,
 }: PropType) {
   return (
@@ -66,7 +66,7 @@ export default function Home({
         <FeaturedProducts collection={featuredCollection} />
         <RoomNavigation navigation={roomNavigation} />
       </main>
-      <Footer navigations={footerNavigations} />
+      <Footer data={footer} />
     </div>
   )
 }
@@ -80,13 +80,13 @@ export const getStaticProps: GetStaticProps = async () => {
     productNavigation,
     heroNavigation,
     roomNavigation,
-    footerNavigations,
+    footer,
     featuredCollection,
   ] = await Promise.all([
     fetchNavigation(PRODUCT_NAVIGATION),
     fetchNavigation(HERO_NAVIGATION),
     fetchNavigation(ROOM_NAVIGATION),
-    fetchFooterNavigation({id: footerID}),
+    fetchFooter({id: footerID}),
     fetchCollection({
       handle: FEATURED_PRODUCTS_HANDLE,
       numberOfProducts: 10,
@@ -99,7 +99,7 @@ export const getStaticProps: GetStaticProps = async () => {
       productNavigation,
       heroNavigation,
       roomNavigation,
-      footerNavigations,
+      footer,
       featuredCollection,
     },
   }

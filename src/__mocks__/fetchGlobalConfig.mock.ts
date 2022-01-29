@@ -18,6 +18,11 @@ export const buildGlobalConfigsResponse = build<GlobalConfigsQuery>({
             _id: fake(f => f.datatype.uuid()),
           },
         },
+        stagingTheme: {
+          footerMenu: {
+            _id: fake(f => f.datatype.uuid()),
+          },
+        },
       },
     ],
   },

@@ -9,7 +9,7 @@ export const getFooter = graphql.query('Footer', (req, res, ctx) => {
   return res(ctx.data(buildFooterResponse()))
 })
 
-const buildFooterResponse = build<FooterQuery>({
+export const buildFooterResponse = build<FooterQuery>({
   fields: {
     Footer: {navigations: []},
   },
@@ -17,7 +17,7 @@ const buildFooterResponse = build<FooterQuery>({
     if (footerQuery?.Footer?.navigations) {
       footerQuery.Footer.navigations = Array(NUMBER_OF_FOOTER_NAVIGATIONITEMS)
         .fill(undefined)
-        .map(() => buildNavigationResponse().allNavigation as Navigation)
+        .map(() => buildNavigationResponse().allNavigation[0] as Navigation)
     }
     return footerQuery
   },

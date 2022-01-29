@@ -9,24 +9,25 @@ import PinterestIcon from '@components/icons/PinterestIcon'
 import SmartPhoneIcon from '@components/icons/SmartPhoneIcon'
 import TwitterIcon from '@components/icons/TwitterIcon'
 import {FooterCard} from './FooterCard.server'
-import {Navigation} from '@generated/cms.types'
+import {Navigation, Footer as FooterType} from '@generated/cms.types'
 import footerStyles from '@styles/footer.module.css'
 
 type PropType = {
-  navigations: Navigation[]
+  data: FooterType
 }
 
-export function Footer({navigations}: PropType) {
+export function Footer({data}: PropType) {
+  const navigations = data.navigations
   return (
     <footer className={footerStyles.footerRoot}>
       <div className={footerStyles.footerGrid}>
-        {navigations.map((navigation, index) => (
+        {navigations?.map((navigation, index) => (
           <div key={index} className={footerStyles.footerColumn}>
-            <h3>{navigation.title}</h3>
+            <h3>{navigation?.title}</h3>
             <ul>
-              <NavigationalItems navigation={navigation}>
+              <NavigationalItems navigation={(navigation ?? []) as Navigation}>
                 {({title, link}) => (
-                  <li>
+                  <li key={`Footer_NavigationItem_${title}`}>
                     <a href={link}>{title}</a>
                   </li>
                 )}

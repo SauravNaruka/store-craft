@@ -3,16 +3,10 @@ import {GlobalConfig, Theme} from '@generated/cms.types'
 export function getTheme(config: GlobalConfig): Theme {
   let theme
   if (process.env.NODE_ENV === 'production') {
-    console.log('---------------------------')
-    console.log('theme production')
-    console.log('---------------------------')
-
+    console.log('------------- Theme Production -------------')
     theme = config.theme
   } else {
-    console.log('---------------------------')
-    console.log('theme staging')
-    console.log('---------------------------')
-
+    console.log('------------- Theme Staging -------------')
     theme = config.stagingTheme
   }
 
