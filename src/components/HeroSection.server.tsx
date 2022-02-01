@@ -32,6 +32,7 @@ export function HeroSection({navigation}: PropType) {
                 objectFit="contain"
                 objectPosition="50% 50%"
                 priority={true}
+                quality={25}
                 aspectRatio={{width: 4, height: 3}}
               />
             </a>

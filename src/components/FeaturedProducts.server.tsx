@@ -54,7 +54,6 @@ export function FeaturedProducts({collection}: PropType) {
               width={96}
               height={72}
               aspectRatio={{width: 4, height: 3}}
-              priority={true}
               style={style}
             />
           )}
