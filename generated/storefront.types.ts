@@ -431,7 +431,7 @@ export enum CardBrand {
   Visa = 'VISA',
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
 export type Cart = Node & {
   __typename?: 'Cart'
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
@@ -444,7 +444,7 @@ export type Cart = Node & {
   createdAt: Scalars['DateTime']
   /** The discount codes that have been applied to the cart. */
   discountCodes: Array<CartDiscountCode>
-  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. */
+  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-cart). */
   estimatedCost: CartEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -456,7 +456,7 @@ export type Cart = Node & {
   updatedAt: Scalars['DateTime']
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to the [Cart guide](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
 export type CartLinesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
@@ -496,7 +496,13 @@ export type CartBuyerIdentity = {
   phone?: Maybe<Scalars['String']>
 }
 
-/** Specifies the input fields to update the buyer information associated with a cart. */
+/**
+ * Specifies the input fields to update the buyer information associated with a cart.
+ * Buyer identity is used to determine
+ * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout)
+ * and should match the customer's shipping address.
+ *
+ */
 export type CartBuyerIdentityInput = {
   /** The country where the buyer is located. */
   countryCode?: InputMaybe<CountryCode>
@@ -573,7 +579,12 @@ export enum CartErrorCode {
   MissingNote = 'MISSING_NOTE',
 }
 
-/** The estimated costs that the buyer will pay at checkout. */
+/**
+ * The estimated costs that the buyer will pay at checkout.
+ * It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
+ * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-cart).
+ *
+ */
 export type CartEstimatedCost = {
   __typename?: 'CartEstimatedCost'
   /** The estimated amount, before taxes and discounts, for the customer to pay at checkout. */
@@ -590,7 +601,7 @@ export type CartEstimatedCost = {
 export type CartInput = {
   /** An array of key-value pairs that contains additional information about the cart. */
   attributes?: InputMaybe<Array<AttributeInput>>
-  /** The customer associated with the cart. */
+  /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
   buyerIdentity?: InputMaybe<CartBuyerIdentityInput>
   /** The discount codes to apply to the cart. */
   discountCodes?: InputMaybe<Array<Scalars['String']>>
@@ -3903,7 +3914,13 @@ export type Mutation = {
   __typename?: 'Mutation'
   /** Updates the attributes on a cart. */
   cartAttributesUpdate?: Maybe<CartAttributesUpdatePayload>
-  /** Updates customer information associated with a cart. */
+  /**
+   * Updates customer information associated with a cart.
+   * Buyer identity is used to determine
+   * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout)
+   * and should match the customer's shipping address.
+   *
+   */
   cartBuyerIdentityUpdate?: Maybe<CartBuyerIdentityUpdatePayload>
   /** Creates a new cart. */
   cartCreate?: Maybe<CartCreatePayload>

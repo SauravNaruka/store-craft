@@ -29,8 +29,10 @@ export function HeroSection({navigation}: PropType) {
                 src={imageUrl}
                 alt={imageCaption}
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
+                objectPosition="50% 50%"
                 priority={true}
+                quality={25}
                 aspectRatio={{width: 4, height: 3}}
               />
             </a>

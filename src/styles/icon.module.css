@@ -13,3 +13,11 @@
 .searchIconSecondary {
   fill: var(--color-neutral-7);
 }
+
+.phoneIconPrimary {
+  fill: var(--color-neutral-8);
+}
+
+.phoneIconSecondary {
+  fill: var(--color-neutral-5);
+}

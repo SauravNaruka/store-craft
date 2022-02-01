@@ -1,0 +1,14 @@
+query GlobalConfigs {
+  allGlobalConfig {
+    theme {
+      footerMenu {
+        _id
+      }
+    }
+    stagingTheme {
+      footerMenu {
+        _id
+      }
+    }
+  }
+}
