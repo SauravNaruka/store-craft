@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import {SocialLinks} from './SocialLinks.server.'
+import {SocialLinks} from './SocialLinks.server'
 import type {Maybe} from '@LocalTypes/interfaces'
 import type {SocialLinks as SocialLinksType} from '@generated/cms.types'
 import footerStyles from '@styles/footer.module.css'

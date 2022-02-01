@@ -14,19 +14,23 @@ export function FooterCards({phone, email}: PropType) {
   return (
     <div className={footerStyles.footerCard}>
       <p>Available 11am–8pm IST, 7 days a week.</p>
-      <FooterCard
-        href={`tel:${phone}`}
-        title="Call"
-        subtitle={phone ?? ''}
-        position="first"
-        icon={<SmartPhoneIcon fill="var(--color-neutral-5)" />}
-      />
-      <FooterCard
-        href={`mailto:${email}`}
-        title="Email"
-        subtitle="Send us a message"
-        icon={<EmailIcon fill="var(--color-neutral-5)" />}
-      />
+      {phone && (
+        <FooterCard
+          href={`tel:${phone}`}
+          title="Call"
+          subtitle={phone}
+          position="first"
+          icon={<SmartPhoneIcon fill="var(--color-neutral-5)" />}
+        />
+      )}
+      {email && (
+        <FooterCard
+          href={`mailto:${email}`}
+          title="Email"
+          subtitle="Send us a message"
+          icon={<EmailIcon fill="var(--color-neutral-5)" />}
+        />
+      )}
       <FooterCard
         href="/faq"
         title="FAQs"

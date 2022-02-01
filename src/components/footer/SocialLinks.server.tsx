@@ -4,7 +4,7 @@ import InstagramIcon from '@components/icons/InstagramIcon'
 import PinterestIcon from '@components/icons/PinterestIcon'
 import TwitterIcon from '@components/icons/TwitterIcon'
 import IconLink from '@components/IconLink'
-import type {SocialLinks} from '@generated/cms.types'
+import type {SocialLinks as SocialLinksType} from '@generated/cms.types'
 import footerStyles from '@styles/footer.module.css'
 
 export function SocialLinks({
@@ -12,7 +12,7 @@ export function SocialLinks({
   facebook,
   pinterest,
   twitter,
-}: SocialLinks) {
+}: SocialLinksType) {
   return (
     <div className={footerStyles.footerSocialLinks}>
       {instagram && (

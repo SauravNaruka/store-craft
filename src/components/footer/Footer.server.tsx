@@ -12,7 +12,7 @@ type PropType = {
 export function Footer({data}: PropType) {
   return (
     <footer className={footerStyles.footerRoot}>
-      <FooterNavigations navigations={data.navigations ?? []} />
+      <FooterNavigations navigations={data.navigations} />
       <FooterCards phone={data.phone} email={data.email} />
       <FooterBottom social={data.social} />
     </footer>
