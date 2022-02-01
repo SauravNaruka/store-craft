@@ -1,5 +1,13 @@
 query Footer($id: ID!) {
   Footer(id: $id) {
+    phone
+    email
+    social {
+      instagram
+      facebook
+      pinterest
+      twitter
+    }
     navigations {
       name
       title
@@ -10,12 +18,6 @@ query Footer($id: ID!) {
         subtitle
         link {
           url
-        }
-        image {
-          caption
-          asset {
-            url
-          }
         }
       }
     }

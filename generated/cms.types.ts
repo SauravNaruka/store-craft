@@ -216,10 +216,15 @@ export type Footer = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
+  /** Support email for the customer */
+  email?: Maybe<Scalars['String']>
   handle?: Maybe<Slug>
   /** Only used internally in the CMS */
   name?: Maybe<Scalars['String']>
   navigations?: Maybe<Array<Maybe<Navigation>>>
+  /** Support contact number for the customer */
+  phone?: Maybe<Scalars['String']>
+  social?: Maybe<SocialLinks>
 }
 
 export type FooterFilter = {
@@ -231,8 +236,11 @@ export type FooterFilter = {
   _rev?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
+  email?: InputMaybe<StringFilter>
   handle?: InputMaybe<SlugFilter>
   name?: InputMaybe<StringFilter>
+  phone?: InputMaybe<StringFilter>
+  social?: InputMaybe<SocialLinksFilter>
 }
 
 export type FooterSorting = {
@@ -242,8 +250,11 @@ export type FooterSorting = {
   _rev?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
+  email?: InputMaybe<SortOrder>
   handle?: InputMaybe<SlugSorting>
   name?: InputMaybe<SortOrder>
+  phone?: InputMaybe<SortOrder>
+  social?: InputMaybe<SocialLinksSorting>
 }
 
 export type Geopoint = {
@@ -1196,6 +1207,38 @@ export type SlugSorting = {
   current?: InputMaybe<SortOrder>
 }
 
+export type SocialLinks = {
+  __typename?: 'SocialLinks'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  /** Use fully qualified URLs */
+  facebook?: Maybe<Scalars['String']>
+  /** Use fully qualified URLs */
+  instagram?: Maybe<Scalars['String']>
+  /** Use fully qualified URLs */
+  pinterest?: Maybe<Scalars['String']>
+  /** Use fully qualified URLs */
+  twitter?: Maybe<Scalars['String']>
+}
+
+export type SocialLinksFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  facebook?: InputMaybe<StringFilter>
+  instagram?: InputMaybe<StringFilter>
+  pinterest?: InputMaybe<StringFilter>
+  twitter?: InputMaybe<StringFilter>
+}
+
+export type SocialLinksSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  facebook?: InputMaybe<SortOrder>
+  instagram?: InputMaybe<SortOrder>
+  pinterest?: InputMaybe<SortOrder>
+  twitter?: InputMaybe<SortOrder>
+}
+
 export enum SortOrder {
   /** Sorts on the value in ascending order. */
   Asc = 'ASC',
@@ -1275,6 +1318,18 @@ export type FooterQuery = {
   Footer?:
     | {
         __typename?: 'Footer'
+        phone?: string | null | undefined
+        email?: string | null | undefined
+        social?:
+          | {
+              __typename?: 'SocialLinks'
+              instagram?: string | null | undefined
+              facebook?: string | null | undefined
+              pinterest?: string | null | undefined
+              twitter?: string | null | undefined
+            }
+          | null
+          | undefined
         navigations?:
           | Array<
               | {
@@ -1293,20 +1348,6 @@ export type FooterQuery = {
                               | {
                                   __typename?: 'Link'
                                   url?: string | null | undefined
-                                }
-                              | null
-                              | undefined
-                            image?:
-                              | {
-                                  __typename?: 'ImageBlock'
-                                  caption?: string | null | undefined
-                                  asset?:
-                                    | {
-                                        __typename?: 'SanityImageAsset'
-                                        url?: string | null | undefined
-                                      }
-                                    | null
-                                    | undefined
                                 }
                               | null
                               | undefined
@@ -1414,6 +1455,14 @@ export type NavigationsQuery = {
 export const FooterDocument = gql`
   query Footer($id: ID!) {
     Footer(id: $id) {
+      phone
+      email
+      social {
+        instagram
+        facebook
+        pinterest
+        twitter
+      }
       navigations {
         name
         title
@@ -1424,12 +1473,6 @@ export const FooterDocument = gql`
           subtitle
           link {
             url
-          }
-          image {
-            caption
-            asset {
-              url
-            }
           }
         }
       }
