@@ -10,6 +10,9 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-graphql-request'
+      - typescript-mock-data:
+        scalars:
+          Date: date # gets translated to casual.date()
   generated/cms.types.ts:
     schema:
       - ${SANITY_STUDIO_ENDPOINT}

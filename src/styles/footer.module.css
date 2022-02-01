@@ -1,0 +1,105 @@
+.footerRoot {
+}
+
+.footerGrid {
+  @apply flex justify-around bg-white;
+  padding: 20px 15px;
+}
+
+.footerColumn {
+  width: 45%;
+}
+
+.footerColumn h2 {
+  text-align: left;
+}
+
+.footerColumn ul {
+  display: flex !important;
+  flex-direction: column;
+  padding: 0;
+}
+
+.footerColumn ul li {
+  padding: 5px 0px;
+  font-size: var(--font-size-small-x);
+}
+
+.footerCard {
+  @apply bg-white;
+  border-top: 1px solid var(--color-neutral-9);
+  padding: 3.9em 20px;
+}
+.footerCard p {
+  margin-bottom: 25px;
+  font-size: var(--font-size-small-x);
+}
+
+.footerCardBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-neutral-9);
+  padding: 15px 20px 15px 5px;
+}
+
+.footerCardBox svg {
+  height: 49px;
+  width: 42px;
+}
+
+.footerCardMain {
+  width: 80%;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-small-x);
+}
+
+.footerCardMainSubtitle {
+  font-size: var(--font-size-small-xx);
+}
+
+.footerCardBoxFirst {
+  border-radius: 5px 5px 0 0;
+}
+.footerCardBoxLast {
+  border-radius: 0 0 5px 5px;
+}
+
+.footerCardLink {
+  transform: scale(0.95) translate(0, -50%) rotate(-45deg);
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--color-neutral-7);
+  border-bottom: 2px solid var(--color-neutral-7);
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.footerCardBox:hover .footerCardLink {
+  border-color: var(--color-neutral-4);
+  transform: scale(0.95) translate(5px, -50%) rotate(-45deg);
+}
+
+.footerBottom {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 4.3rem 20px 5.4rem;
+  margin: 0 auto;
+}
+
+.footerLogo {
+  font-size: var(--font-size-large-xx);
+}
+
+.footerPrivacy {
+  font-size: var(--font-size-small-xx);
+  padding-top: 15px;
+}
+
+.footerSocialLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}

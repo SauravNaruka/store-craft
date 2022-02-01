@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Image, {ImageComponentProps} from '@components/Image'
-import cardStyles from '@styles/card.module.scss'
+import cardStyles from '@styles/card.module.css'
 
 type CardStyle = {
   rootClass: string
@@ -10,7 +10,7 @@ type CardStyle = {
 
 type PropType = ImageComponentProps & {
   title: JSX.Element | string
-  subtitle?: string | null
+  subtitle?: JSX.Element | string | null
   link: string
   style: CardStyle
 }

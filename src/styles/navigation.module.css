@@ -1,12 +1,8 @@
-.productNavigationRoot {
-  padding: 20px 0px;
-}
 .productNavigationImage {
 }
 
 .roomNavigationRoot {
   background-color: var(--color-neutral-10);
-  padding: 0px;
 }
 
 .roomNavigationImage {
@@ -18,4 +14,19 @@
   overflow: hidden;
   width: 100vw;
   height: calc(100vw * 3 / 4);
+}
+
+.textLeft {
+  @apply text-left;
+}
+
+.navigationalPrice {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small-xx);
+  color: var(--color-neutral-1);
+}
+
+.navigationalPrice del {
+  color: var(--color-neutral-4);
 }

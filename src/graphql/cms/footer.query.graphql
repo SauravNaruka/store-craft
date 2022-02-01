@@ -1,0 +1,25 @@
+query Footer($id: ID!) {
+  Footer(id: $id) {
+    phone
+    email
+    social {
+      instagram
+      facebook
+      pinterest
+      twitter
+    }
+    navigations {
+      name
+      title
+      subtitle
+      description
+      items {
+        title
+        subtitle
+        link {
+          url
+        }
+      }
+    }
+  }
+}

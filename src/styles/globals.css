@@ -8,10 +8,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: var(--font-size-medium-x);
   background-color: var(--color-primary-11);
+  color: var(--color-neutral-4);
 }
 
 a {
@@ -29,5 +30,14 @@ h2 {
   letter-spacing: 0.2rem;
   text-align: center;
   text-transform: uppercase;
-  margin: 5px 0px 20px;
+  margin: 0px 0px 10px;
+  color: var(--color-neutral-1);
+}
+
+h3 {
+  font-size: var(--font-size-medium-x);
+  line-height: var(--font-size-medium-xx);
+  letter-spacing: 0.2rem;
+  margin: 0px 0px 10px;
+  color: var(--color-neutral-2);
 }

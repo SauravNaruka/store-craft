@@ -22,7 +22,7 @@ module.exports = {
     '^@generated/(.*)$': '<rootDir>/generated/$1',
     '^@helpers/(.*)$': '<rootDir>/src/helpers/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@types/(.*)$': '<rootDir>/src/types/$1',
+    '^@LocalTypes/(.*)$': '<rootDir>/src/types/$1',
 
     /* Handle CSS imports (with CSS modules)
       https://jestjs.io/docs/webpack#mocking-css-modules */

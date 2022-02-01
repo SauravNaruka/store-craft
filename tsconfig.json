@@ -22,7 +22,7 @@
       "@helpers/*": ["src/helpers/*"],
       "@hooks/*": ["src/hooks/*"],
       "@styles/*": ["src/styles/*"],
-      "@types/*": ["src/types/*"]
+      "@LocalTypes/*": ["src/types/*"]
     },
     "incremental": true,
     "typeRoots": ["./node_modules/@types", "./src/types"]

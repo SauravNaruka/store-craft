@@ -3,6 +3,7 @@ import Image from '@components/Image'
 import NavigationalItems from './NavigationalItems'
 import type {Navigation} from '@generated/cms.types'
 import navigationStyles from '@styles/navigation.module.css'
+import commonStyles from '@styles/common.module.css'
 
 type PropType = {
   navigation: Navigation
@@ -10,7 +11,7 @@ type PropType = {
 
 export function HeroSection({navigation}: PropType) {
   return (
-    <section>
+    <section className={commonStyles.pageSection}>
       <NavigationalItems navigation={navigation}>
         {({link, imageUrl, imageCaption, index}) => {
           if (index > 0) {
@@ -28,8 +29,10 @@ export function HeroSection({navigation}: PropType) {
                 src={imageUrl}
                 alt={imageCaption}
                 layout="fill"
-                objectFit="cover"
+                objectFit="contain"
+                objectPosition="50% 50%"
                 priority={true}
+                quality={25}
                 aspectRatio={{width: 4, height: 3}}
               />
             </a>

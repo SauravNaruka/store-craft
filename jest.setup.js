@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect'
-import {server} from './src/__mocks__/server.js'
+import {server} from './src/__mocks__/server'
 
 jest.mock('next/image', () => ({
   __esModule: true,

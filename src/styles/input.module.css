@@ -10,20 +10,20 @@
   border: 2px solid #ffffff;
   box-sizing: border-box;
   backdrop-filter: blur(40px);
+}
 
-  .input[type='search'] {
-    font-size: 1.2rem;
-    outline: none;
-    max-width: calc(100% - 70px);
-  }
+.searchInput .input[type='search'] {
+  font-size: 1.2rem;
+  outline: none;
+  max-width: calc(100% - 70px);
+}
 
-  input[type='submit'] {
-    display: none;
-  }
+.searchInput input[type='submit'] {
+  display: none;
+}
 
-  svg {
-    min-width: 25px;
-  }
+.searchInput svg {
+  min-width: 25px;
 }
 
 .input {

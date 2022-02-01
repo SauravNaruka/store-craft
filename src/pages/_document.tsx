@@ -5,6 +5,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=optional"
+          rel="stylesheet"
+        />
         <meta name="theme-color" content="#f4f9fa" />
         <link rel="icon" href="/favicon.png" />
       </Head>

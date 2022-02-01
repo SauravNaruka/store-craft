@@ -2,8 +2,8 @@ import * as React from 'react'
 import NavigationalItems from '@components/NavigationalItems'
 import {Card} from '@components/Card.server'
 import type {Navigation} from '@generated/cms.types'
-import commonStyles from '@styles/common.module.scss'
-import cardStyles from '@styles/card.module.scss'
+import commonStyles from '@styles/common.module.css'
+import cardStyles from '@styles/card.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 
 const style = {
@@ -18,7 +18,7 @@ type PropType = {
 export function RoomNavigation({navigation}: PropType) {
   return (
     <section
-      className={`${navigationStyles.roomNavigationRoot} ${commonStyles.pageSection}`}
+      className={`${commonStyles.pageSection} ${navigationStyles.roomNavigationRoot} `}
     >
       <h2>{navigation.title ?? ''}</h2>
       <div
@@ -34,8 +34,10 @@ export function RoomNavigation({navigation}: PropType) {
               link={link}
               src={imageUrl}
               alt={imageCaption}
-              width={172}
-              height={129}
+              layout="fill"
+              objectFit="contain"
+              objectPosition="50% 50%"
+              sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
               aspectRatio={{width: 4, height: 3}}
               style={style}
             />
