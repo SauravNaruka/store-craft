@@ -1,0 +1,5 @@
+fragment LinkExternallFields on LinkExternal {
+  title
+  url
+  newWindow
+}

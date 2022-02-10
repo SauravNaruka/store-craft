@@ -3332,17 +3332,7 @@ export type Image = {
    *
    * All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
    *
-   * If you need multiple variations of the same image, then you can use [GraphQL field aliases](https://graphql.org/learn/queries/#aliases). For example:
-   *
-   * ```graphql
-   * {
-   *   ... on Image {
-   *     original: url
-   *     thumbnail: url(transform: { maxWidth: 80, maxHeight: 80 })
-   *     retina: url(transform: { scale: 2 })
-   *   }
-   * }
-   * ```
+   * If you need multiple variations of the same image, then you can use [GraphQL aliases](https://graphql.org/learn/queries/#aliases).
    *
    */
   url: Scalars['URL']

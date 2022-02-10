@@ -1,0 +1,10 @@
+query Header($id: ID!) {
+  Header(id: $id) {
+    name
+    navigations {
+      navigation {
+        ...NavigationFields
+      }
+    }
+  }
+}

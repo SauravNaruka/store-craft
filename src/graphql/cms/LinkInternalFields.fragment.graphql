@@ -1,0 +1,14 @@
+fragment LinkInternalFields on LinkInternal {
+  reference {
+    ... on ShopifyCollection {
+      title
+      shopifyId
+    }
+    ... on Page {
+      title
+      slug {
+        current
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+fragment ThemeFields on Theme {
+  headerMenu {
+    _id
+  }
+  footerMenu {
+    _id
+  }
+}
