@@ -1,6 +1,6 @@
 import {graphql} from 'msw'
 import {build, fake} from '@jackfranklin/test-data-bot'
-import type {GlobalConfigsQuery} from '@generated/cms.types'
+import type {GlobalConfigQuery} from '@generated/cms.types'
 
 export const getGlobalConfig = graphql.query(
   'GlobalConfigs',
@@ -9,21 +9,25 @@ export const getGlobalConfig = graphql.query(
   },
 )
 
-export const buildGlobalConfigsResponse = build<GlobalConfigsQuery>({
+export const buildGlobalConfigsResponse = build<GlobalConfigQuery>({
   fields: {
-    allGlobalConfig: [
-      {
-        theme: {
-          footerMenu: {
-            _id: fake(f => f.datatype.uuid()),
-          },
+    GlobalConfig: {
+      theme: {
+        headerMenu: {
+          _id: fake(f => f.datatype.uuid()),
         },
-        stagingTheme: {
-          footerMenu: {
-            _id: fake(f => f.datatype.uuid()),
-          },
+        footerMenu: {
+          _id: fake(f => f.datatype.uuid()),
         },
       },
-    ],
+      stagingTheme: {
+        headerMenu: {
+          _id: fake(f => f.datatype.uuid()),
+        },
+        footerMenu: {
+          _id: fake(f => f.datatype.uuid()),
+        },
+      },
+    },
   },
 })

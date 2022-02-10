@@ -1,8 +1,8 @@
 import {graphql} from 'msw'
 import {build, fake} from '@jackfranklin/test-data-bot'
-import {buildNavigationResponse} from './fetchNavigations.mock'
+import {buildNavigation} from './Navigations.mock'
 import {buildSocialLinks} from './SocialLinks.mock'
-import type {FooterQuery, Navigation} from '@generated/cms.types'
+import type {FooterQuery} from '@generated/cms.types'
 
 const NUMBER_OF_FOOTER_NAVIGATIONITEMS = 3
 
@@ -25,9 +25,8 @@ export const buildFooterResponse = build<FooterQuery>({
         .fill(undefined)
         .map(() => {
           return {
-            ...buildNavigationResponse().allNavigation[0],
-            image: null,
-          } as Navigation
+            navigation: buildNavigation(),
+          }
         })
     }
     return footerQuery
