@@ -1,5 +1,5 @@
 import {graphql} from 'msw'
-import {fetchNavigation} from '@api/fetchNavigations'
+import {fetchNavigationBySlug} from '@api/fetchNavigations'
 import {server} from '../../__mocks__/server'
 
 describe('fetch navigation by id', () => {
@@ -13,7 +13,9 @@ describe('fetch navigation by id', () => {
       }),
     )
 
-    await expect(fetchNavigation('product-navigation')).rejects.toThrow()
+    await expect(
+      fetchNavigationBySlug({slug: 'product-navigation'}),
+    ).rejects.toThrow()
   })
 
   test('empty api response', async () => {
@@ -23,6 +25,8 @@ describe('fetch navigation by id', () => {
       }),
     )
 
-    await expect(fetchNavigation('product-navigation')).rejects.toThrow()
+    await expect(
+      fetchNavigationBySlug({slug: 'product-navigation'}),
+    ).rejects.toThrow()
   })
 })

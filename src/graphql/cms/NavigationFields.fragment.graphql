@@ -1,4 +1,5 @@
 fragment NavigationFields on Navigation {
+  __typename
   title
   subtitle
   link {
@@ -10,7 +11,12 @@ fragment NavigationFields on Navigation {
 
     ... on NavigationGroup {
       navigation {
-        _id
+        __typename
+        title
+        subtitle
+        link {
+          ...LinkInternalFields
+        }
       }
     }
   }

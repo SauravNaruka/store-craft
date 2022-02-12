@@ -4,9 +4,11 @@ import * as logger from '@helpers/logger'
 import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import type {Navigation, NavigationsQueryVariables} from '@generated/cms.types'
 
-export async function fetchNavigation(id: string): Promise<Navigation> {
+export async function fetchNavigationBySlug(
+  args: NavigationsQueryVariables,
+): Promise<Navigation> {
   try {
-    const navigation = await fetchNavigationQuery({slug: id})
+    const navigation = await fetchNavigationQuery(args)
     return navigation
   } catch (error) {
     logger.error(error)

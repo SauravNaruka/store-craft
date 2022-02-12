@@ -12,7 +12,7 @@ import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
 import {getFooterID, getTheme} from '@helpers/globalConfig.helper'
-import {fetchNavigation} from '@api/fetchNavigations'
+import {fetchNavigationBySlug} from '@api/fetchNavigations'
 import {fetchCollection} from '@api/fetchCollection'
 import {fetchGlobalConfig} from '@api/fetchGlobalConfig'
 import {fetchFooter} from '@api/fetchFooter'
@@ -83,9 +83,9 @@ export const getStaticProps: GetStaticProps = async () => {
     footer,
     featuredCollection,
   ] = await Promise.all([
-    fetchNavigation(PRODUCT_NAVIGATION),
-    fetchNavigation(HERO_NAVIGATION),
-    fetchNavigation(ROOM_NAVIGATION),
+    fetchNavigationBySlug({slug: PRODUCT_NAVIGATION}),
+    fetchNavigationBySlug({slug: HERO_NAVIGATION}),
+    fetchNavigationBySlug({slug: ROOM_NAVIGATION}),
     fetchFooter({id: footerID}),
     fetchCollection({
       handle: FEATURED_PRODUCTS_HANDLE,

@@ -1,10 +1,20 @@
 fragment LinkInternalFields on LinkInternal {
+  __typename
   reference {
     ... on ShopifyCollection {
-      title
+      __typename
       shopifyId
+      title
+      handle
+      sourceData {
+        image {
+          originalSrc
+          altText
+        }
+      }
     }
     ... on Page {
+      __typename
       title
       slug {
         current

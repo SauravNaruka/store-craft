@@ -1,6 +1,7 @@
 import * as React from 'react'
-import {isValidImageBlock} from '@helpers/image.helper'
-import type {Navigation, NavigationItem} from '@generated/cms.types'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import type {Navigation} from '@generated/cms.types'
 
 type CardCallbackProp = {
   title: string
@@ -22,23 +23,22 @@ export function NavigationalItems({
   imageNavigation = true,
   children: render,
 }: PropType) {
-  const navigationItems: NavigationItem[] = navigation?.items?.length
-    ? (navigation.items as NavigationItem[])
-    : []
   return (
     <>
-      {navigationItems.map(({title, subtitle, link, image}, index) => {
+      {navigation?.items?.map((item, index) => {
         if (
-          title &&
-          link?.url &&
-          (!imageNavigation || isValidImageBlock(image))
+          isInternalLink(item) &&
+          isShopifyCollection(item.reference) &&
+          item.reference.title &&
+          item.reference.handle
+          // item.reference.sourceData?.image?.originalSrc
         ) {
           return render({
-            title,
-            subtitle,
-            link: link.url,
-            imageUrl: image?.asset?.url ?? '',
-            imageCaption: image?.caption ?? '',
+            title: item.reference.title,
+            subtitle: item.title,
+            link: item.reference.handle,
+            imageUrl: item.reference.sourceData?.image?.originalSrc ?? '',
+            imageCaption: item.reference.sourceData?.image?.altText ?? '',
             index,
           })
         } else {
