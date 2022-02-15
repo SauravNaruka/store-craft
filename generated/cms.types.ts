@@ -2264,8 +2264,13 @@ export type LinkInternalFieldsFragment = {
               image?:
                 | {
                     __typename?: 'ShopifySourceImage'
-                    originalSrc?: string | null | undefined
                     altText?: string | null | undefined
+                    originalSrc?: string | null | undefined
+                    w100?: string | null | undefined
+                    w300?: string | null | undefined
+                    w800?: string | null | undefined
+                    w1200?: string | null | undefined
+                    w1600?: string | null | undefined
                   }
                 | null
                 | undefined
@@ -2317,8 +2322,13 @@ export type NavigationQuery = {
                           image?:
                             | {
                                 __typename?: 'ShopifySourceImage'
-                                originalSrc?: string | null | undefined
                                 altText?: string | null | undefined
+                                originalSrc?: string | null | undefined
+                                w100?: string | null | undefined
+                                w300?: string | null | undefined
+                                w800?: string | null | undefined
+                                w1200?: string | null | undefined
+                                w1600?: string | null | undefined
                               }
                             | null
                             | undefined
@@ -2367,8 +2377,13 @@ export type NavigationQuery = {
                               image?:
                                 | {
                                     __typename?: 'ShopifySourceImage'
-                                    originalSrc?: string | null | undefined
                                     altText?: string | null | undefined
+                                    originalSrc?: string | null | undefined
+                                    w100?: string | null | undefined
+                                    w300?: string | null | undefined
+                                    w800?: string | null | undefined
+                                    w1200?: string | null | undefined
+                                    w1600?: string | null | undefined
                                   }
                                 | null
                                 | undefined
@@ -2415,11 +2430,22 @@ export type NavigationQuery = {
                                           image?:
                                             | {
                                                 __typename?: 'ShopifySourceImage'
+                                                altText?:
+                                                  | string
+                                                  | null
+                                                  | undefined
                                                 originalSrc?:
                                                   | string
                                                   | null
                                                   | undefined
-                                                altText?:
+                                                w100?: string | null | undefined
+                                                w300?: string | null | undefined
+                                                w800?: string | null | undefined
+                                                w1200?:
+                                                  | string
+                                                  | null
+                                                  | undefined
+                                                w1600?:
                                                   | string
                                                   | null
                                                   | undefined
@@ -2479,8 +2505,13 @@ export type NavigationFieldsFragment = {
                     image?:
                       | {
                           __typename?: 'ShopifySourceImage'
-                          originalSrc?: string | null | undefined
                           altText?: string | null | undefined
+                          originalSrc?: string | null | undefined
+                          w100?: string | null | undefined
+                          w300?: string | null | undefined
+                          w800?: string | null | undefined
+                          w1200?: string | null | undefined
+                          w1600?: string | null | undefined
                         }
                       | null
                       | undefined
@@ -2526,8 +2557,13 @@ export type NavigationFieldsFragment = {
                         image?:
                           | {
                               __typename?: 'ShopifySourceImage'
-                              originalSrc?: string | null | undefined
                               altText?: string | null | undefined
+                              originalSrc?: string | null | undefined
+                              w100?: string | null | undefined
+                              w300?: string | null | undefined
+                              w800?: string | null | undefined
+                              w1200?: string | null | undefined
+                              w1600?: string | null | undefined
                             }
                           | null
                           | undefined
@@ -2574,11 +2610,16 @@ export type NavigationFieldsFragment = {
                                     image?:
                                       | {
                                           __typename?: 'ShopifySourceImage'
+                                          altText?: string | null | undefined
                                           originalSrc?:
                                             | string
                                             | null
                                             | undefined
-                                          altText?: string | null | undefined
+                                          w100?: string | null | undefined
+                                          w300?: string | null | undefined
+                                          w800?: string | null | undefined
+                                          w1200?: string | null | undefined
+                                          w1600?: string | null | undefined
                                         }
                                       | null
                                       | undefined
@@ -2673,11 +2714,22 @@ export type FooterQuery = {
                                           image?:
                                             | {
                                                 __typename?: 'ShopifySourceImage'
+                                                altText?:
+                                                  | string
+                                                  | null
+                                                  | undefined
                                                 originalSrc?:
                                                   | string
                                                   | null
                                                   | undefined
-                                                altText?:
+                                                w100?: string | null | undefined
+                                                w300?: string | null | undefined
+                                                w800?: string | null | undefined
+                                                w1200?:
+                                                  | string
+                                                  | null
+                                                  | undefined
+                                                w1600?:
                                                   | string
                                                   | null
                                                   | undefined
@@ -2732,11 +2784,31 @@ export type FooterQuery = {
                                               image?:
                                                 | {
                                                     __typename?: 'ShopifySourceImage'
+                                                    altText?:
+                                                      | string
+                                                      | null
+                                                      | undefined
                                                     originalSrc?:
                                                       | string
                                                       | null
                                                       | undefined
-                                                    altText?:
+                                                    w100?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w300?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w800?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w1200?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w1600?:
                                                       | string
                                                       | null
                                                       | undefined
@@ -2801,11 +2873,31 @@ export type FooterQuery = {
                                                           image?:
                                                             | {
                                                                 __typename?: 'ShopifySourceImage'
+                                                                altText?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
                                                                 originalSrc?:
                                                                   | string
                                                                   | null
                                                                   | undefined
-                                                                altText?:
+                                                                w100?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w300?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w800?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w1200?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w1600?:
                                                                   | string
                                                                   | null
                                                                   | undefined
@@ -2937,11 +3029,22 @@ export type HeaderQuery = {
                                           image?:
                                             | {
                                                 __typename?: 'ShopifySourceImage'
+                                                altText?:
+                                                  | string
+                                                  | null
+                                                  | undefined
                                                 originalSrc?:
                                                   | string
                                                   | null
                                                   | undefined
-                                                altText?:
+                                                w100?: string | null | undefined
+                                                w300?: string | null | undefined
+                                                w800?: string | null | undefined
+                                                w1200?:
+                                                  | string
+                                                  | null
+                                                  | undefined
+                                                w1600?:
                                                   | string
                                                   | null
                                                   | undefined
@@ -2996,11 +3099,31 @@ export type HeaderQuery = {
                                               image?:
                                                 | {
                                                     __typename?: 'ShopifySourceImage'
+                                                    altText?:
+                                                      | string
+                                                      | null
+                                                      | undefined
                                                     originalSrc?:
                                                       | string
                                                       | null
                                                       | undefined
-                                                    altText?:
+                                                    w100?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w300?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w800?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w1200?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    w1600?:
                                                       | string
                                                       | null
                                                       | undefined
@@ -3065,11 +3188,31 @@ export type HeaderQuery = {
                                                           image?:
                                                             | {
                                                                 __typename?: 'ShopifySourceImage'
+                                                                altText?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
                                                                 originalSrc?:
                                                                   | string
                                                                   | null
                                                                   | undefined
-                                                                altText?:
+                                                                w100?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w300?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w800?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w1200?:
+                                                                  | string
+                                                                  | null
+                                                                  | undefined
+                                                                w1600?:
                                                                   | string
                                                                   | null
                                                                   | undefined
@@ -3146,8 +3289,13 @@ export type NavigationsQuery = {
                       image?:
                         | {
                             __typename?: 'ShopifySourceImage'
-                            originalSrc?: string | null | undefined
                             altText?: string | null | undefined
+                            originalSrc?: string | null | undefined
+                            w100?: string | null | undefined
+                            w300?: string | null | undefined
+                            w800?: string | null | undefined
+                            w1200?: string | null | undefined
+                            w1600?: string | null | undefined
                           }
                         | null
                         | undefined
@@ -3196,8 +3344,13 @@ export type NavigationsQuery = {
                           image?:
                             | {
                                 __typename?: 'ShopifySourceImage'
-                                originalSrc?: string | null | undefined
                                 altText?: string | null | undefined
+                                originalSrc?: string | null | undefined
+                                w100?: string | null | undefined
+                                w300?: string | null | undefined
+                                w800?: string | null | undefined
+                                w1200?: string | null | undefined
+                                w1600?: string | null | undefined
                               }
                             | null
                             | undefined
@@ -3244,11 +3397,16 @@ export type NavigationsQuery = {
                                       image?:
                                         | {
                                             __typename?: 'ShopifySourceImage'
+                                            altText?: string | null | undefined
                                             originalSrc?:
                                               | string
                                               | null
                                               | undefined
-                                            altText?: string | null | undefined
+                                            w100?: string | null | undefined
+                                            w300?: string | null | undefined
+                                            w800?: string | null | undefined
+                                            w1200?: string | null | undefined
+                                            w1600?: string | null | undefined
                                           }
                                         | null
                                         | undefined
@@ -3285,8 +3443,13 @@ export const LinkInternalFieldsFragmentDoc = gql`
         handle
         sourceData {
           image {
-            originalSrc
             altText
+            originalSrc
+            w100
+            w300
+            w800
+            w1200
+            w1600
           }
         }
       }

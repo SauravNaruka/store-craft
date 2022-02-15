@@ -26,37 +26,36 @@ export function FeaturedProducts({collection}: PropType) {
       <HStack>
         <Products products={products}>
           {({
-            id,
-            link,
             title,
-            // subtitle,
-            imageUrl,
-            imageCaption,
-            originalAmount,
-            amount,
+            subtitle,
+            slug,
             currencyCode,
-            // seo,
-          }) => (
-            <Card
-              key={id}
-              title={title}
-              subtitle={
-                <div className={navigationStyles.navigationalPrice}>
-                  <span>{formatAmount(amount, currencyCode)}</span>
-                  {originalAmount && (
-                    <del>{formatAmount(originalAmount, currencyCode)}</del>
-                  )}
-                </div>
-              }
-              link={link}
-              src={imageUrl}
-              alt={imageCaption}
-              width={96}
-              height={72}
-              aspectRatio={{width: 4, height: 3}}
-              style={style}
-            />
-          )}
+            amount,
+            originalAmount,
+            image,
+            index,
+          }) =>
+            image && (
+              <Card
+                key={title + index}
+                title={title}
+                subtitle={
+                  <div className={navigationStyles.navigationalPrice}>
+                    <span>{formatAmount(amount, currencyCode)}</span>
+                    {originalAmount && (
+                      <del>{formatAmount(originalAmount, currencyCode)}</del>
+                    )}
+                  </div>
+                }
+                link={slug}
+                width={96}
+                height={72}
+                image={image}
+                aspectRatio={{width: 4, height: 3}}
+                style={style}
+              />
+            )
+          }
         </Products>
       </HStack>
     </section>

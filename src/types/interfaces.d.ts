@@ -8,9 +8,24 @@ export type Valueof<T> = T[keyof T]
 
 export type Maybe<T> = T | null
 
-export interface ImageType {
+export interface ImageSource {
+  w96: string
+  w128: string
+  w256: string
+  w384: string
+  w640: string
+  w750: string
+  w828: string
+  w1080: string
+  w1200: string
+  w1920: string
+  w2048: string
+  w3840: string
+}
+
+export interface ImageType extends Partial<ImageSource> {
   url: string | StaticImageData
-  caption: string
+  altText: string
 }
 
 export type AspectRatio =
@@ -31,4 +46,13 @@ export type Edge<Node> = {
 export type Price = {
   amount: number
   currencyCode: CurrencyCode
+}
+
+export type CollectionsByID = {[key: string]: Collection}
+
+export type NavigationalData = {
+  title: string
+  subtitle?: string
+  slug: string
+  image?: Maybe<ImageType>
 }

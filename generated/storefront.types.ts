@@ -6313,6 +6313,42 @@ export type CollectionQuery = {
     | undefined
 }
 
+export type CollectionShortInfoQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type CollectionShortInfoQuery = {
+  __typename?: 'QueryRoot'
+  collection?:
+    | {
+        __typename: 'Collection'
+        id: string
+        handle: string
+        image?:
+          | {
+              __typename?: 'Image'
+              altText?: string | null | undefined
+              url: any
+              w96: any
+              w128: any
+              w256: any
+              w384: any
+              w640: any
+              w750: any
+              w828: any
+              w1080: any
+              w1200: any
+              w1920: any
+              w2048: any
+              w3840: any
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
 export const CollectionDocument = gql`
   query Collection(
     $handle: String!
@@ -6375,6 +6411,75 @@ export const CollectionDocument = gql`
     }
   }
 `
+export const CollectionShortInfoDocument = gql`
+  query CollectionShortInfo($id: ID!) {
+    collection(id: $id) {
+      __typename
+      id
+      handle
+      image {
+        altText
+        url
+        w96: url(
+          transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
+        )
+        w128: url(
+          transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
+        )
+        w256: url(
+          transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
+        )
+        w384: url(
+          transform: {maxWidth: 384, maxHeight: 288, preferredContentType: WEBP}
+        )
+        w640: url(
+          transform: {maxWidth: 640, maxHeight: 480, preferredContentType: WEBP}
+        )
+        w750: url(
+          transform: {maxWidth: 750, maxHeight: 562, preferredContentType: WEBP}
+        )
+        w828: url(
+          transform: {maxWidth: 828, maxHeight: 621, preferredContentType: WEBP}
+        )
+        w1080: url(
+          transform: {
+            maxWidth: 1080
+            maxHeight: 810
+            preferredContentType: WEBP
+          }
+        )
+        w1200: url(
+          transform: {
+            maxWidth: 1200
+            maxHeight: 900
+            preferredContentType: WEBP
+          }
+        )
+        w1920: url(
+          transform: {
+            maxWidth: 1920
+            maxHeight: 1440
+            preferredContentType: WEBP
+          }
+        )
+        w2048: url(
+          transform: {
+            maxWidth: 2048
+            maxHeight: 1536
+            preferredContentType: WEBP
+          }
+        )
+        w3840: url(
+          transform: {
+            maxWidth: 3840
+            maxHeight: 2880
+            preferredContentType: WEBP
+          }
+        )
+      }
+    }
+  }
+`
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -6399,6 +6504,20 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'Collection',
+      )
+    },
+    CollectionShortInfo(
+      variables: CollectionShortInfoQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionShortInfoQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionShortInfoQuery>(
+            CollectionShortInfoDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionShortInfo',
       )
     },
   }

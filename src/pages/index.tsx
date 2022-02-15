@@ -12,8 +12,8 @@ import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
 import {getFooterID, getTheme} from '@helpers/globalConfig.helper'
-import {fetchNavigationBySlug} from '@api/fetchNavigations'
-import {fetchCollection} from '@api/fetchCollection'
+import {fetchNavigationAndRelatedCollectionBySlug} from '@api/fetchNavigations'
+import {fetchCollectionBySlug} from '@api/fetchCollection'
 import {fetchGlobalConfig} from '@api/fetchGlobalConfig'
 import {fetchFooter} from '@api/fetchFooter'
 import {
@@ -22,22 +22,28 @@ import {
   ROOM_NAVIGATION,
 } from '@constants/navigation.constants'
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
+import type {CollectionsByID} from '@LocalTypes/interfaces'
 import type {Navigation, Footer as FooterType} from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.css'
 
+type NavigationAndCollectionsByID = {
+  navigation: Navigation
+  collectionsByID: CollectionsByID
+}
+
 type PropType = {
-  productNavigation: Navigation
-  heroNavigation: Navigation
-  roomNavigation: Navigation
+  productNavigationAndCollectionsByID: NavigationAndCollectionsByID
+  heroNavigationAndCollectionsByID: NavigationAndCollectionsByID
+  roomNavigationAndCollectionsByID: NavigationAndCollectionsByID
   footer: FooterType
   featuredCollection: Collection
 }
 
 export default function Home({
-  productNavigation,
-  heroNavigation,
-  roomNavigation,
+  productNavigationAndCollectionsByID,
+  heroNavigationAndCollectionsByID,
+  roomNavigationAndCollectionsByID,
   footer,
   featuredCollection,
 }: PropType) {
@@ -61,10 +67,20 @@ export default function Home({
       </Header>
 
       <main className={styles.main}>
-        <ProductNavigation navigation={productNavigation} />
-        <HeroSection navigation={heroNavigation} />
+        <ProductNavigation
+          navigation={productNavigationAndCollectionsByID.navigation}
+          collectionsByID={productNavigationAndCollectionsByID.collectionsByID}
+        />
+        <HeroSection
+          navigation={heroNavigationAndCollectionsByID.navigation}
+          collectionsByID={heroNavigationAndCollectionsByID.collectionsByID}
+        />
         <FeaturedProducts collection={featuredCollection} />
-        <RoomNavigation navigation={roomNavigation} />
+
+        <RoomNavigation
+          navigation={roomNavigationAndCollectionsByID.navigation}
+          collectionsByID={roomNavigationAndCollectionsByID.collectionsByID}
+        />
       </main>
       <Footer data={footer} />
     </div>
@@ -77,17 +93,17 @@ export const getStaticProps: GetStaticProps = async () => {
   const footerID = getFooterID(theme)
 
   const [
-    productNavigation,
-    heroNavigation,
-    roomNavigation,
+    productNavigationAndCollectionsByID,
+    heroNavigationAndCollectionsByID,
+    roomNavigationAndCollectionsByID,
     footer,
     featuredCollection,
   ] = await Promise.all([
-    fetchNavigationBySlug({slug: PRODUCT_NAVIGATION}),
-    fetchNavigationBySlug({slug: HERO_NAVIGATION}),
-    fetchNavigationBySlug({slug: ROOM_NAVIGATION}),
+    fetchNavigationAndRelatedCollectionBySlug({slug: PRODUCT_NAVIGATION}),
+    fetchNavigationAndRelatedCollectionBySlug({slug: HERO_NAVIGATION}),
+    fetchNavigationAndRelatedCollectionBySlug({slug: ROOM_NAVIGATION}),
     fetchFooter({id: footerID}),
-    fetchCollection({
+    fetchCollectionBySlug({
       handle: FEATURED_PRODUCTS_HANDLE,
       numberOfProducts: 10,
       numberOfImages: 1,
@@ -96,9 +112,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      productNavigation,
-      heroNavigation,
-      roomNavigation,
+      productNavigationAndCollectionsByID,
+      heroNavigationAndCollectionsByID,
+      roomNavigationAndCollectionsByID,
       footer,
       featuredCollection,
     },

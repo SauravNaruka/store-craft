@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {getFirstNodeFromConnection} from '@helpers/connection.helper'
+import {isValidImageType} from '@helpers/image.helper'
 import {
   getMaxPriceFromProductPriceRange,
   getMinPriceFromProductPriceRange,
@@ -9,19 +10,16 @@ import type {
   Product,
   CurrencyCode,
 } from '@generated/storefront.types'
-import type {Price, Maybe} from '../types/interfaces'
+import type {Price, Maybe, ImageType} from '../types/interfaces'
 
 type ProductsChildren = {
-  id: string
-  link: string
   title: string
   subtitle?: string | null
-  imageUrl: string
-  imageCaption: string
-  originalAmount?: number
-  amount: number
+  slug: string
   currencyCode: CurrencyCode
-  seo?: {title?: Maybe<string>; description?: Maybe<string>}
+  amount: number
+  originalAmount?: number
+  image?: Maybe<ImageType>
   index: number
 }
 
@@ -35,44 +33,25 @@ export function Products({products, children: render}: PropType) {
     <>
       {products.map(
         (
-          {
-            id,
-            handle,
-            title,
-            description,
-            images,
-            compareAtPriceRange,
-            priceRange,
-            seo,
-          },
+          {handle, title, description, images, compareAtPriceRange, priceRange},
           index,
         ) => {
-          const image = getFirstNodeFromConnection<ImageShopify>(images)
+          const firstImage = getFirstNodeFromConnection<ImageShopify>(images)
+          const image = isValidImageType(firstImage) ? firstImage : null
           const {amount: originalAmount}: Price =
             getMaxPriceFromProductPriceRange(compareAtPriceRange)
           const {amount, currencyCode}: Price =
             getMinPriceFromProductPriceRange(priceRange)
 
-          if (
-            image &&
-            image.url &&
-            title &&
-            handle &&
-            description &&
-            amount &&
-            currencyCode
-          ) {
+          if (title && handle && description && amount && currencyCode) {
             return render({
-              id,
-              link: handle,
               title,
               subtitle: description,
-              imageUrl: image.url,
-              imageCaption: image.altText ? image.altText : title,
-              originalAmount,
-              amount,
+              slug: handle,
               currencyCode,
-              seo: seo,
+              amount,
+              originalAmount,
+              image,
               index,
             })
           } else {

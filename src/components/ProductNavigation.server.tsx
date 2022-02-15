@@ -2,6 +2,7 @@ import * as React from 'react'
 import {Card} from './Card.server'
 import NavigationalItems from './NavigationalItems'
 import {HStack} from './HStack.server'
+import type {CollectionsByID} from '@LocalTypes/interfaces'
 import type {Navigation} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
 import cardStyles from '@styles/card.module.css'
@@ -15,27 +16,32 @@ const style = {
 
 type PropType = {
   navigation: Navigation
+  collectionsByID: CollectionsByID
 }
 
-export function ProductNavigation({navigation}: PropType) {
+export function ProductNavigation({navigation, collectionsByID}: PropType) {
   return (
     <section className={commonStyles.pageSection}>
       <HStack>
-        <NavigationalItems navigation={navigation}>
-          {({title, link, imageUrl, imageCaption, index}) => (
-            <Card
-              key={index}
-              title={title}
-              link={link}
-              src={imageUrl}
-              alt={imageCaption}
-              width={96}
-              height={72}
-              aspectRatio={{width: 4, height: 3}}
-              priority={true}
-              style={style}
-            />
-          )}
+        <NavigationalItems
+          navigation={navigation}
+          collectionsByID={collectionsByID}
+        >
+          {({title, slug, image, index}) =>
+            image && (
+              <Card
+                key={index}
+                title={title}
+                link={slug}
+                width={96}
+                height={72}
+                image={image}
+                aspectRatio={{width: 4, height: 3}}
+                priority={true}
+                style={style}
+              />
+            )
+          }
         </NavigationalItems>
       </HStack>
     </section>
