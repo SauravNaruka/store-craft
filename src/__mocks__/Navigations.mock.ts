@@ -11,13 +11,7 @@ export const buildNavigation = build<Navigation>({
   fields: {
     name: fake(f => f.random.words()),
     title: fake(f => f.random.words()),
-    subtitle: fake(f => f.random.words()),
-    image: {
-      caption: fake(f => f.random.word()),
-      asset: {
-        url: fake(f => f.internet.url()),
-      },
-    },
+    link: buildLinkInternalShopifyCollection(),
     items: [],
   },
   postBuild: navigation => {

@@ -3514,10 +3514,7 @@ export enum LocationSortKeys {
 /** Represents a mailing address for customers and shipping. */
 export type MailingAddress = Node & {
   __typename?: 'MailingAddress'
-  /**
-   * The first line of the address. Typically the street address or PO Box number.
-   *
-   */
+  /** The first line of the address. Typically the street address or PO Box number. */
   address1?: Maybe<Scalars['String']>
   /**
    * The second line of the address. Typically the number of the apartment, suite, or unit.

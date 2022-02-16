@@ -5,18 +5,8 @@ fragment LinkInternalFields on LinkInternal {
       __typename
       shopifyId
       title
+      subtitle
       handle
-      sourceData {
-        image {
-          altText
-          originalSrc
-          w100
-          w300
-          w800
-          w1200
-          w1600
-        }
-      }
     }
     ... on Page {
       __typename

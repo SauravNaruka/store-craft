@@ -14,13 +14,13 @@ describe('Card tests', () => {
     const randomURL = faker.internet.url()
     const imageSrc = faker.random.word()
     const imageCaption = faker.random.words()
+    const image = {url: imageSrc, altText: imageCaption}
 
     render(
       <Card
         title={randomTitle}
         link={randomURL}
-        src={imageSrc}
-        alt={imageCaption}
+        image={image}
         aspectRatio={{width: 4, height: 3}}
         style={style}
       />,
@@ -36,14 +36,14 @@ describe('Card tests', () => {
     const randomURL = faker.internet.url()
     const imageSrc = faker.random.word()
     const imageCaption = faker.random.words()
+    const image = {url: imageSrc, altText: imageCaption}
 
     render(
       <Card
         title={randomTitle}
         subtitle={randomSubTitle}
         link={randomURL}
-        src={imageSrc}
-        alt={imageCaption}
+        image={image}
         aspectRatio={{width: 4, height: 3}}
         style={style}
       />,

@@ -4,6 +4,7 @@ import type {LinkInternal, ShopifyCollection, Page} from '@generated/cms.types'
 export const buildShopifyCollection = build<ShopifyCollection>({
   fields: {
     title: fake(f => f.random.words()),
+    subtitle: fake(f => f.random.words()),
     shopifyId: fake(f => f.random.word()),
   },
 })

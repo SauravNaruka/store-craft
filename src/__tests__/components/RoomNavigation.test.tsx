@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/react'
 import {
   buildAndGetFirstNaigation,
   NUMBER_OF_NAVIGATIONITEMS,
-} from 'src/__mocks__/fetchNavigations.mock'
+} from 'src/__mocks__/Navigations.handlers'
 import {RoomNavigation} from '@components/RoomNavigation'
 
 describe('room navigation', () => {

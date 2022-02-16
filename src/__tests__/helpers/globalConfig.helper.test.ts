@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import first from 'lodash/first'
 import {getFooterID} from '@helpers/globalConfig.helper'
-import {buildGlobalConfigsResponse} from '../../__mocks__/fetchGlobalConfig.mock'
+import {buildGlobalConfigsResponse} from '../../__mocks__/GlobalConfig.mock'
 
 describe('Global Config helper method', () => {
   test('helper to get footer ID from global config or throw new Error', () => {

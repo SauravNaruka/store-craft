@@ -4,7 +4,7 @@ import {
   buildAndGetFirstNaigation,
   buildNavigationItem,
   NUMBER_OF_NAVIGATIONITEMS,
-} from '../../__mocks__/fetchNavigations.mock'
+} from '../../__mocks__/Navigations.handlers'
 import type {Navigation, NavigationItem} from '../../../generated/cms.types'
 
 describe('Navigational Items functioning', () => {

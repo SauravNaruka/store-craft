@@ -4,7 +4,7 @@ import {HomeCarousel} from '@components/carousel/HomeCarousel'
 import {
   buildAndGetFirstNaigation,
   NUMBER_OF_NAVIGATIONITEMS,
-} from 'src/__mocks__/fetchNavigations.mock'
+} from 'src/__mocks__/Navigations.handlers'
 import type {Navigation, NavigationItem} from '@generated/cms.types'
 
 describe('the working of Home carousel', () => {

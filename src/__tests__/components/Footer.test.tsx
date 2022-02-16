@@ -1,7 +1,7 @@
 import {render, screen} from '@testing-library/react'
 import first from 'lodash/first'
 import {Footer} from '@components/footer/Footer.server'
-import {buildFooterResponse} from '../../__mocks__/fetchFooter.mock'
+import {buildFooterResponse} from '../../__mocks__/Footer.mock'
 import type {Footer as FooterType} from '@generated/cms.types'
 
 describe('Footer navigation', () => {

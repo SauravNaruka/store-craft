@@ -1,7 +1,6 @@
 fragment NavigationFields on Navigation {
   __typename
   title
-  subtitle
   link {
     ...LinkInternalFields
   }
@@ -13,7 +12,6 @@ fragment NavigationFields on Navigation {
       navigation {
         __typename
         title
-        subtitle
         link {
           ...LinkInternalFields
         }

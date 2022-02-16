@@ -535,12 +535,10 @@ export type Navigation = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
-  image?: Maybe<ImageBlock>
   items?: Maybe<Array<Maybe<LinkExternalOrLinkInternalOrNavigationGroup>>>
   link?: Maybe<LinkInternal>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Slug>
-  subtitle?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
 }
 
@@ -553,11 +551,9 @@ export type NavigationFilter = {
   _rev?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
-  image?: InputMaybe<ImageBlockFilter>
   link?: InputMaybe<LinkInternalFilter>
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
-  subtitle?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
 }
 
@@ -586,11 +582,9 @@ export type NavigationSorting = {
   _rev?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
-  image?: InputMaybe<ImageBlockSorting>
   link?: InputMaybe<LinkInternalSorting>
   name?: InputMaybe<SortOrder>
   slug?: InputMaybe<SlugSorting>
-  subtitle?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
 }
 
@@ -1353,6 +1347,7 @@ export type ShopifyCollection = Document & {
   products?: Maybe<Array<Maybe<ShopifyProduct>>>
   shopifyId?: Maybe<Scalars['String']>
   sourceData?: Maybe<ShopifySourceCollection>
+  subtitle?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
 }
 
@@ -1369,6 +1364,7 @@ export type ShopifyCollectionFilter = {
   handle?: InputMaybe<StringFilter>
   shopifyId?: InputMaybe<StringFilter>
   sourceData?: InputMaybe<ShopifySourceCollectionFilter>
+  subtitle?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
 }
 
@@ -1383,6 +1379,7 @@ export type ShopifyCollectionSorting = {
   handle?: InputMaybe<SortOrder>
   shopifyId?: InputMaybe<SortOrder>
   sourceData?: InputMaybe<ShopifySourceCollectionSorting>
+  subtitle?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
 }
 
@@ -2257,26 +2254,8 @@ export type LinkInternalFieldsFragment = {
         __typename: 'ShopifyCollection'
         shopifyId?: string | null | undefined
         title?: string | null | undefined
+        subtitle?: string | null | undefined
         handle?: string | null | undefined
-        sourceData?:
-          | {
-              __typename?: 'ShopifySourceCollection'
-              image?:
-                | {
-                    __typename?: 'ShopifySourceImage'
-                    altText?: string | null | undefined
-                    originalSrc?: string | null | undefined
-                    w100?: string | null | undefined
-                    w300?: string | null | undefined
-                    w800?: string | null | undefined
-                    w1200?: string | null | undefined
-                    w1600?: string | null | undefined
-                  }
-                | null
-                | undefined
-            }
-          | null
-          | undefined
       }
     | {__typename?: 'ShopifyProduct'}
     | null
@@ -2293,7 +2272,6 @@ export type NavigationQuery = {
     | {
         __typename: 'Navigation'
         title?: string | null | undefined
-        subtitle?: string | null | undefined
         link?:
           | {
               __typename: 'LinkInternal'
@@ -2315,26 +2293,8 @@ export type NavigationQuery = {
                     __typename: 'ShopifyCollection'
                     shopifyId?: string | null | undefined
                     title?: string | null | undefined
+                    subtitle?: string | null | undefined
                     handle?: string | null | undefined
-                    sourceData?:
-                      | {
-                          __typename?: 'ShopifySourceCollection'
-                          image?:
-                            | {
-                                __typename?: 'ShopifySourceImage'
-                                altText?: string | null | undefined
-                                originalSrc?: string | null | undefined
-                                w100?: string | null | undefined
-                                w300?: string | null | undefined
-                                w800?: string | null | undefined
-                                w1200?: string | null | undefined
-                                w1600?: string | null | undefined
-                              }
-                            | null
-                            | undefined
-                        }
-                      | null
-                      | undefined
                   }
                 | {__typename?: 'ShopifyProduct'}
                 | null
@@ -2370,26 +2330,8 @@ export type NavigationQuery = {
                         __typename: 'ShopifyCollection'
                         shopifyId?: string | null | undefined
                         title?: string | null | undefined
+                        subtitle?: string | null | undefined
                         handle?: string | null | undefined
-                        sourceData?:
-                          | {
-                              __typename?: 'ShopifySourceCollection'
-                              image?:
-                                | {
-                                    __typename?: 'ShopifySourceImage'
-                                    altText?: string | null | undefined
-                                    originalSrc?: string | null | undefined
-                                    w100?: string | null | undefined
-                                    w300?: string | null | undefined
-                                    w800?: string | null | undefined
-                                    w1200?: string | null | undefined
-                                    w1600?: string | null | undefined
-                                  }
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
                       }
                     | {__typename?: 'ShopifyProduct'}
                     | null
@@ -2401,7 +2343,6 @@ export type NavigationQuery = {
                     | {
                         __typename: 'Navigation'
                         title?: string | null | undefined
-                        subtitle?: string | null | undefined
                         link?:
                           | {
                               __typename: 'LinkInternal'
@@ -2423,38 +2364,8 @@ export type NavigationQuery = {
                                     __typename: 'ShopifyCollection'
                                     shopifyId?: string | null | undefined
                                     title?: string | null | undefined
+                                    subtitle?: string | null | undefined
                                     handle?: string | null | undefined
-                                    sourceData?:
-                                      | {
-                                          __typename?: 'ShopifySourceCollection'
-                                          image?:
-                                            | {
-                                                __typename?: 'ShopifySourceImage'
-                                                altText?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                originalSrc?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w100?: string | null | undefined
-                                                w300?: string | null | undefined
-                                                w800?: string | null | undefined
-                                                w1200?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w1600?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                              }
-                                            | null
-                                            | undefined
-                                        }
-                                      | null
-                                      | undefined
                                   }
                                 | {__typename?: 'ShopifyProduct'}
                                 | null
@@ -2479,7 +2390,6 @@ export type NavigationQuery = {
 export type NavigationFieldsFragment = {
   __typename: 'Navigation'
   title?: string | null | undefined
-  subtitle?: string | null | undefined
   link?:
     | {
         __typename: 'LinkInternal'
@@ -2498,26 +2408,8 @@ export type NavigationFieldsFragment = {
               __typename: 'ShopifyCollection'
               shopifyId?: string | null | undefined
               title?: string | null | undefined
+              subtitle?: string | null | undefined
               handle?: string | null | undefined
-              sourceData?:
-                | {
-                    __typename?: 'ShopifySourceCollection'
-                    image?:
-                      | {
-                          __typename?: 'ShopifySourceImage'
-                          altText?: string | null | undefined
-                          originalSrc?: string | null | undefined
-                          w100?: string | null | undefined
-                          w300?: string | null | undefined
-                          w800?: string | null | undefined
-                          w1200?: string | null | undefined
-                          w1600?: string | null | undefined
-                        }
-                      | null
-                      | undefined
-                  }
-                | null
-                | undefined
             }
           | {__typename?: 'ShopifyProduct'}
           | null
@@ -2550,26 +2442,8 @@ export type NavigationFieldsFragment = {
                   __typename: 'ShopifyCollection'
                   shopifyId?: string | null | undefined
                   title?: string | null | undefined
+                  subtitle?: string | null | undefined
                   handle?: string | null | undefined
-                  sourceData?:
-                    | {
-                        __typename?: 'ShopifySourceCollection'
-                        image?:
-                          | {
-                              __typename?: 'ShopifySourceImage'
-                              altText?: string | null | undefined
-                              originalSrc?: string | null | undefined
-                              w100?: string | null | undefined
-                              w300?: string | null | undefined
-                              w800?: string | null | undefined
-                              w1200?: string | null | undefined
-                              w1600?: string | null | undefined
-                            }
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
                 }
               | {__typename?: 'ShopifyProduct'}
               | null
@@ -2581,7 +2455,6 @@ export type NavigationFieldsFragment = {
               | {
                   __typename: 'Navigation'
                   title?: string | null | undefined
-                  subtitle?: string | null | undefined
                   link?:
                     | {
                         __typename: 'LinkInternal'
@@ -2603,29 +2476,8 @@ export type NavigationFieldsFragment = {
                               __typename: 'ShopifyCollection'
                               shopifyId?: string | null | undefined
                               title?: string | null | undefined
+                              subtitle?: string | null | undefined
                               handle?: string | null | undefined
-                              sourceData?:
-                                | {
-                                    __typename?: 'ShopifySourceCollection'
-                                    image?:
-                                      | {
-                                          __typename?: 'ShopifySourceImage'
-                                          altText?: string | null | undefined
-                                          originalSrc?:
-                                            | string
-                                            | null
-                                            | undefined
-                                          w100?: string | null | undefined
-                                          w300?: string | null | undefined
-                                          w800?: string | null | undefined
-                                          w1200?: string | null | undefined
-                                          w1600?: string | null | undefined
-                                        }
-                                      | null
-                                      | undefined
-                                  }
-                                | null
-                                | undefined
                             }
                           | {__typename?: 'ShopifyProduct'}
                           | null
@@ -2685,7 +2537,6 @@ export type FooterQuery = {
                     | {
                         __typename: 'Navigation'
                         title?: string | null | undefined
-                        subtitle?: string | null | undefined
                         link?:
                           | {
                               __typename: 'LinkInternal'
@@ -2707,38 +2558,8 @@ export type FooterQuery = {
                                     __typename: 'ShopifyCollection'
                                     shopifyId?: string | null | undefined
                                     title?: string | null | undefined
+                                    subtitle?: string | null | undefined
                                     handle?: string | null | undefined
-                                    sourceData?:
-                                      | {
-                                          __typename?: 'ShopifySourceCollection'
-                                          image?:
-                                            | {
-                                                __typename?: 'ShopifySourceImage'
-                                                altText?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                originalSrc?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w100?: string | null | undefined
-                                                w300?: string | null | undefined
-                                                w800?: string | null | undefined
-                                                w1200?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w1600?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                              }
-                                            | null
-                                            | undefined
-                                        }
-                                      | null
-                                      | undefined
                                   }
                                 | {__typename?: 'ShopifyProduct'}
                                 | null
@@ -2777,47 +2598,8 @@ export type FooterQuery = {
                                         __typename: 'ShopifyCollection'
                                         shopifyId?: string | null | undefined
                                         title?: string | null | undefined
+                                        subtitle?: string | null | undefined
                                         handle?: string | null | undefined
-                                        sourceData?:
-                                          | {
-                                              __typename?: 'ShopifySourceCollection'
-                                              image?:
-                                                | {
-                                                    __typename?: 'ShopifySourceImage'
-                                                    altText?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    originalSrc?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w100?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w300?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w800?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1200?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1600?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
                                       }
                                     | {__typename?: 'ShopifyProduct'}
                                     | null
@@ -2829,7 +2611,6 @@ export type FooterQuery = {
                                     | {
                                         __typename: 'Navigation'
                                         title?: string | null | undefined
-                                        subtitle?: string | null | undefined
                                         link?:
                                           | {
                                               __typename: 'LinkInternal'
@@ -2863,48 +2644,12 @@ export type FooterQuery = {
                                                       | string
                                                       | null
                                                       | undefined
-                                                    handle?:
+                                                    subtitle?:
                                                       | string
                                                       | null
                                                       | undefined
-                                                    sourceData?:
-                                                      | {
-                                                          __typename?: 'ShopifySourceCollection'
-                                                          image?:
-                                                            | {
-                                                                __typename?: 'ShopifySourceImage'
-                                                                altText?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                originalSrc?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w100?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w300?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w800?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w1200?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w1600?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                              }
-                                                            | null
-                                                            | undefined
-                                                        }
+                                                    handle?:
+                                                      | string
                                                       | null
                                                       | undefined
                                                   }
@@ -3000,7 +2745,6 @@ export type HeaderQuery = {
                     | {
                         __typename: 'Navigation'
                         title?: string | null | undefined
-                        subtitle?: string | null | undefined
                         link?:
                           | {
                               __typename: 'LinkInternal'
@@ -3022,38 +2766,8 @@ export type HeaderQuery = {
                                     __typename: 'ShopifyCollection'
                                     shopifyId?: string | null | undefined
                                     title?: string | null | undefined
+                                    subtitle?: string | null | undefined
                                     handle?: string | null | undefined
-                                    sourceData?:
-                                      | {
-                                          __typename?: 'ShopifySourceCollection'
-                                          image?:
-                                            | {
-                                                __typename?: 'ShopifySourceImage'
-                                                altText?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                originalSrc?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w100?: string | null | undefined
-                                                w300?: string | null | undefined
-                                                w800?: string | null | undefined
-                                                w1200?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                                w1600?:
-                                                  | string
-                                                  | null
-                                                  | undefined
-                                              }
-                                            | null
-                                            | undefined
-                                        }
-                                      | null
-                                      | undefined
                                   }
                                 | {__typename?: 'ShopifyProduct'}
                                 | null
@@ -3092,47 +2806,8 @@ export type HeaderQuery = {
                                         __typename: 'ShopifyCollection'
                                         shopifyId?: string | null | undefined
                                         title?: string | null | undefined
+                                        subtitle?: string | null | undefined
                                         handle?: string | null | undefined
-                                        sourceData?:
-                                          | {
-                                              __typename?: 'ShopifySourceCollection'
-                                              image?:
-                                                | {
-                                                    __typename?: 'ShopifySourceImage'
-                                                    altText?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    originalSrc?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w100?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w300?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w800?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1200?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1600?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
                                       }
                                     | {__typename?: 'ShopifyProduct'}
                                     | null
@@ -3144,7 +2819,6 @@ export type HeaderQuery = {
                                     | {
                                         __typename: 'Navigation'
                                         title?: string | null | undefined
-                                        subtitle?: string | null | undefined
                                         link?:
                                           | {
                                               __typename: 'LinkInternal'
@@ -3178,48 +2852,12 @@ export type HeaderQuery = {
                                                       | string
                                                       | null
                                                       | undefined
-                                                    handle?:
+                                                    subtitle?:
                                                       | string
                                                       | null
                                                       | undefined
-                                                    sourceData?:
-                                                      | {
-                                                          __typename?: 'ShopifySourceCollection'
-                                                          image?:
-                                                            | {
-                                                                __typename?: 'ShopifySourceImage'
-                                                                altText?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                originalSrc?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w100?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w300?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w800?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w1200?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                                w1600?:
-                                                                  | string
-                                                                  | null
-                                                                  | undefined
-                                                              }
-                                                            | null
-                                                            | undefined
-                                                        }
+                                                    handle?:
+                                                      | string
                                                       | null
                                                       | undefined
                                                   }
@@ -3263,7 +2901,6 @@ export type NavigationsQuery = {
   allNavigation: Array<{
     __typename: 'Navigation'
     title?: string | null | undefined
-    subtitle?: string | null | undefined
     link?:
       | {
           __typename: 'LinkInternal'
@@ -3282,26 +2919,8 @@ export type NavigationsQuery = {
                 __typename: 'ShopifyCollection'
                 shopifyId?: string | null | undefined
                 title?: string | null | undefined
+                subtitle?: string | null | undefined
                 handle?: string | null | undefined
-                sourceData?:
-                  | {
-                      __typename?: 'ShopifySourceCollection'
-                      image?:
-                        | {
-                            __typename?: 'ShopifySourceImage'
-                            altText?: string | null | undefined
-                            originalSrc?: string | null | undefined
-                            w100?: string | null | undefined
-                            w300?: string | null | undefined
-                            w800?: string | null | undefined
-                            w1200?: string | null | undefined
-                            w1600?: string | null | undefined
-                          }
-                        | null
-                        | undefined
-                    }
-                  | null
-                  | undefined
               }
             | {__typename?: 'ShopifyProduct'}
             | null
@@ -3337,26 +2956,8 @@ export type NavigationsQuery = {
                     __typename: 'ShopifyCollection'
                     shopifyId?: string | null | undefined
                     title?: string | null | undefined
+                    subtitle?: string | null | undefined
                     handle?: string | null | undefined
-                    sourceData?:
-                      | {
-                          __typename?: 'ShopifySourceCollection'
-                          image?:
-                            | {
-                                __typename?: 'ShopifySourceImage'
-                                altText?: string | null | undefined
-                                originalSrc?: string | null | undefined
-                                w100?: string | null | undefined
-                                w300?: string | null | undefined
-                                w800?: string | null | undefined
-                                w1200?: string | null | undefined
-                                w1600?: string | null | undefined
-                              }
-                            | null
-                            | undefined
-                        }
-                      | null
-                      | undefined
                   }
                 | {__typename?: 'ShopifyProduct'}
                 | null
@@ -3368,7 +2969,6 @@ export type NavigationsQuery = {
                 | {
                     __typename: 'Navigation'
                     title?: string | null | undefined
-                    subtitle?: string | null | undefined
                     link?:
                       | {
                           __typename: 'LinkInternal'
@@ -3390,29 +2990,8 @@ export type NavigationsQuery = {
                                 __typename: 'ShopifyCollection'
                                 shopifyId?: string | null | undefined
                                 title?: string | null | undefined
+                                subtitle?: string | null | undefined
                                 handle?: string | null | undefined
-                                sourceData?:
-                                  | {
-                                      __typename?: 'ShopifySourceCollection'
-                                      image?:
-                                        | {
-                                            __typename?: 'ShopifySourceImage'
-                                            altText?: string | null | undefined
-                                            originalSrc?:
-                                              | string
-                                              | null
-                                              | undefined
-                                            w100?: string | null | undefined
-                                            w300?: string | null | undefined
-                                            w800?: string | null | undefined
-                                            w1200?: string | null | undefined
-                                            w1600?: string | null | undefined
-                                          }
-                                        | null
-                                        | undefined
-                                    }
-                                  | null
-                                  | undefined
                               }
                             | {__typename?: 'ShopifyProduct'}
                             | null
@@ -3440,18 +3019,8 @@ export const LinkInternalFieldsFragmentDoc = gql`
         __typename
         shopifyId
         title
+        subtitle
         handle
-        sourceData {
-          image {
-            altText
-            originalSrc
-            w100
-            w300
-            w800
-            w1200
-            w1600
-          }
-        }
       }
       ... on Page {
         __typename
@@ -3475,7 +3044,6 @@ export const NavigationFieldsFragmentDoc = gql`
   fragment NavigationFields on Navigation {
     __typename
     title
-    subtitle
     link {
       ...LinkInternalFields
     }
@@ -3486,7 +3054,6 @@ export const NavigationFieldsFragmentDoc = gql`
         navigation {
           __typename
           title
-          subtitle
           link {
             ...LinkInternalFields
           }

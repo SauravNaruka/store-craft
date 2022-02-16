@@ -21,16 +21,13 @@ describe('Products', () => {
 
     expect(productCallback).toBeCalledTimes(2)
     expect(productCallback).nthCalledWith(1, {
-      id: product.id,
-      link: product.handle,
       title: product.title,
       subtitle: product.description,
-      imageUrl: product.images.edges[0].node.url,
-      imageCaption: product.images.edges[0].node.altText,
-      originalAmount: product.compareAtPriceRange.maxVariantPrice.amount,
-      amount: product.priceRange.maxVariantPrice.amount,
+      slug: product.handle,
       currencyCode: product.priceRange.maxVariantPrice.currencyCode,
-      seo: product.seo,
+      amount: product.priceRange.maxVariantPrice.amount,
+      originalAmount: product.compareAtPriceRange.maxVariantPrice.amount,
+      image: product.images.edges[0].node,
       index: 0,
     })
   })
@@ -39,6 +36,7 @@ describe('Products', () => {
     const productCallback = jest.fn()
     const inCompleteProduct = {
       ...product,
+      title: null as unknown as string,
       images: anImageConnection({edges: []}),
     }
     render(

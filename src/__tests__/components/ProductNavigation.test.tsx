@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/react'
 import first from 'lodash/first.js'
 import faker from 'faker'
 import {ProductNavigation} from '../../components/ProductNavigation.server'
-import {buildAndGetFirstNaigation} from '../../__mocks__/fetchNavigations.mock'
+import {buildAndGetFirstNaigation} from '../../__mocks__/Navigations.handlers'
 import type {Navigation, NavigationItem} from '../../../generated/cms.types'
 
 describe('product navigations tests', () => {
