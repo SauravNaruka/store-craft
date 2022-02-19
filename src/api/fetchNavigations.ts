@@ -55,7 +55,7 @@ function fetchNavigationQuery(navigationsQuery: NavigationsQuery) {
   )
 }
 
-async function fetchCollectionByNavigation(navigation: Navigation) {
+export async function fetchCollectionByNavigation(navigation: Navigation) {
   if (!navigation?.items || !isArray(navigation.items)) {
     return {}
   }

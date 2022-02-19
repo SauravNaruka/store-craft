@@ -1,14 +1,11 @@
 import {render} from '@testing-library/react'
 import NavigationalItems from '@components/NavigationalItems'
-import type {Navigation} from '../../../generated/cms.types'
 import {
   buildNavigationAndCollectionIDs,
   NUMBER_OF_NAVIGATIONITEMS,
 } from '../../__mocks__/Navigations.mock'
-import {
-  buildLinkInternalShopifyCollection,
-  buildShopifyCollection,
-} from '../../__mocks__/LinkInternal.mock'
+import {buildLinkInternalShopifyCollection} from '../../__mocks__/LinkInternal.mock'
+import {buildShopifyCollection} from '../../__mocks__/ShopifyCollection.mock'
 
 describe('Navigational Items functioning', () => {
   test('return card component when everything is right', () => {
