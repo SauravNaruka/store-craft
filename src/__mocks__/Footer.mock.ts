@@ -1,15 +1,19 @@
-import {build, fake} from '@jackfranklin/test-data-bot'
+import faker from 'faker'
 import {buildNavigationGroup} from './NavigationGroup.mock'
 import {buildSocialLinks} from './SocialLinks.mock'
 import type {FooterQuery} from '@generated/cms.types'
 
-export const buildFooterResponse = build<FooterQuery>({
-  fields: {
+export const NUMBER_OF_NAVIGATIONI_GROUP = 2
+
+export function buildFooterResponse(): FooterQuery {
+  return {
     Footer: {
-      phone: fake(f => f.random.word()),
-      email: fake(f => f.internet.email()),
+      phone: faker.random.word(),
+      email: faker.internet.email(),
       social: buildSocialLinks(),
-      navigations: [buildNavigationGroup()],
+      navigations: Array(NUMBER_OF_NAVIGATIONI_GROUP)
+        .fill(undefined)
+        .map(() => buildNavigationGroup()),
     },
-  },
-})
+  }
+}

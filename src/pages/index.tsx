@@ -22,17 +22,12 @@ import {
   ROOM_NAVIGATION,
 } from '@constants/navigation.constants'
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
-import type {CollectionsByID} from '@LocalTypes/interfaces'
-import type {Navigation, Footer as FooterType} from '@generated/cms.types'
+import type {NavigationAndCollectionsByID} from '@LocalTypes/interfaces'
+import type {Footer as FooterType} from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.css'
 
-type NavigationAndCollectionsByID = {
-  navigation: Navigation
-  collectionsByID: CollectionsByID
-}
-
-type PropType = {
+export type PropType = {
   productNavigationAndCollectionsByID: NavigationAndCollectionsByID
   heroNavigationAndCollectionsByID: NavigationAndCollectionsByID
   roomNavigationAndCollectionsByID: NavigationAndCollectionsByID
@@ -87,7 +82,7 @@ export default function Home({
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<PropType> = async () => {
   const globalConfig = await fetchGlobalConfig()
   const theme = getTheme(globalConfig)
   const footerID = getFooterID(theme)

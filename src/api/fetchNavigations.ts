@@ -60,12 +60,14 @@ async function fetchCollectionByNavigation(navigation: Navigation) {
     return {}
   }
 
-  const collectionsPromise = navigation.items
-    .map(makeCollectionPromiseFromNavigationItem)
-    .filter(Boolean) as Promise<Collection>[]
+  const collectionsPromise = navigation.items.map(
+    makeCollectionPromiseFromNavigationItem,
+  ) as Promise<Collection>[]
 
   const collections = await Promise.all(collectionsPromise)
-  const collectionsByID = formatCollectionsToCollectionsByID(collections)
+  const collectionsByID = formatCollectionsToCollectionsByID(
+    collections.filter(Boolean),
+  )
 
   return collectionsByID
 }

@@ -1,29 +1,37 @@
-import {build, fake} from '@jackfranklin/test-data-bot'
+import faker from 'faker'
 import type {LinkInternal, ShopifyCollection, Page} from '@generated/cms.types'
 
-export const buildShopifyCollection = build<ShopifyCollection>({
-  fields: {
-    title: fake(f => f.random.words()),
-    subtitle: fake(f => f.random.words()),
-    shopifyId: fake(f => f.random.word()),
-  },
-})
+export function buildShopifyCollection(
+  overrides: Partial<ShopifyCollection> = {},
+): ShopifyCollection {
+  return {
+    __typename: 'ShopifyCollection',
+    title: faker.random.words(),
+    subtitle: faker.random.words(),
+    shopifyId: faker.random.word(),
+    handle: faker.internet.url(),
+    ...overrides,
+  }
+}
 
-export const buildPage = build<Page>({
-  fields: {
-    title: fake(f => f.random.words()),
-    slug: {current: fake(f => f.random.word())},
-  },
-})
+export function buildPage(): Page {
+  return {
+    __typename: 'Page',
+    title: faker.random.words(),
+    slug: {current: faker.random.word()},
+  }
+}
 
-export const buildLinkInternalShopifyCollection = build<LinkInternal>({
-  fields: {
+export function buildLinkInternalShopifyCollection(): LinkInternal {
+  return {
+    __typename: 'LinkInternal',
     reference: buildShopifyCollection(),
-  },
-})
+  }
+}
 
-export const buildLinkInternalPage = build<LinkInternal>({
-  fields: {
+export function buildLinkInternalPage(): LinkInternal {
+  return {
+    __typename: 'LinkInternal',
     reference: buildPage(),
-  },
-})
+  }
+}

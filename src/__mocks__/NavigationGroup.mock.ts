@@ -1,10 +1,9 @@
-import {build} from '@jackfranklin/test-data-bot'
-import {buildNavigation} from './Navigations.mock'
+import {buildNavigationWithPageLinks} from './Navigations.mock'
 import type {NavigationGroup} from '@generated/cms.types'
 
-export const buildNavigationGroup = build<NavigationGroup>({
-  fields: {
+export function buildNavigationGroup(): NavigationGroup {
+  return {
     __typename: 'NavigationGroup',
-    navigation: buildNavigation(),
-  },
-})
+    navigation: buildNavigationWithPageLinks(),
+  }
+}

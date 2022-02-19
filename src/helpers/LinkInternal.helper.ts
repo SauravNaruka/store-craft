@@ -11,9 +11,13 @@ export function isInternalLink(object?: unknown): object is LinkInternal {
 }
 
 export function getInternalLinkNavigationData(
-  link: LinkInternal,
+  link: LinkInternal | unknown,
   collectionsByID?: CollectionsByID,
-): NavigationalData {
+): NavigationalData | null {
+  if (!isInternalLink(link)) {
+    return null
+  }
+
   if (isShopifyCollection(link.reference)) {
     return getShopifyCollectionNavigationalData(
       link,
@@ -26,5 +30,5 @@ export function getInternalLinkNavigationData(
 
   // TODO: Implement other internal link type
 
-  throw new Error('unknown internal link')
+  return null
 }

@@ -5,7 +5,7 @@ export function isPage(object?: unknown): object is Page {
   return (object as Page)?.__typename === 'Page'
 }
 
-export function getPageNavigationalData(page: Page): NavigationalData {
+export function getPageNavigationalData(page: Page): NavigationalData | null {
   if (page.title && page.slug?.current) {
     return {
       title: page.title,
@@ -15,5 +15,5 @@ export function getPageNavigationalData(page: Page): NavigationalData {
     }
   }
 
-  throw new Error('Missing navigation data for page')
+  return null
 }

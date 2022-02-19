@@ -50,6 +50,11 @@ export type Price = {
 
 export type CollectionsByID = {[key: string]: Collection}
 
+export type NavigationAndCollectionsByID = {
+  navigation: Navigation
+  collectionsByID: CollectionsByID
+}
+
 export type NavigationalData = {
   title: string
   subtitle?: string

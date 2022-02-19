@@ -1,8 +1,5 @@
 import * as React from 'react'
-import {
-  isInternalLink,
-  getInternalLinkNavigationData,
-} from '@helpers/LinkInternal.helper'
+import {getInternalLinkNavigationData} from '@helpers/LinkInternal.helper'
 import type {CollectionsByID, ImageType, Maybe} from '@LocalTypes/interfaces'
 import type {Navigation} from '@generated/cms.types'
 
@@ -29,17 +26,21 @@ export function NavigationalItems({
   return (
     <>
       {navigation?.items?.map((item, index) => {
-        if (isInternalLink(item)) {
-          const {title, subtitle, slug, image} = getInternalLinkNavigationData(
-            item,
-            collectionsByID,
-          )
+        const navigationalData = getInternalLinkNavigationData(
+          item,
+          collectionsByID,
+        )
 
+        if (
+          navigationalData &&
+          navigationalData.title &&
+          navigationalData.slug
+        ) {
           return render({
-            title,
-            subtitle,
-            slug,
-            image,
+            title: navigationalData.title,
+            subtitle: navigationalData.subtitle,
+            slug: navigationalData.slug,
+            image: navigationalData.image,
             index,
           })
         } else {

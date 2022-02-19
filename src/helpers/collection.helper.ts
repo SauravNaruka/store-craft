@@ -12,15 +12,13 @@ export function getShopifyCollectionNavigationalData(
   link: LinkInternal,
   shopifyCollection: ShopifyCollection,
   collectionsByID?: CollectionsByID,
-): NavigationalData {
+): NavigationalData | null {
   if (!shopifyCollection.title || !shopifyCollection.handle) {
-    throw new Error(
-      `Missing critical data for navigation for ${shopifyCollection?.shopifyId}`,
-    )
+    return null
   }
   return {
     title: shopifyCollection.title,
-    subtitle: link.title ?? undefined,
+    subtitle: shopifyCollection.subtitle ?? undefined,
     slug: shopifyCollection.handle,
     image: getShopifyCollectionImage(
       shopifyCollection.shopifyId,
@@ -35,7 +33,7 @@ export function getShopifyCollectionImage(
 ) {
   if (shopifyId && collectionsByID) {
     const collection = collectionsByID[shopifyId]
-    return isValidImageType(collection.image) ? collection.image : null
+    return isValidImageType(collection?.image) ? collection.image : null
   }
 
   return null
