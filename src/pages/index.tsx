@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import CartIcon from '@components/icons/CartIcon'
 import MenuIcon from '@components/icons/MenuIcon'
@@ -82,7 +81,7 @@ export default function Home({
   )
 }
 
-export const getStaticProps: GetStaticProps<PropType> = async () => {
+export const getStaticProps = async () => {
   const globalConfig = await fetchGlobalConfig()
   const theme = getTheme(globalConfig)
   const footerID = getFooterID(theme)
