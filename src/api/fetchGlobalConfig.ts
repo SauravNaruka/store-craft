@@ -19,6 +19,7 @@ export async function fetchGlobalConfig(): Promise<GlobalConfig> {
 function fetchGlobalConfigQuery() {
   return client.GlobalConfig({id: configID}).then(globalConfigsQuery => {
     console.log('----------- fetchGlobalConfigQuery sucess-----------')
+    console.log(`----------- configID = ${configID}-----------`)
     const value = JSON.stringify(globalConfigsQuery)
     console.log(` - values ${value}`)
     Object.keys(globalConfigsQuery).forEach((key: string, index) => {
