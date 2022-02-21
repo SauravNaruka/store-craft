@@ -1,0 +1,6 @@
+fragment LinkExternallFields on LinkExternal {
+  __typename
+  title
+  url
+  newWindow
+}

@@ -1,21 +1,28 @@
 import {render, screen} from '@testing-library/react'
-import first from 'lodash/first.js'
 import faker from 'faker'
 import {ProductNavigation} from '../../components/ProductNavigation.server'
-import {buildAndGetFirstNaigation} from '../../__mocks__/fetchNavigations.mock'
-import type {Navigation, NavigationItem} from '../../../generated/cms.types'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {getFirstShopifyCollection} from '@helpers/navigation.helper'
+import {buildNavigationAndCollectionIDs} from '../../__mocks__/Navigations.mock'
 
 describe('product navigations tests', () => {
   test('navigation to have links', () => {
-    const navigation: Navigation = buildAndGetFirstNaigation()
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
-    render(<ProductNavigation navigation={navigation} />)
-    const firstNavigationItem = first(navigation.items) as NavigationItem
-    expect(
-      screen.getByRole('link', {
-        name: firstNavigationItem.title!,
-      }),
-    ).toBeInTheDocument()
+    render(
+      <ProductNavigation
+        navigation={navigation}
+        collectionsByID={collectionsByID}
+      />,
+    )
+
+    const firstNavigationItem = getFirstShopifyCollection(navigation)
+    const title = firstNavigationItem?.title ?? 'Non-matching title'
+    const links = screen.getAllByRole('link', {
+      name: new RegExp(title),
+    })
+    expect(links.length).toBeGreaterThanOrEqual(1)
   })
 
   test('navigation item dont render without a valid link', () => {
@@ -24,23 +31,21 @@ describe('product navigations tests', () => {
         {
           title: 'Some Title',
           link: undefined,
-          image: undefined,
         },
       ],
     }
-    render(<ProductNavigation navigation={navigation} />)
+    render(<ProductNavigation navigation={navigation} collectionsByID={{}} />)
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
   test('navigation item render with a valid link but partial data', async () => {
-    const navigation = {
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
+
+    const updatedNavigation = {
+      ...navigation,
       items: [
-        {
-          title: 'Some Title',
-          link: {url: '/some-url'},
-          image: {asset: {url: faker.internet.url()}, caption: 'some text'},
-        },
+        ...navigation.items,
         {
           title: undefined,
           link: {url: '/some-url2'},
@@ -48,10 +53,29 @@ describe('product navigations tests', () => {
         },
       ],
     }
-    render(<ProductNavigation navigation={navigation} />)
 
-    expect(screen.queryByRole('link', {name: 'Some Title'})).toBeInTheDocument()
+    render(
+      <ProductNavigation
+        navigation={updatedNavigation}
+        collectionsByID={collectionsByID}
+      />,
+    )
+
+    const shopifyCollection =
+      isInternalLink(navigation.items[0]) &&
+      isShopifyCollection(navigation.items[0].reference)
+        ? navigation.items[0].reference
+        : null
+
+    const title = isShopifyCollection(shopifyCollection)
+      ? (shopifyCollection.title as string)
+      : 'Non matching text'
+
+    expect(
+      screen.queryByRole('link', {name: new RegExp(title)}),
+    ).toBeInTheDocument()
+
     const links = await screen.findAllByRole('link')
-    expect(links).toHaveLength(1)
+    expect(links).toHaveLength(navigation.items.length)
   })
 })

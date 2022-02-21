@@ -1,4 +1,4 @@
-import {GlobalConfig, Theme} from '@generated/cms.types'
+import type {GlobalConfig, Theme} from '@generated/cms.types'
 
 export function getTheme(config: GlobalConfig): Theme {
   let theme

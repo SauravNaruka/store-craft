@@ -1,5 +1,5 @@
 import {graphql} from 'msw'
-import {fetchCollection} from '@api/fetchCollection'
+import {fetchCollectionBySlug} from '@api/fetchCollection'
 import {server} from '../../__mocks__/server'
 
 describe('fetch collection by handle', () => {
@@ -11,7 +11,7 @@ describe('fetch collection by handle', () => {
     )
 
     await expect(
-      fetchCollection({
+      fetchCollectionBySlug({
         handle: 'FEATURED_PRODUCTS_HANDLE',
         numberOfProducts: 10,
         numberOfImages: 1,

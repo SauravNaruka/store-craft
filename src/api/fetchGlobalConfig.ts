@@ -1,8 +1,9 @@
-import first from 'lodash/first.js'
 import client from '@api/clientSainty'
 import * as logger from '@helpers/logger'
 import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import type {GlobalConfig} from '@generated/cms.types'
+
+const configID = process?.env?.SANITY_STUDIO_GLOBAL_CONFIG_ID ?? ''
 
 export async function fetchGlobalConfig(): Promise<GlobalConfig> {
   try {
@@ -15,8 +16,9 @@ export async function fetchGlobalConfig(): Promise<GlobalConfig> {
 }
 
 function fetchGlobalConfigQuery() {
-  return client.GlobalConfigs().then(globalConfigsQuery => {
-    const globalConfig = first(globalConfigsQuery.allGlobalConfig)
+  return client.GlobalConfig({id: configID}).then(globalConfigsQuery => {
+    const globalConfig = globalConfigsQuery.GlobalConfig
+
     if (globalConfig) {
       return globalConfig as GlobalConfig
     }

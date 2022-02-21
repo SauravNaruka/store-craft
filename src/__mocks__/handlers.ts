@@ -1,11 +1,15 @@
-import {getNavigationsHandler} from './fetchNavigations.mock'
-import {getCollectionHandler} from './fetchCollection.mock'
-import {getGlobalConfig} from './fetchGlobalConfig.mock'
-import {getFooter} from './fetchFooter.mock'
+import {getNavigationsHandler} from './Navigations.handlers'
+import {
+  getCollectionHandler,
+  getCollectionShortInfoHandler,
+} from './Collection.handlers'
+import {getGlobalConfig} from './GlobalConfig.handlers'
+import {getFooter} from './Footer.handlers'
 
 const handlers = [
   getNavigationsHandler,
   getCollectionHandler,
+  getCollectionShortInfoHandler,
   getGlobalConfig,
   getFooter,
 ]

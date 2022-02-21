@@ -3,14 +3,26 @@ import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import * as logger from '@helpers/logger'
 import type {
   Collection,
+  CollectionQuery,
+  CollectionShortInfoQuery,
   CollectionQueryVariables,
 } from '@generated/storefront.types'
 
-export async function fetchCollection(
-  args: CollectionQueryVariables,
-): Promise<Collection> {
+export async function fetchCollectionBySlug({
+  handle,
+  numberOfProducts,
+  numberOfImages,
+  cursor,
+}: CollectionQueryVariables): Promise<Collection> {
   try {
-    const response = await fetchCollectionQuery(args)
+    const response = await client
+      .Collection({
+        handle,
+        numberOfProducts,
+        numberOfImages,
+        cursor,
+      })
+      .then(getCollectionFromCollectionQuery)
     return response
   } catch (error) {
     logger.error(error)
@@ -18,27 +30,29 @@ export async function fetchCollection(
   }
 }
 
-function fetchCollectionQuery({
-  handle,
-  numberOfProducts,
-  numberOfImages,
-  cursor,
-}: CollectionQueryVariables): Promise<Collection> {
-  return client
-    .Collection({
-      handle,
-      numberOfProducts,
-      numberOfImages,
-      cursor,
-    })
-    .then(collectionQuery => {
-      const collection = collectionQuery.collection
-      if (collection) {
-        return collection as Collection
-      }
+export async function fetchCollectionShortInfoByID(
+  id: string,
+): Promise<Collection> {
+  try {
+    const response = await client
+      .CollectionShortInfo({id})
+      .then(getCollectionFromCollectionQuery)
+    return response
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
 
-      throw new Error(
-        `${API_RESPONSE_ERROR}. request at client.Collection for variable ID:${handle}, numberOfProducts:${numberOfProducts}, numberOfImages:${numberOfImages}, cursor:${cursor}`,
-      )
-    })
+function getCollectionFromCollectionQuery(
+  collectionQuery: CollectionQuery | CollectionShortInfoQuery,
+) {
+  const collection = collectionQuery.collection
+  if (collection) {
+    return collection as Collection
+  }
+
+  throw new Error(
+    `${API_RESPONSE_ERROR}. request at client.Collection for variable`,
+  )
 }

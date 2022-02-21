@@ -1,19 +1,24 @@
 import {render} from '@testing-library/react'
 import NavigationalItems from '@components/NavigationalItems'
 import {
-  buildAndGetFirstNaigation,
-  buildNavigationItem,
+  buildNavigationAndCollectionIDs,
   NUMBER_OF_NAVIGATIONITEMS,
-} from '../../__mocks__/fetchNavigations.mock'
-import type {Navigation, NavigationItem} from '../../../generated/cms.types'
+} from '../../__mocks__/Navigations.mock'
+import {buildLinkInternalShopifyCollection} from '../../__mocks__/LinkInternal.mock'
+import {buildShopifyCollection} from '../../__mocks__/ShopifyCollection.mock'
 
 describe('Navigational Items functioning', () => {
   test('return card component when everything is right', () => {
     const card = jest.fn()
-    const navigation: Navigation = buildAndGetFirstNaigation()
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
     render(
-      <NavigationalItems navigation={navigation}>{card}</NavigationalItems>,
+      <NavigationalItems
+        navigation={navigation}
+        collectionsByID={collectionsByID}
+      >
+        {card}
+      </NavigationalItems>,
     )
 
     expect(card).toBeCalledTimes(NUMBER_OF_NAVIGATIONITEMS)
@@ -21,11 +26,23 @@ describe('Navigational Items functioning', () => {
 
   test('return null when title is missing', () => {
     const card = jest.fn()
-    const navigationItem: NavigationItem = buildNavigationItem()
-    navigationItem.title = null
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
+
+    const updatedNavigation = {
+      ...navigation,
+      items: [
+        {
+          ...buildLinkInternalShopifyCollection(),
+          reference: {...buildShopifyCollection({title: undefined})},
+        },
+      ],
+    }
 
     render(
-      <NavigationalItems navigation={{items: [navigationItem]}}>
+      <NavigationalItems
+        navigation={updatedNavigation}
+        collectionsByID={collectionsByID}
+      >
         {card}
       </NavigationalItems>,
     )
@@ -34,24 +51,48 @@ describe('Navigational Items functioning', () => {
 
   test('return card when subtitle is missing', () => {
     const card = jest.fn()
-    const navigationItem: NavigationItem = buildNavigationItem()
-    navigationItem.subtitle = null
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
+
+    const updatedNavigation = {
+      ...navigation,
+      items: [
+        {
+          ...buildLinkInternalShopifyCollection(),
+          reference: {...buildShopifyCollection({subtitle: undefined})},
+        },
+      ],
+    }
 
     render(
-      <NavigationalItems navigation={{items: [navigationItem]}}>
+      <NavigationalItems
+        navigation={updatedNavigation}
+        collectionsByID={collectionsByID}
+      >
         {card}
       </NavigationalItems>,
     )
     expect(card).toBeCalledTimes(1)
   })
 
-  test('return card when subtitle is missing', () => {
+  test('return card when link is missing', () => {
     const card = jest.fn()
-    const navigationItem: NavigationItem = buildNavigationItem()
-    navigationItem.link = null
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
+
+    const updatedNavigation = {
+      ...navigation,
+      items: [
+        {
+          ...buildLinkInternalShopifyCollection(),
+          reference: {...buildShopifyCollection({handle: undefined})},
+        },
+      ],
+    }
 
     render(
-      <NavigationalItems navigation={{items: [navigationItem]}}>
+      <NavigationalItems
+        navigation={updatedNavigation}
+        collectionsByID={collectionsByID}
+      >
         {card}
       </NavigationalItems>,
     )

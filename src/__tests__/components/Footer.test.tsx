@@ -1,8 +1,10 @@
 import {render, screen} from '@testing-library/react'
 import first from 'lodash/first'
 import {Footer} from '@components/footer/Footer.server'
-import {buildFooterResponse} from '../../__mocks__/fetchFooter.mock'
+import {buildFooterResponse} from '../../__mocks__/Footer.mock'
 import type {Footer as FooterType} from '@generated/cms.types'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import {isPage} from '@helpers/page.helper'
 
 describe('Footer navigation', () => {
   test('footer with no navigation render footer', () => {
@@ -15,13 +17,23 @@ describe('Footer navigation', () => {
     const footer = buildFooterResponse().Footer as FooterType
     render(<Footer data={footer} />)
 
-    const firstNavigation = first(footer?.navigations)
-    const firstTitle = firstNavigation?.title ?? 'Non Matching title'
+    const firstNavigationGroup = first(footer?.navigations)
+    const firstNavigationItem = first(firstNavigationGroup?.navigation?.items)
+
+    const navigationTitle =
+      firstNavigationGroup?.navigation?.title ?? 'Non Matching title'
+
     const firstLinkTitle =
-      firstNavigation?.items?.[0]?.title ?? 'Non Matching title'
+      isInternalLink(firstNavigationItem) &&
+      isPage(firstNavigationItem.reference) &&
+      firstNavigationItem.reference.title
+        ? firstNavigationItem.reference.title
+        : 'Non Matching title'
+
     expect(
-      screen.getByRole('heading', {name: new RegExp(firstTitle)}),
+      screen.getByRole('heading', {name: new RegExp(navigationTitle)}),
     ).toBeInTheDocument()
+
     expect(screen.getByRole('link', {name: firstLinkTitle})).toBeInTheDocument()
   })
 })

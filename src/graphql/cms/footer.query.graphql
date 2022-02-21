@@ -9,16 +9,8 @@ query Footer($id: ID!) {
       twitter
     }
     navigations {
-      name
-      title
-      subtitle
-      description
-      items {
-        title
-        subtitle
-        link {
-          url
-        }
+      navigation {
+        ...NavigationFields
       }
     }
   }

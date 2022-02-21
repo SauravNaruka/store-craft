@@ -1,12 +1,42 @@
 import first from 'lodash/first.js'
+import isArray from 'lodash/isArray'
 import client from '@api/clientSainty'
 import * as logger from '@helpers/logger'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {fetchCollectionShortInfoByID} from './fetchCollection'
 import {API_RESPONSE_ERROR} from '@constants/errors.constants'
-import type {Navigation, NavigationsQueryVariables} from '@generated/cms.types'
+import type {
+  Navigation,
+  NavigationsQuery,
+  NavigationsQueryVariables,
+  LinkExternalOrLinkInternalOrNavigationGroup,
+} from '@generated/cms.types'
+import type {Collection} from '@generated/storefront.types'
+import type {Maybe, CollectionsByID} from '@LocalTypes/interfaces'
 
-export async function fetchNavigation(id: string): Promise<Navigation> {
+export async function fetchNavigationAndRelatedCollectionBySlug({
+  slug,
+}: NavigationsQueryVariables) {
   try {
-    const navigation = await fetchNavigationQuery({slug: id})
+    const navigation = await fetchNavigationBySlug({slug})
+    const collectionsByID = await fetchCollectionByNavigation(navigation)
+
+    return {navigation, collectionsByID}
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
+
+export async function fetchNavigationBySlug({
+  slug,
+}: NavigationsQueryVariables): Promise<Navigation> {
+  try {
+    const navigation = await client
+      .Navigations({slug})
+      .then(fetchNavigationQuery)
+
     return navigation
   } catch (error) {
     logger.error(error)
@@ -14,15 +44,53 @@ export async function fetchNavigation(id: string): Promise<Navigation> {
   }
 }
 
-function fetchNavigationQuery({slug}: NavigationsQueryVariables) {
-  return client.Navigations({slug}).then(navigationsQuery => {
-    const navigation = first(navigationsQuery.allNavigation)
-    if (navigation) {
-      return navigation as Navigation
-    }
+function fetchNavigationQuery(navigationsQuery: NavigationsQuery) {
+  const navigation = first(navigationsQuery.allNavigation)
+  if (navigation) {
+    return navigation as Navigation
+  }
 
-    throw new Error(
-      `${API_RESPONSE_ERROR}. request at client.Navigations for variable ${slug}`,
-    )
+  throw new Error(
+    `${API_RESPONSE_ERROR}. request at client.Navigations for variable.`,
+  )
+}
+
+export async function fetchCollectionByNavigation(navigation: Navigation) {
+  if (!navigation?.items || !isArray(navigation.items)) {
+    return {}
+  }
+
+  const collectionsPromise = navigation.items.map(
+    makeCollectionPromiseFromNavigationItem,
+  ) as Promise<Collection>[]
+
+  const collections = await Promise.all(collectionsPromise)
+  const collectionsByID = formatCollectionsToCollectionsByID(
+    collections.filter(Boolean),
+  )
+
+  return collectionsByID
+}
+
+async function makeCollectionPromiseFromNavigationItem(
+  item: Maybe<LinkExternalOrLinkInternalOrNavigationGroup>,
+) {
+  if (
+    isInternalLink(item) &&
+    isShopifyCollection(item.reference) &&
+    item.reference.shopifyId
+  ) {
+    return fetchCollectionShortInfoByID(item.reference.shopifyId)
+  }
+
+  return null
+}
+
+function formatCollectionsToCollectionsByID(collections: Collection[]) {
+  const collectionsByID: CollectionsByID = {}
+  collections.forEach(item => {
+    collectionsByID[item.id] = item
   })
+
+  return collectionsByID
 }

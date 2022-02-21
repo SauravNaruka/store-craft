@@ -1,44 +1,46 @@
 import * as React from 'react'
-import {isValidImageBlock} from '@helpers/image.helper'
-import type {Navigation, NavigationItem} from '@generated/cms.types'
+import {getInternalLinkNavigationData} from '@helpers/LinkInternal.helper'
+import type {CollectionsByID, ImageType, Maybe} from '@LocalTypes/interfaces'
+import type {Navigation} from '@generated/cms.types'
 
 type CardCallbackProp = {
   title: string
-  link: string
-  imageUrl: string
-  imageCaption: string
-  index: number
   subtitle?: string | null
+  slug: string
+  image?: Maybe<ImageType>
+  index: number
 }
 
 type PropType = {
   navigation: Navigation
+  collectionsByID?: CollectionsByID
   imageNavigation?: boolean
   children: (props: CardCallbackProp) => React.ReactNode
 }
 
 export function NavigationalItems({
   navigation,
-  imageNavigation = true,
+  collectionsByID,
   children: render,
 }: PropType) {
-  const navigationItems: NavigationItem[] = navigation?.items?.length
-    ? (navigation.items as NavigationItem[])
-    : []
   return (
     <>
-      {navigationItems.map(({title, subtitle, link, image}, index) => {
+      {navigation?.items?.map((item, index) => {
+        const navigationalData = getInternalLinkNavigationData(
+          item,
+          collectionsByID,
+        )
+
         if (
-          title &&
-          link?.url &&
-          (!imageNavigation || isValidImageBlock(image))
+          navigationalData &&
+          navigationalData.title &&
+          navigationalData.slug
         ) {
           return render({
-            title,
-            subtitle,
-            link: link.url,
-            imageUrl: image?.asset?.url ?? '',
-            imageCaption: image?.caption ?? '',
+            title: navigationalData.title,
+            subtitle: navigationalData.subtitle,
+            slug: navigationalData.slug,
+            image: navigationalData.image,
             index,
           })
         } else {

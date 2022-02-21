@@ -15,15 +15,7 @@ type PropType = ImageComponentProps & {
   style: CardStyle
 }
 
-export function Card({
-  title,
-  subtitle,
-  link,
-  src,
-  alt,
-  style,
-  ...rest
-}: PropType) {
+export function Card({title, subtitle, link, style, ...rest}: PropType) {
   return (
     <div className={style.rootClass} role="listitem">
       <a
@@ -32,11 +24,9 @@ export function Card({
         href={link}
         className={cardStyles.hiddenLink}
       />
-      {src && alt && (
-        <div className={style.imageClass}>
-          <Image src={src} alt={alt} {...rest} />
-        </div>
-      )}
+      <div className={style.imageClass}>
+        <Image {...rest} />
+      </div>
       <a className={style.linkTextClass} href={link}>
         <span>{title}</span>
         {subtitle && <span>{subtitle}</span>}

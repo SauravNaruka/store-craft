@@ -5,7 +5,7 @@ import {server} from '../../__mocks__/server'
 describe('fetch global config', () => {
   test('error in api response', async () => {
     server.use(
-      graphql.query('GlobalConfigs', (req, res, ctx) => {
+      graphql.query('GlobalConfig', (req, res, ctx) => {
         return res.once(
           ctx.status(500),
           ctx.errors([{message: 'Server Error'}]),
@@ -18,8 +18,8 @@ describe('fetch global config', () => {
 
   test('empty api response', async () => {
     server.use(
-      graphql.query('GlobalConfigs', (req, res, ctx) => {
-        return res.once(ctx.data({allGlobalConfig: []}))
+      graphql.query('GlobalConfig', (req, res, ctx) => {
+        return res.once(ctx.data({}))
       }),
     )
 

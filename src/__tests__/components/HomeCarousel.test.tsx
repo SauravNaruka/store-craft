@@ -1,37 +1,46 @@
-import {render, screen} from '@testing-library/react'
 import faker from 'faker'
+import {render, screen} from '@testing-library/react'
 import {HomeCarousel} from '@components/carousel/HomeCarousel'
 import {
-  buildAndGetFirstNaigation,
+  buildNavigationAndCollectionIDs,
   NUMBER_OF_NAVIGATIONITEMS,
-} from 'src/__mocks__/fetchNavigations.mock'
-import type {Navigation, NavigationItem} from '@generated/cms.types'
+} from 'src/__mocks__/Navigations.mock'
 
 describe('the working of Home carousel', () => {
   test('home carousel', () => {
-    const navigation: Navigation = buildAndGetFirstNaigation()
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
-    render(<HomeCarousel navigation={navigation} />)
+    render(
+      <HomeCarousel
+        navigation={navigation}
+        collectionsByID={collectionsByID}
+      />,
+    )
     expect(screen.getAllByRole('link', {hidden: true}).length).toBe(
       NUMBER_OF_NAVIGATIONITEMS,
     )
   })
 
   test('home carousel with empty value', () => {
-    const navigationItems: NavigationItem[] = [
-      {
-        title: faker.random.words(),
-        link: {url: faker.random.word()},
-        image: {
-          caption: faker.random.word(),
-          asset: {
-            url: null,
-          },
-        },
-      },
-    ]
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
-    render(<HomeCarousel navigation={{items: navigationItems}} />)
+    const updatedNavigation = {
+      ...navigation,
+      items: [
+        {
+          title: undefined,
+          link: {url: '/some-url2'},
+          image: {asset: {url: faker.internet.url()}, caption: 'some text'},
+        },
+      ],
+    }
+
+    render(
+      <HomeCarousel
+        navigation={updatedNavigation}
+        collectionsByID={collectionsByID}
+      />,
+    )
     expect(screen.queryAllByRole('link', {hidden: true}).length).toBe(0)
   })
 })

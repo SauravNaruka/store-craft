@@ -25,6 +25,25 @@ export type Scalars = {
   JSON: any
 }
 
+export type AnnotationLinkEmail = {
+  __typename?: 'AnnotationLinkEmail'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
+}
+
+export type AnnotationLinkEmailFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  email?: InputMaybe<StringFilter>
+}
+
+export type AnnotationLinkEmailSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  email?: InputMaybe<SortOrder>
+}
+
 export type Author = Document & {
   __typename?: 'Author'
   /** Date the document was created */
@@ -57,6 +76,13 @@ export type AuthorFilter = {
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
 }
+
+export type AuthorOrPageOrPostOrShopifyCollectionOrShopifyProduct =
+  | Author
+  | Page
+  | Post
+  | ShopifyCollection
+  | ShopifyProduct
 
 export type AuthorReference = {
   __typename?: 'AuthorReference'
@@ -221,7 +247,7 @@ export type Footer = Document & {
   handle?: Maybe<Slug>
   /** Only used internally in the CMS */
   name?: Maybe<Scalars['String']>
-  navigations?: Maybe<Array<Maybe<Navigation>>>
+  navigations?: Maybe<Array<Maybe<NavigationGroup>>>
   /** Support contact number for the customer */
   phone?: Maybe<Scalars['String']>
   social?: Maybe<SocialLinks>
@@ -325,6 +351,49 @@ export type GlobalConfigSorting = {
   _updatedAt?: InputMaybe<SortOrder>
 }
 
+export type Header = Document & {
+  __typename?: 'Header'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  /** Only used internally in the CMS */
+  name?: Maybe<Scalars['String']>
+  navigations?: Maybe<Array<Maybe<NavigationGroup>>>
+  slug?: Maybe<Slug>
+}
+
+export type HeaderFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  name?: InputMaybe<StringFilter>
+  slug?: InputMaybe<SlugFilter>
+}
+
+export type HeaderSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  slug?: InputMaybe<SlugSorting>
+}
+
 export type IdFilter = {
   /** Checks if the value is equal to the given input. */
   eq?: InputMaybe<Scalars['ID']>
@@ -403,27 +472,54 @@ export type IntFilter = {
   neq?: InputMaybe<Scalars['Int']>
 }
 
-export type Link = {
-  __typename?: 'Link'
+export type LinkExternal = {
+  __typename?: 'LinkExternal'
   _key?: Maybe<Scalars['String']>
   _type?: Maybe<Scalars['String']>
-  /** Optional internal reference to the page */
-  internalReference?: Maybe<Page>
-  /** Use fully qualified URLs for external link & relative URLs for internal links */
+  newWindow?: Maybe<Scalars['Boolean']>
+  title?: Maybe<Scalars['String']>
   url?: Maybe<Scalars['String']>
 }
 
-export type LinkFilter = {
+export type LinkExternalFilter = {
   _key?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
-  internalReference?: InputMaybe<PageFilter>
+  newWindow?: InputMaybe<BooleanFilter>
+  title?: InputMaybe<StringFilter>
   url?: InputMaybe<StringFilter>
 }
 
-export type LinkSorting = {
+export type LinkExternalOrLinkInternalOrNavigationGroup =
+  | LinkExternal
+  | LinkInternal
+  | NavigationGroup
+
+export type LinkExternalSorting = {
   _key?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
+  newWindow?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
   url?: InputMaybe<SortOrder>
+}
+
+export type LinkInternal = {
+  __typename?: 'LinkInternal'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  reference?: Maybe<AuthorOrPageOrPostOrShopifyCollectionOrShopifyProduct>
+  title?: Maybe<Scalars['String']>
+}
+
+export type LinkInternalFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type LinkInternalSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
 }
 
 export type Navigation = Document & {
@@ -439,12 +535,10 @@ export type Navigation = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
-  description?: Maybe<Scalars['String']>
-  image?: Maybe<ImageBlock>
-  items?: Maybe<Array<Maybe<NavigationItem>>>
+  items?: Maybe<Array<Maybe<LinkExternalOrLinkInternalOrNavigationGroup>>>
+  link?: Maybe<LinkInternal>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Slug>
-  subtitle?: Maybe<Scalars['String']>
   title?: Maybe<Scalars['String']>
 }
 
@@ -457,40 +551,28 @@ export type NavigationFilter = {
   _rev?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
-  description?: InputMaybe<StringFilter>
-  image?: InputMaybe<ImageBlockFilter>
+  link?: InputMaybe<LinkInternalFilter>
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
-  subtitle?: InputMaybe<StringFilter>
   title?: InputMaybe<StringFilter>
 }
 
-export type NavigationItem = {
-  __typename?: 'NavigationItem'
+export type NavigationGroup = {
+  __typename?: 'NavigationGroup'
   _key?: Maybe<Scalars['String']>
   _type?: Maybe<Scalars['String']>
-  image?: Maybe<ImageBlock>
-  link?: Maybe<Link>
-  subtitle?: Maybe<Scalars['String']>
-  title?: Maybe<Scalars['String']>
+  navigation?: Maybe<Navigation>
 }
 
-export type NavigationItemFilter = {
+export type NavigationGroupFilter = {
   _key?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
-  image?: InputMaybe<ImageBlockFilter>
-  link?: InputMaybe<LinkFilter>
-  subtitle?: InputMaybe<StringFilter>
-  title?: InputMaybe<StringFilter>
+  navigation?: InputMaybe<NavigationFilter>
 }
 
-export type NavigationItemSorting = {
+export type NavigationGroupSorting = {
   _key?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
-  image?: InputMaybe<ImageBlockSorting>
-  link?: InputMaybe<LinkSorting>
-  subtitle?: InputMaybe<SortOrder>
-  title?: InputMaybe<SortOrder>
 }
 
 export type NavigationSorting = {
@@ -500,11 +582,9 @@ export type NavigationSorting = {
   _rev?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
-  description?: InputMaybe<SortOrder>
-  image?: InputMaybe<ImageBlockSorting>
+  link?: InputMaybe<LinkInternalSorting>
   name?: InputMaybe<SortOrder>
   slug?: InputMaybe<SlugSorting>
-  subtitle?: InputMaybe<SortOrder>
   title?: InputMaybe<SortOrder>
 }
 
@@ -538,6 +618,28 @@ export type PageFilter = {
   mainImage?: InputMaybe<ImageFilter>
   slug?: InputMaybe<SlugFilter>
   title?: InputMaybe<StringFilter>
+}
+
+export type PageInfo = {
+  __typename?: 'PageInfo'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  hasNextPage?: Maybe<Scalars['Boolean']>
+  hasPreviousPage?: Maybe<Scalars['Boolean']>
+}
+
+export type PageInfoFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  hasNextPage?: InputMaybe<BooleanFilter>
+  hasPreviousPage?: InputMaybe<BooleanFilter>
+}
+
+export type PageInfoSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  hasNextPage?: InputMaybe<SortOrder>
+  hasPreviousPage?: InputMaybe<SortOrder>
 }
 
 export type PageSorting = {
@@ -654,23 +756,29 @@ export type RootQuery = {
   Document?: Maybe<Document>
   Footer?: Maybe<Footer>
   GlobalConfig?: Maybe<GlobalConfig>
+  Header?: Maybe<Header>
   Navigation?: Maybe<Navigation>
   Page?: Maybe<Page>
   Post?: Maybe<Post>
   PostCategory?: Maybe<PostCategory>
   SanityFileAsset?: Maybe<SanityFileAsset>
   SanityImageAsset?: Maybe<SanityImageAsset>
+  ShopifyCollection?: Maybe<ShopifyCollection>
+  ShopifyProduct?: Maybe<ShopifyProduct>
   Theme?: Maybe<Theme>
   allAuthor: Array<Author>
   allDocument: Array<Document>
   allFooter: Array<Footer>
   allGlobalConfig: Array<GlobalConfig>
+  allHeader: Array<Header>
   allNavigation: Array<Navigation>
   allPage: Array<Page>
   allPost: Array<Post>
   allPostCategory: Array<PostCategory>
   allSanityFileAsset: Array<SanityFileAsset>
   allSanityImageAsset: Array<SanityImageAsset>
+  allShopifyCollection: Array<ShopifyCollection>
+  allShopifyProduct: Array<ShopifyProduct>
   allTheme: Array<Theme>
 }
 
@@ -687,6 +795,10 @@ export type RootQueryFooterArgs = {
 }
 
 export type RootQueryGlobalConfigArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryHeaderArgs = {
   id: Scalars['ID']
 }
 
@@ -711,6 +823,14 @@ export type RootQuerySanityFileAssetArgs = {
 }
 
 export type RootQuerySanityImageAssetArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryShopifyCollectionArgs = {
+  id: Scalars['ID']
+}
+
+export type RootQueryShopifyProductArgs = {
   id: Scalars['ID']
 }
 
@@ -744,6 +864,13 @@ export type RootQueryAllGlobalConfigArgs = {
   offset?: InputMaybe<Scalars['Int']>
   sort?: InputMaybe<Array<GlobalConfigSorting>>
   where?: InputMaybe<GlobalConfigFilter>
+}
+
+export type RootQueryAllHeaderArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<HeaderSorting>>
+  where?: InputMaybe<HeaderFilter>
 }
 
 export type RootQueryAllNavigationArgs = {
@@ -786,6 +913,20 @@ export type RootQueryAllSanityImageAssetArgs = {
   offset?: InputMaybe<Scalars['Int']>
   sort?: InputMaybe<Array<SanityImageAssetSorting>>
   where?: InputMaybe<SanityImageAssetFilter>
+}
+
+export type RootQueryAllShopifyCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<ShopifyCollectionSorting>>
+  where?: InputMaybe<ShopifyCollectionFilter>
+}
+
+export type RootQueryAllShopifyProductArgs = {
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  sort?: InputMaybe<Array<ShopifyProductSorting>>
+  where?: InputMaybe<ShopifyProductFilter>
 }
 
 export type RootQueryAllThemeArgs = {
@@ -1188,6 +1329,783 @@ export type SeoSorting = {
   title?: InputMaybe<SortOrder>
 }
 
+export type ShopifyCollection = Document & {
+  __typename?: 'ShopifyCollection'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  archived?: Maybe<Scalars['Boolean']>
+  handle?: Maybe<Scalars['String']>
+  products?: Maybe<Array<Maybe<ShopifyProduct>>>
+  shopifyId?: Maybe<Scalars['String']>
+  sourceData?: Maybe<ShopifySourceCollection>
+  subtitle?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+}
+
+export type ShopifyCollectionFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  archived?: InputMaybe<BooleanFilter>
+  handle?: InputMaybe<StringFilter>
+  shopifyId?: InputMaybe<StringFilter>
+  sourceData?: InputMaybe<ShopifySourceCollectionFilter>
+  subtitle?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type ShopifyCollectionSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  archived?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  shopifyId?: InputMaybe<SortOrder>
+  sourceData?: InputMaybe<ShopifySourceCollectionSorting>
+  subtitle?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+}
+
+export type ShopifyMoneyV2 = {
+  __typename?: 'ShopifyMoneyV2'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  amount?: Maybe<Scalars['String']>
+  currencyCode?: Maybe<Scalars['String']>
+}
+
+export type ShopifyMoneyV2Filter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  amount?: InputMaybe<StringFilter>
+  currencyCode?: InputMaybe<StringFilter>
+}
+
+export type ShopifyMoneyV2Sorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  amount?: InputMaybe<SortOrder>
+  currencyCode?: InputMaybe<SortOrder>
+}
+
+export type ShopifyProduct = Document & {
+  __typename?: 'ShopifyProduct'
+  /** Date the document was created */
+  _createdAt?: Maybe<Scalars['DateTime']>
+  /** Document ID */
+  _id?: Maybe<Scalars['ID']>
+  _key?: Maybe<Scalars['String']>
+  /** Current document revision */
+  _rev?: Maybe<Scalars['String']>
+  /** Document type */
+  _type?: Maybe<Scalars['String']>
+  /** Date the document was last modified */
+  _updatedAt?: Maybe<Scalars['DateTime']>
+  archived?: Maybe<Scalars['Boolean']>
+  collections?: Maybe<Array<Maybe<ShopifyCollection>>>
+  handle?: Maybe<Scalars['String']>
+  maxVariantPrice?: Maybe<Scalars['Float']>
+  minVariantPrice?: Maybe<Scalars['Float']>
+  options?: Maybe<Array<Maybe<ShopifyProductOption>>>
+  shopifyId?: Maybe<Scalars['String']>
+  sourceData?: Maybe<ShopifySourceProduct>
+  title?: Maybe<Scalars['String']>
+  variants?: Maybe<Array<Maybe<ShopifyProductVariant>>>
+}
+
+export type ShopifyProductFilter = {
+  /** Apply filters on document level */
+  _?: InputMaybe<Sanity_DocumentFilter>
+  _createdAt?: InputMaybe<DatetimeFilter>
+  _id?: InputMaybe<IdFilter>
+  _key?: InputMaybe<StringFilter>
+  _rev?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  _updatedAt?: InputMaybe<DatetimeFilter>
+  archived?: InputMaybe<BooleanFilter>
+  handle?: InputMaybe<StringFilter>
+  maxVariantPrice?: InputMaybe<FloatFilter>
+  minVariantPrice?: InputMaybe<FloatFilter>
+  shopifyId?: InputMaybe<StringFilter>
+  sourceData?: InputMaybe<ShopifySourceProductFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type ShopifyProductOption = {
+  __typename?: 'ShopifyProductOption'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  shopifyOptionId?: Maybe<Scalars['String']>
+  values?: Maybe<Array<Maybe<ShopifyProductOptionValue>>>
+}
+
+export type ShopifyProductOptionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+  shopifyOptionId?: InputMaybe<StringFilter>
+}
+
+export type ShopifyProductOptionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  shopifyOptionId?: InputMaybe<SortOrder>
+}
+
+export type ShopifyProductOptionValue = {
+  __typename?: 'ShopifyProductOptionValue'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  value?: Maybe<Scalars['String']>
+}
+
+export type ShopifyProductOptionValueFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  value?: InputMaybe<StringFilter>
+}
+
+export type ShopifyProductOptionValueSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  value?: InputMaybe<SortOrder>
+}
+
+export type ShopifyProductSorting = {
+  _createdAt?: InputMaybe<SortOrder>
+  _id?: InputMaybe<SortOrder>
+  _key?: InputMaybe<SortOrder>
+  _rev?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  _updatedAt?: InputMaybe<SortOrder>
+  archived?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  maxVariantPrice?: InputMaybe<SortOrder>
+  minVariantPrice?: InputMaybe<SortOrder>
+  shopifyId?: InputMaybe<SortOrder>
+  sourceData?: InputMaybe<ShopifySourceProductSorting>
+  title?: InputMaybe<SortOrder>
+}
+
+export type ShopifyProductVariant = {
+  __typename?: 'ShopifyProductVariant'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  shopifyVariantID?: Maybe<Scalars['String']>
+  sourceData?: Maybe<ShopifySourceProductVariant>
+  title?: Maybe<Scalars['String']>
+}
+
+export type ShopifyProductVariantFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  shopifyVariantID?: InputMaybe<StringFilter>
+  sourceData?: InputMaybe<ShopifySourceProductVariantFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type ShopifyProductVariantSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  shopifyVariantID?: InputMaybe<SortOrder>
+  sourceData?: InputMaybe<ShopifySourceProductVariantSorting>
+  title?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceCollection = {
+  __typename?: 'ShopifySourceCollection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  description?: Maybe<Scalars['String']>
+  descriptionHtml?: Maybe<Scalars['String']>
+  handle?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
+  image?: Maybe<ShopifySourceImage>
+  products?: Maybe<ShopifySourceProductsConnection>
+  title?: Maybe<Scalars['String']>
+  updatedAt?: Maybe<Scalars['Date']>
+}
+
+export type ShopifySourceCollectionEdge = {
+  __typename?: 'ShopifySourceCollectionEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceCollectionNode>
+}
+
+export type ShopifySourceCollectionEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceCollectionNodeFilter>
+}
+
+export type ShopifySourceCollectionEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceCollectionNodeSorting>
+}
+
+export type ShopifySourceCollectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  description?: InputMaybe<StringFilter>
+  descriptionHtml?: InputMaybe<StringFilter>
+  handle?: InputMaybe<StringFilter>
+  id?: InputMaybe<StringFilter>
+  image?: InputMaybe<ShopifySourceImageFilter>
+  products?: InputMaybe<ShopifySourceProductsConnectionFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateFilter>
+}
+
+export type ShopifySourceCollectionNode = {
+  __typename?: 'ShopifySourceCollectionNode'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  handle?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceCollectionNodeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  handle?: InputMaybe<StringFilter>
+  id?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceCollectionNodeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceCollectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  descriptionHtml?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  image?: InputMaybe<ShopifySourceImageSorting>
+  products?: InputMaybe<ShopifySourceProductsConnectionSorting>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceCollectionsConnection = {
+  __typename?: 'ShopifySourceCollectionsConnection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceCollectionEdge>>>
+  pageInfo?: Maybe<PageInfo>
+}
+
+export type ShopifySourceCollectionsConnectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  pageInfo?: InputMaybe<PageInfoFilter>
+}
+
+export type ShopifySourceCollectionsConnectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  pageInfo?: InputMaybe<PageInfoSorting>
+}
+
+export type ShopifySourceImage = {
+  __typename?: 'ShopifySourceImage'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  altText?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
+  originalSrc?: Maybe<Scalars['String']>
+  w100?: Maybe<Scalars['String']>
+  w300?: Maybe<Scalars['String']>
+  w800?: Maybe<Scalars['String']>
+  w1200?: Maybe<Scalars['String']>
+  w1600?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceImageEdge = {
+  __typename?: 'ShopifySourceImageEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  key?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceImage>
+}
+
+export type ShopifySourceImageEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  key?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceImageFilter>
+}
+
+export type ShopifySourceImageEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  key?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceImageSorting>
+}
+
+export type ShopifySourceImageFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  altText?: InputMaybe<StringFilter>
+  id?: InputMaybe<StringFilter>
+  originalSrc?: InputMaybe<StringFilter>
+  w100?: InputMaybe<StringFilter>
+  w300?: InputMaybe<StringFilter>
+  w800?: InputMaybe<StringFilter>
+  w1200?: InputMaybe<StringFilter>
+  w1600?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceImageSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  altText?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  originalSrc?: InputMaybe<SortOrder>
+  w100?: InputMaybe<SortOrder>
+  w300?: InputMaybe<SortOrder>
+  w800?: InputMaybe<SortOrder>
+  w1200?: InputMaybe<SortOrder>
+  w1600?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceImages = {
+  __typename?: 'ShopifySourceImages'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceImageEdge>>>
+}
+
+export type ShopifySourceImagesFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceImagesSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProduct = {
+  __typename?: 'ShopifySourceProduct'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  availableForSale?: Maybe<Scalars['Boolean']>
+  collections?: Maybe<ShopifySourceCollectionsConnection>
+  compareAtPriceRange?: Maybe<ShopifySourceProductPriceRange>
+  createdAt?: Maybe<Scalars['Date']>
+  description?: Maybe<Scalars['String']>
+  descriptionHtml?: Maybe<Scalars['String']>
+  handle?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
+  images?: Maybe<ShopifySourceImages>
+  options?: Maybe<Array<Maybe<ShopifySourceProductOption>>>
+  presentmentPriceRanges?: Maybe<ShopifySourceProductPresentmentPriceRangeConnection>
+  priceRange?: Maybe<ShopifySourceProductPriceRange>
+  productType?: Maybe<Scalars['String']>
+  publishedAt?: Maybe<Scalars['Date']>
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>
+  title?: Maybe<Scalars['String']>
+  updatedAt?: Maybe<Scalars['Date']>
+  variants?: Maybe<ShopifySourceProductVariantsConnection>
+  vendor?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceProductEdge = {
+  __typename?: 'ShopifySourceProductEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceProductNode>
+}
+
+export type ShopifySourceProductEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceProductNodeFilter>
+}
+
+export type ShopifySourceProductEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceProductNodeSorting>
+}
+
+export type ShopifySourceProductFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  availableForSale?: InputMaybe<BooleanFilter>
+  collections?: InputMaybe<ShopifySourceCollectionsConnectionFilter>
+  compareAtPriceRange?: InputMaybe<ShopifySourceProductPriceRangeFilter>
+  createdAt?: InputMaybe<DateFilter>
+  description?: InputMaybe<StringFilter>
+  descriptionHtml?: InputMaybe<StringFilter>
+  handle?: InputMaybe<StringFilter>
+  id?: InputMaybe<StringFilter>
+  images?: InputMaybe<ShopifySourceImagesFilter>
+  presentmentPriceRanges?: InputMaybe<ShopifySourceProductPresentmentPriceRangeConnectionFilter>
+  priceRange?: InputMaybe<ShopifySourceProductPriceRangeFilter>
+  productType?: InputMaybe<StringFilter>
+  publishedAt?: InputMaybe<DateFilter>
+  title?: InputMaybe<StringFilter>
+  updatedAt?: InputMaybe<DateFilter>
+  variants?: InputMaybe<ShopifySourceProductVariantsConnectionFilter>
+  vendor?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductNode = {
+  __typename?: 'ShopifySourceProductNode'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  handle?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceProductNodeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  handle?: InputMaybe<StringFilter>
+  id?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductNodeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductOption = {
+  __typename?: 'ShopifySourceProductOption'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  values?: Maybe<Array<Maybe<Scalars['String']>>>
+}
+
+export type ShopifySourceProductOptionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductOptionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductPresentmentPriceRangeConnection = {
+  __typename?: 'ShopifySourceProductPresentmentPriceRangeConnection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceProductPriceRangeEdge>>>
+}
+
+export type ShopifySourceProductPresentmentPriceRangeConnectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductPresentmentPriceRangeConnectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductPricePresentmentEdge = {
+  __typename?: 'ShopifySourceProductPricePresentmentEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceProductVariantPricePair>
+}
+
+export type ShopifySourceProductPricePresentmentEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceProductVariantPricePairFilter>
+}
+
+export type ShopifySourceProductPricePresentmentEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceProductVariantPricePairSorting>
+}
+
+export type ShopifySourceProductPriceRange = {
+  __typename?: 'ShopifySourceProductPriceRange'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  maxVariantPrice?: Maybe<ShopifyMoneyV2>
+  minVariantPrice?: Maybe<ShopifyMoneyV2>
+}
+
+export type ShopifySourceProductPriceRangeEdge = {
+  __typename?: 'ShopifySourceProductPriceRangeEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceProductPriceRange>
+}
+
+export type ShopifySourceProductPriceRangeEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceProductPriceRangeFilter>
+}
+
+export type ShopifySourceProductPriceRangeEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceProductPriceRangeSorting>
+}
+
+export type ShopifySourceProductPriceRangeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  maxVariantPrice?: InputMaybe<ShopifyMoneyV2Filter>
+  minVariantPrice?: InputMaybe<ShopifyMoneyV2Filter>
+}
+
+export type ShopifySourceProductPriceRangeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  maxVariantPrice?: InputMaybe<ShopifyMoneyV2Sorting>
+  minVariantPrice?: InputMaybe<ShopifyMoneyV2Sorting>
+}
+
+export type ShopifySourceProductSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  availableForSale?: InputMaybe<SortOrder>
+  collections?: InputMaybe<ShopifySourceCollectionsConnectionSorting>
+  compareAtPriceRange?: InputMaybe<ShopifySourceProductPriceRangeSorting>
+  createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  descriptionHtml?: InputMaybe<SortOrder>
+  handle?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  images?: InputMaybe<ShopifySourceImagesSorting>
+  presentmentPriceRanges?: InputMaybe<ShopifySourceProductPresentmentPriceRangeConnectionSorting>
+  priceRange?: InputMaybe<ShopifySourceProductPriceRangeSorting>
+  productType?: InputMaybe<SortOrder>
+  publishedAt?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+  variants?: InputMaybe<ShopifySourceProductVariantsConnectionSorting>
+  vendor?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductVariant = {
+  __typename?: 'ShopifySourceProductVariant'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  availableForSale?: Maybe<Scalars['Boolean']>
+  compareAtPriceV2?: Maybe<ShopifyMoneyV2>
+  currentlyNotInStock?: Maybe<Scalars['Boolean']>
+  id?: Maybe<Scalars['String']>
+  image?: Maybe<ShopifySourceImage>
+  priceV2?: Maybe<ShopifyMoneyV2>
+  requiresShipping?: Maybe<Scalars['Boolean']>
+  selectedOptions?: Maybe<Array<Maybe<ShopifySourceSelectedOption>>>
+  sku?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+  weight?: Maybe<Scalars['Float']>
+  weightUnit?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceProductVariantEdge = {
+  __typename?: 'ShopifySourceProductVariantEdge'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  cursor?: Maybe<Scalars['String']>
+  node?: Maybe<ShopifySourceProductVariant>
+}
+
+export type ShopifySourceProductVariantEdgeFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  cursor?: InputMaybe<StringFilter>
+  node?: InputMaybe<ShopifySourceProductVariantFilter>
+}
+
+export type ShopifySourceProductVariantEdgeSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  cursor?: InputMaybe<SortOrder>
+  node?: InputMaybe<ShopifySourceProductVariantSorting>
+}
+
+export type ShopifySourceProductVariantFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  availableForSale?: InputMaybe<BooleanFilter>
+  compareAtPriceV2?: InputMaybe<ShopifyMoneyV2Filter>
+  currentlyNotInStock?: InputMaybe<BooleanFilter>
+  id?: InputMaybe<StringFilter>
+  image?: InputMaybe<ShopifySourceImageFilter>
+  priceV2?: InputMaybe<ShopifyMoneyV2Filter>
+  requiresShipping?: InputMaybe<BooleanFilter>
+  sku?: InputMaybe<StringFilter>
+  title?: InputMaybe<StringFilter>
+  weight?: InputMaybe<FloatFilter>
+  weightUnit?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductVariantPricePair = {
+  __typename?: 'ShopifySourceProductVariantPricePair'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  compareAtPrice?: Maybe<ShopifyMoneyV2>
+  price?: Maybe<ShopifyMoneyV2>
+}
+
+export type ShopifySourceProductVariantPricePairFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  compareAtPrice?: InputMaybe<ShopifyMoneyV2Filter>
+  price?: InputMaybe<ShopifyMoneyV2Filter>
+}
+
+export type ShopifySourceProductVariantPricePairSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  compareAtPrice?: InputMaybe<ShopifyMoneyV2Sorting>
+  price?: InputMaybe<ShopifyMoneyV2Sorting>
+}
+
+export type ShopifySourceProductVariantPricePresenentmentConnection = {
+  __typename?: 'ShopifySourceProductVariantPricePresenentmentConnection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceProductPricePresentmentEdge>>>
+}
+
+export type ShopifySourceProductVariantPricePresenentmentConnectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceProductVariantPricePresenentmentConnectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductVariantSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  availableForSale?: InputMaybe<SortOrder>
+  compareAtPriceV2?: InputMaybe<ShopifyMoneyV2Sorting>
+  currentlyNotInStock?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  image?: InputMaybe<ShopifySourceImageSorting>
+  priceV2?: InputMaybe<ShopifyMoneyV2Sorting>
+  requiresShipping?: InputMaybe<SortOrder>
+  sku?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
+  weight?: InputMaybe<SortOrder>
+  weightUnit?: InputMaybe<SortOrder>
+}
+
+export type ShopifySourceProductVariantsConnection = {
+  __typename?: 'ShopifySourceProductVariantsConnection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceProductVariantEdge>>>
+  pageInfo?: Maybe<PageInfo>
+}
+
+export type ShopifySourceProductVariantsConnectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  pageInfo?: InputMaybe<PageInfoFilter>
+}
+
+export type ShopifySourceProductVariantsConnectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  pageInfo?: InputMaybe<PageInfoSorting>
+}
+
+export type ShopifySourceProductsConnection = {
+  __typename?: 'ShopifySourceProductsConnection'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  edges?: Maybe<Array<Maybe<ShopifySourceProductEdge>>>
+  pageInfo?: Maybe<PageInfo>
+}
+
+export type ShopifySourceProductsConnectionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  pageInfo?: InputMaybe<PageInfoFilter>
+}
+
+export type ShopifySourceProductsConnectionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  pageInfo?: InputMaybe<PageInfoSorting>
+}
+
+export type ShopifySourceSelectedOption = {
+  __typename?: 'ShopifySourceSelectedOption'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  value?: Maybe<Scalars['String']>
+}
+
+export type ShopifySourceSelectedOptionFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  name?: InputMaybe<StringFilter>
+  value?: InputMaybe<StringFilter>
+}
+
+export type ShopifySourceSelectedOptionSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  value?: InputMaybe<SortOrder>
+}
+
 export type Slug = {
   __typename?: 'Slug'
   _key?: Maybe<Scalars['String']>
@@ -1280,6 +2198,8 @@ export type Theme = Document & {
   _updatedAt?: Maybe<Scalars['DateTime']>
   /** Build complex menus from the module area, assign them here to update the menu everywhere */
   footerMenu?: Maybe<Footer>
+  /** Build complex menus from the menu area, assign them here to update the menu everywhere */
+  headerMenu?: Maybe<Header>
   /** Select the page you want to be the homepage on the marketing site. */
   homepage?: Maybe<Page>
   themeTitle?: Maybe<Scalars['String']>
@@ -1295,6 +2215,7 @@ export type ThemeFilter = {
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
   footerMenu?: InputMaybe<FooterFilter>
+  headerMenu?: InputMaybe<HeaderFilter>
   homepage?: InputMaybe<PageFilter>
   themeTitle?: InputMaybe<StringFilter>
 }
@@ -1307,6 +2228,284 @@ export type ThemeSorting = {
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
   themeTitle?: InputMaybe<SortOrder>
+}
+
+export type LinkExternallFieldsFragment = {
+  __typename: 'LinkExternal'
+  title?: string | null | undefined
+  url?: string | null | undefined
+  newWindow?: boolean | null | undefined
+}
+
+export type LinkInternalFieldsFragment = {
+  __typename: 'LinkInternal'
+  reference?:
+    | {__typename?: 'Author'}
+    | {
+        __typename: 'Page'
+        title?: string | null | undefined
+        slug?:
+          | {__typename?: 'Slug'; current?: string | null | undefined}
+          | null
+          | undefined
+      }
+    | {__typename?: 'Post'}
+    | {
+        __typename: 'ShopifyCollection'
+        shopifyId?: string | null | undefined
+        title?: string | null | undefined
+        subtitle?: string | null | undefined
+        handle?: string | null | undefined
+      }
+    | {__typename?: 'ShopifyProduct'}
+    | null
+    | undefined
+}
+
+export type NavigationQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type NavigationQuery = {
+  __typename?: 'RootQuery'
+  Navigation?:
+    | {
+        __typename: 'Navigation'
+        title?: string | null | undefined
+        link?:
+          | {
+              __typename: 'LinkInternal'
+              reference?:
+                | {__typename?: 'Author'}
+                | {
+                    __typename: 'Page'
+                    title?: string | null | undefined
+                    slug?:
+                      | {
+                          __typename?: 'Slug'
+                          current?: string | null | undefined
+                        }
+                      | null
+                      | undefined
+                  }
+                | {__typename?: 'Post'}
+                | {
+                    __typename: 'ShopifyCollection'
+                    shopifyId?: string | null | undefined
+                    title?: string | null | undefined
+                    subtitle?: string | null | undefined
+                    handle?: string | null | undefined
+                  }
+                | {__typename?: 'ShopifyProduct'}
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+        items?:
+          | Array<
+              | {
+                  __typename: 'LinkExternal'
+                  title?: string | null | undefined
+                  url?: string | null | undefined
+                  newWindow?: boolean | null | undefined
+                }
+              | {
+                  __typename: 'LinkInternal'
+                  reference?:
+                    | {__typename?: 'Author'}
+                    | {
+                        __typename: 'Page'
+                        title?: string | null | undefined
+                        slug?:
+                          | {
+                              __typename?: 'Slug'
+                              current?: string | null | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | {__typename?: 'Post'}
+                    | {
+                        __typename: 'ShopifyCollection'
+                        shopifyId?: string | null | undefined
+                        title?: string | null | undefined
+                        subtitle?: string | null | undefined
+                        handle?: string | null | undefined
+                      }
+                    | {__typename?: 'ShopifyProduct'}
+                    | null
+                    | undefined
+                }
+              | {
+                  __typename?: 'NavigationGroup'
+                  navigation?:
+                    | {
+                        __typename: 'Navigation'
+                        title?: string | null | undefined
+                        link?:
+                          | {
+                              __typename: 'LinkInternal'
+                              reference?:
+                                | {__typename?: 'Author'}
+                                | {
+                                    __typename: 'Page'
+                                    title?: string | null | undefined
+                                    slug?:
+                                      | {
+                                          __typename?: 'Slug'
+                                          current?: string | null | undefined
+                                        }
+                                      | null
+                                      | undefined
+                                  }
+                                | {__typename?: 'Post'}
+                                | {
+                                    __typename: 'ShopifyCollection'
+                                    shopifyId?: string | null | undefined
+                                    title?: string | null | undefined
+                                    subtitle?: string | null | undefined
+                                    handle?: string | null | undefined
+                                  }
+                                | {__typename?: 'ShopifyProduct'}
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
+export type NavigationFieldsFragment = {
+  __typename: 'Navigation'
+  title?: string | null | undefined
+  link?:
+    | {
+        __typename: 'LinkInternal'
+        reference?:
+          | {__typename?: 'Author'}
+          | {
+              __typename: 'Page'
+              title?: string | null | undefined
+              slug?:
+                | {__typename?: 'Slug'; current?: string | null | undefined}
+                | null
+                | undefined
+            }
+          | {__typename?: 'Post'}
+          | {
+              __typename: 'ShopifyCollection'
+              shopifyId?: string | null | undefined
+              title?: string | null | undefined
+              subtitle?: string | null | undefined
+              handle?: string | null | undefined
+            }
+          | {__typename?: 'ShopifyProduct'}
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+  items?:
+    | Array<
+        | {
+            __typename: 'LinkExternal'
+            title?: string | null | undefined
+            url?: string | null | undefined
+            newWindow?: boolean | null | undefined
+          }
+        | {
+            __typename: 'LinkInternal'
+            reference?:
+              | {__typename?: 'Author'}
+              | {
+                  __typename: 'Page'
+                  title?: string | null | undefined
+                  slug?:
+                    | {__typename?: 'Slug'; current?: string | null | undefined}
+                    | null
+                    | undefined
+                }
+              | {__typename?: 'Post'}
+              | {
+                  __typename: 'ShopifyCollection'
+                  shopifyId?: string | null | undefined
+                  title?: string | null | undefined
+                  subtitle?: string | null | undefined
+                  handle?: string | null | undefined
+                }
+              | {__typename?: 'ShopifyProduct'}
+              | null
+              | undefined
+          }
+        | {
+            __typename?: 'NavigationGroup'
+            navigation?:
+              | {
+                  __typename: 'Navigation'
+                  title?: string | null | undefined
+                  link?:
+                    | {
+                        __typename: 'LinkInternal'
+                        reference?:
+                          | {__typename?: 'Author'}
+                          | {
+                              __typename: 'Page'
+                              title?: string | null | undefined
+                              slug?:
+                                | {
+                                    __typename?: 'Slug'
+                                    current?: string | null | undefined
+                                  }
+                                | null
+                                | undefined
+                            }
+                          | {__typename?: 'Post'}
+                          | {
+                              __typename: 'ShopifyCollection'
+                              shopifyId?: string | null | undefined
+                              title?: string | null | undefined
+                              subtitle?: string | null | undefined
+                              handle?: string | null | undefined
+                            }
+                          | {__typename?: 'ShopifyProduct'}
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                }
+              | null
+              | undefined
+          }
+        | null
+        | undefined
+      >
+    | null
+    | undefined
+}
+
+export type ThemeFieldsFragment = {
+  __typename?: 'Theme'
+  headerMenu?:
+    | {__typename?: 'Header'; _id?: string | null | undefined}
+    | null
+    | undefined
+  footerMenu?:
+    | {__typename?: 'Footer'; _id?: string | null | undefined}
+    | null
+    | undefined
 }
 
 export type FooterQueryVariables = Exact<{
@@ -1333,28 +2532,145 @@ export type FooterQuery = {
         navigations?:
           | Array<
               | {
-                  __typename?: 'Navigation'
-                  name?: string | null | undefined
-                  title?: string | null | undefined
-                  subtitle?: string | null | undefined
-                  description?: string | null | undefined
-                  items?:
-                    | Array<
-                        | {
-                            __typename?: 'NavigationItem'
-                            title?: string | null | undefined
-                            subtitle?: string | null | undefined
-                            link?:
+                  __typename?: 'NavigationGroup'
+                  navigation?:
+                    | {
+                        __typename: 'Navigation'
+                        title?: string | null | undefined
+                        link?:
+                          | {
+                              __typename: 'LinkInternal'
+                              reference?:
+                                | {__typename?: 'Author'}
+                                | {
+                                    __typename: 'Page'
+                                    title?: string | null | undefined
+                                    slug?:
+                                      | {
+                                          __typename?: 'Slug'
+                                          current?: string | null | undefined
+                                        }
+                                      | null
+                                      | undefined
+                                  }
+                                | {__typename?: 'Post'}
+                                | {
+                                    __typename: 'ShopifyCollection'
+                                    shopifyId?: string | null | undefined
+                                    title?: string | null | undefined
+                                    subtitle?: string | null | undefined
+                                    handle?: string | null | undefined
+                                  }
+                                | {__typename?: 'ShopifyProduct'}
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                        items?:
+                          | Array<
                               | {
-                                  __typename?: 'Link'
+                                  __typename: 'LinkExternal'
+                                  title?: string | null | undefined
                                   url?: string | null | undefined
+                                  newWindow?: boolean | null | undefined
+                                }
+                              | {
+                                  __typename: 'LinkInternal'
+                                  reference?:
+                                    | {__typename?: 'Author'}
+                                    | {
+                                        __typename: 'Page'
+                                        title?: string | null | undefined
+                                        slug?:
+                                          | {
+                                              __typename?: 'Slug'
+                                              current?:
+                                                | string
+                                                | null
+                                                | undefined
+                                            }
+                                          | null
+                                          | undefined
+                                      }
+                                    | {__typename?: 'Post'}
+                                    | {
+                                        __typename: 'ShopifyCollection'
+                                        shopifyId?: string | null | undefined
+                                        title?: string | null | undefined
+                                        subtitle?: string | null | undefined
+                                        handle?: string | null | undefined
+                                      }
+                                    | {__typename?: 'ShopifyProduct'}
+                                    | null
+                                    | undefined
+                                }
+                              | {
+                                  __typename?: 'NavigationGroup'
+                                  navigation?:
+                                    | {
+                                        __typename: 'Navigation'
+                                        title?: string | null | undefined
+                                        link?:
+                                          | {
+                                              __typename: 'LinkInternal'
+                                              reference?:
+                                                | {__typename?: 'Author'}
+                                                | {
+                                                    __typename: 'Page'
+                                                    title?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    slug?:
+                                                      | {
+                                                          __typename?: 'Slug'
+                                                          current?:
+                                                            | string
+                                                            | null
+                                                            | undefined
+                                                        }
+                                                      | null
+                                                      | undefined
+                                                  }
+                                                | {__typename?: 'Post'}
+                                                | {
+                                                    __typename: 'ShopifyCollection'
+                                                    shopifyId?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    title?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    subtitle?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    handle?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                  }
+                                                | {
+                                                    __typename?: 'ShopifyProduct'
+                                                  }
+                                                | null
+                                                | undefined
+                                            }
+                                          | null
+                                          | undefined
+                                      }
+                                    | null
+                                    | undefined
                                 }
                               | null
                               | undefined
-                          }
-                        | null
-                        | undefined
-                      >
+                            >
+                          | null
+                          | undefined
+                      }
                     | null
                     | undefined
                 }
@@ -1368,33 +2684,212 @@ export type FooterQuery = {
     | undefined
 }
 
-export type GlobalConfigsQueryVariables = Exact<{[key: string]: never}>
+export type GlobalConfigQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
 
-export type GlobalConfigsQuery = {
+export type GlobalConfigQuery = {
   __typename?: 'RootQuery'
-  allGlobalConfig: Array<{
-    __typename?: 'GlobalConfig'
-    theme?:
-      | {
-          __typename?: 'Theme'
-          footerMenu?:
-            | {__typename?: 'Footer'; _id?: string | null | undefined}
-            | null
-            | undefined
-        }
-      | null
-      | undefined
-    stagingTheme?:
-      | {
-          __typename?: 'Theme'
-          footerMenu?:
-            | {__typename?: 'Footer'; _id?: string | null | undefined}
-            | null
-            | undefined
-        }
-      | null
-      | undefined
-  }>
+  GlobalConfig?:
+    | {
+        __typename?: 'GlobalConfig'
+        _id?: string | null | undefined
+        theme?:
+          | {
+              __typename?: 'Theme'
+              headerMenu?:
+                | {__typename?: 'Header'; _id?: string | null | undefined}
+                | null
+                | undefined
+              footerMenu?:
+                | {__typename?: 'Footer'; _id?: string | null | undefined}
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+        stagingTheme?:
+          | {
+              __typename?: 'Theme'
+              headerMenu?:
+                | {__typename?: 'Header'; _id?: string | null | undefined}
+                | null
+                | undefined
+              footerMenu?:
+                | {__typename?: 'Footer'; _id?: string | null | undefined}
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
+export type HeaderQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type HeaderQuery = {
+  __typename?: 'RootQuery'
+  Header?:
+    | {
+        __typename?: 'Header'
+        name?: string | null | undefined
+        navigations?:
+          | Array<
+              | {
+                  __typename?: 'NavigationGroup'
+                  navigation?:
+                    | {
+                        __typename: 'Navigation'
+                        title?: string | null | undefined
+                        link?:
+                          | {
+                              __typename: 'LinkInternal'
+                              reference?:
+                                | {__typename?: 'Author'}
+                                | {
+                                    __typename: 'Page'
+                                    title?: string | null | undefined
+                                    slug?:
+                                      | {
+                                          __typename?: 'Slug'
+                                          current?: string | null | undefined
+                                        }
+                                      | null
+                                      | undefined
+                                  }
+                                | {__typename?: 'Post'}
+                                | {
+                                    __typename: 'ShopifyCollection'
+                                    shopifyId?: string | null | undefined
+                                    title?: string | null | undefined
+                                    subtitle?: string | null | undefined
+                                    handle?: string | null | undefined
+                                  }
+                                | {__typename?: 'ShopifyProduct'}
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                        items?:
+                          | Array<
+                              | {
+                                  __typename: 'LinkExternal'
+                                  title?: string | null | undefined
+                                  url?: string | null | undefined
+                                  newWindow?: boolean | null | undefined
+                                }
+                              | {
+                                  __typename: 'LinkInternal'
+                                  reference?:
+                                    | {__typename?: 'Author'}
+                                    | {
+                                        __typename: 'Page'
+                                        title?: string | null | undefined
+                                        slug?:
+                                          | {
+                                              __typename?: 'Slug'
+                                              current?:
+                                                | string
+                                                | null
+                                                | undefined
+                                            }
+                                          | null
+                                          | undefined
+                                      }
+                                    | {__typename?: 'Post'}
+                                    | {
+                                        __typename: 'ShopifyCollection'
+                                        shopifyId?: string | null | undefined
+                                        title?: string | null | undefined
+                                        subtitle?: string | null | undefined
+                                        handle?: string | null | undefined
+                                      }
+                                    | {__typename?: 'ShopifyProduct'}
+                                    | null
+                                    | undefined
+                                }
+                              | {
+                                  __typename?: 'NavigationGroup'
+                                  navigation?:
+                                    | {
+                                        __typename: 'Navigation'
+                                        title?: string | null | undefined
+                                        link?:
+                                          | {
+                                              __typename: 'LinkInternal'
+                                              reference?:
+                                                | {__typename?: 'Author'}
+                                                | {
+                                                    __typename: 'Page'
+                                                    title?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    slug?:
+                                                      | {
+                                                          __typename?: 'Slug'
+                                                          current?:
+                                                            | string
+                                                            | null
+                                                            | undefined
+                                                        }
+                                                      | null
+                                                      | undefined
+                                                  }
+                                                | {__typename?: 'Post'}
+                                                | {
+                                                    __typename: 'ShopifyCollection'
+                                                    shopifyId?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    title?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    subtitle?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    handle?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                  }
+                                                | {
+                                                    __typename?: 'ShopifyProduct'
+                                                  }
+                                                | null
+                                                | undefined
+                                            }
+                                          | null
+                                          | undefined
+                                      }
+                                    | null
+                                    | undefined
+                                }
+                              | null
+                              | undefined
+                            >
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type NavigationsQueryVariables = Exact<{
@@ -1404,16 +2899,30 @@ export type NavigationsQueryVariables = Exact<{
 export type NavigationsQuery = {
   __typename?: 'RootQuery'
   allNavigation: Array<{
-    __typename?: 'Navigation'
-    name?: string | null | undefined
+    __typename: 'Navigation'
     title?: string | null | undefined
-    subtitle?: string | null | undefined
-    image?:
+    link?:
       | {
-          __typename?: 'ImageBlock'
-          caption?: string | null | undefined
-          asset?:
-            | {__typename?: 'SanityImageAsset'; url?: string | null | undefined}
+          __typename: 'LinkInternal'
+          reference?:
+            | {__typename?: 'Author'}
+            | {
+                __typename: 'Page'
+                title?: string | null | undefined
+                slug?:
+                  | {__typename?: 'Slug'; current?: string | null | undefined}
+                  | null
+                  | undefined
+              }
+            | {__typename?: 'Post'}
+            | {
+                __typename: 'ShopifyCollection'
+                shopifyId?: string | null | undefined
+                title?: string | null | undefined
+                subtitle?: string | null | undefined
+                handle?: string | null | undefined
+              }
+            | {__typename?: 'ShopifyProduct'}
             | null
             | undefined
         }
@@ -1422,21 +2931,71 @@ export type NavigationsQuery = {
     items?:
       | Array<
           | {
-              __typename?: 'NavigationItem'
+              __typename: 'LinkExternal'
               title?: string | null | undefined
-              subtitle?: string | null | undefined
-              link?:
-                | {__typename?: 'Link'; url?: string | null | undefined}
+              url?: string | null | undefined
+              newWindow?: boolean | null | undefined
+            }
+          | {
+              __typename: 'LinkInternal'
+              reference?:
+                | {__typename?: 'Author'}
+                | {
+                    __typename: 'Page'
+                    title?: string | null | undefined
+                    slug?:
+                      | {
+                          __typename?: 'Slug'
+                          current?: string | null | undefined
+                        }
+                      | null
+                      | undefined
+                  }
+                | {__typename?: 'Post'}
+                | {
+                    __typename: 'ShopifyCollection'
+                    shopifyId?: string | null | undefined
+                    title?: string | null | undefined
+                    subtitle?: string | null | undefined
+                    handle?: string | null | undefined
+                  }
+                | {__typename?: 'ShopifyProduct'}
                 | null
                 | undefined
-              image?:
+            }
+          | {
+              __typename?: 'NavigationGroup'
+              navigation?:
                 | {
-                    __typename?: 'ImageBlock'
-                    caption?: string | null | undefined
-                    asset?:
+                    __typename: 'Navigation'
+                    title?: string | null | undefined
+                    link?:
                       | {
-                          __typename?: 'SanityImageAsset'
-                          url?: string | null | undefined
+                          __typename: 'LinkInternal'
+                          reference?:
+                            | {__typename?: 'Author'}
+                            | {
+                                __typename: 'Page'
+                                title?: string | null | undefined
+                                slug?:
+                                  | {
+                                      __typename?: 'Slug'
+                                      current?: string | null | undefined
+                                    }
+                                  | null
+                                  | undefined
+                              }
+                            | {__typename?: 'Post'}
+                            | {
+                                __typename: 'ShopifyCollection'
+                                shopifyId?: string | null | undefined
+                                title?: string | null | undefined
+                                subtitle?: string | null | undefined
+                                handle?: string | null | undefined
+                              }
+                            | {__typename?: 'ShopifyProduct'}
+                            | null
+                            | undefined
                         }
                       | null
                       | undefined
@@ -1452,6 +3011,77 @@ export type NavigationsQuery = {
   }>
 }
 
+export const LinkInternalFieldsFragmentDoc = gql`
+  fragment LinkInternalFields on LinkInternal {
+    __typename
+    reference {
+      ... on ShopifyCollection {
+        __typename
+        shopifyId
+        title
+        subtitle
+        handle
+      }
+      ... on Page {
+        __typename
+        title
+        slug {
+          current
+        }
+      }
+    }
+  }
+`
+export const LinkExternallFieldsFragmentDoc = gql`
+  fragment LinkExternallFields on LinkExternal {
+    __typename
+    title
+    url
+    newWindow
+  }
+`
+export const NavigationFieldsFragmentDoc = gql`
+  fragment NavigationFields on Navigation {
+    __typename
+    title
+    link {
+      ...LinkInternalFields
+    }
+    items {
+      ...LinkInternalFields
+      ...LinkExternallFields
+      ... on NavigationGroup {
+        navigation {
+          __typename
+          title
+          link {
+            ...LinkInternalFields
+          }
+        }
+      }
+    }
+  }
+  ${LinkInternalFieldsFragmentDoc}
+  ${LinkExternallFieldsFragmentDoc}
+`
+export const ThemeFieldsFragmentDoc = gql`
+  fragment ThemeFields on Theme {
+    headerMenu {
+      _id
+    }
+    footerMenu {
+      _id
+    }
+  }
+`
+export const NavigationDocument = gql`
+  query Navigation($id: ID!) {
+    Navigation(id: $id) {
+      ...NavigationFields
+    }
+  }
+  ${NavigationFieldsFragmentDoc}
+`
 export const FooterDocument = gql`
   query Footer($id: ID!) {
     Footer(id: $id) {
@@ -1464,64 +3094,48 @@ export const FooterDocument = gql`
         twitter
       }
       navigations {
-        name
-        title
-        subtitle
-        description
-        items {
-          title
-          subtitle
-          link {
-            url
-          }
+        navigation {
+          ...NavigationFields
         }
       }
     }
   }
+  ${NavigationFieldsFragmentDoc}
 `
-export const GlobalConfigsDocument = gql`
-  query GlobalConfigs {
-    allGlobalConfig {
+export const GlobalConfigDocument = gql`
+  query GlobalConfig($id: ID!) {
+    GlobalConfig(id: $id) {
+      _id
       theme {
-        footerMenu {
-          _id
-        }
+        ...ThemeFields
       }
       stagingTheme {
-        footerMenu {
-          _id
+        ...ThemeFields
+      }
+    }
+  }
+  ${ThemeFieldsFragmentDoc}
+`
+export const HeaderDocument = gql`
+  query Header($id: ID!) {
+    Header(id: $id) {
+      name
+      navigations {
+        navigation {
+          ...NavigationFields
         }
       }
     }
   }
+  ${NavigationFieldsFragmentDoc}
 `
 export const NavigationsDocument = gql`
   query Navigations($slug: String) {
     allNavigation(where: {slug: {current: {eq: $slug}}}) {
-      name
-      title
-      subtitle
-      image {
-        caption
-        asset {
-          url
-        }
-      }
-      items {
-        title
-        subtitle
-        link {
-          url
-        }
-        image {
-          caption
-          asset {
-            url
-          }
-        }
-      }
+      ...NavigationFields
     }
   }
+  ${NavigationFieldsFragmentDoc}
 `
 
 export type SdkFunctionWrapper = <T>(
@@ -1536,6 +3150,19 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    Navigation(
+      variables: NavigationQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<NavigationQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<NavigationQuery>(NavigationDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'Navigation',
+      )
+    },
     Footer(
       variables: FooterQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
@@ -1549,17 +3176,30 @@ export function getSdk(
         'Footer',
       )
     },
-    GlobalConfigs(
-      variables?: GlobalConfigsQueryVariables,
+    GlobalConfig(
+      variables: GlobalConfigQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<GlobalConfigsQuery> {
+    ): Promise<GlobalConfigQuery> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.request<GlobalConfigsQuery>(GlobalConfigsDocument, variables, {
+          client.request<GlobalConfigQuery>(GlobalConfigDocument, variables, {
             ...requestHeaders,
             ...wrappedRequestHeaders,
           }),
-        'GlobalConfigs',
+        'GlobalConfig',
+      )
+    },
+    Header(
+      variables: HeaderQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<HeaderQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<HeaderQuery>(HeaderDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'Header',
       )
     },
     Navigations(

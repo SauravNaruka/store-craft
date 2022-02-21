@@ -1,18 +1,30 @@
 import {render, screen} from '@testing-library/react'
-import {
-  buildAndGetFirstNaigation,
-  NUMBER_OF_NAVIGATIONITEMS,
-} from 'src/__mocks__/fetchNavigations.mock'
 import {RoomNavigation} from '@components/RoomNavigation'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {buildNavigationAndCollectionIDs} from '../../__mocks__/Navigations.mock'
 
 describe('room navigation', () => {
   test('room navigation links', () => {
-    const navigation = buildAndGetFirstNaigation()
+    const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
-    render(<RoomNavigation navigation={navigation} />)
-    expect(screen.getAllByRole('link').length).toBe(NUMBER_OF_NAVIGATIONITEMS)
+    render(
+      <RoomNavigation
+        navigation={navigation}
+        collectionsByID={collectionsByID}
+      />,
+    )
+
+    const numberOfNavigation = navigation.items?.filter(
+      (item: unknown) =>
+        isInternalLink(item) && isShopifyCollection(item.reference),
+    ).length
+
+    expect(screen.getAllByRole('link').length).toBe(numberOfNavigation)
     expect(
-      screen.getByRole('heading', {name: new RegExp(navigation.title!)}),
+      screen.getByRole('heading', {
+        name: new RegExp(navigation.title ?? 'Non Matching string'),
+      }),
     ).toBeInTheDocument()
   })
 })

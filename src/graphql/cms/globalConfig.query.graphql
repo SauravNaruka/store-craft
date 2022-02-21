@@ -1,0 +1,11 @@
+query GlobalConfig($id: ID!) {
+  GlobalConfig(id: $id) {
+    _id
+    theme {
+      ...ThemeFields
+    }
+    stagingTheme {
+      ...ThemeFields
+    }
+  }
+}
