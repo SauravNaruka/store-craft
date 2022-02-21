@@ -44,7 +44,9 @@ export default function Home({
   return (
     <div className={styles.container}>
       <Head>
-        <meta name="robots" content="INDEX,FOLLOW" />
+        {/* <meta name="robots" content="INDEX,FOLLOW" /> */}
+        {/*  TODO: Remove noindex meta tag */}
+        <meta name="robots" content="noindex" />
         <title>Crafty Wing</title>
         <meta
           name="description"
