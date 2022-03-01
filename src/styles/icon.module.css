@@ -3,7 +3,13 @@
 }
 
 .iconPrimaryColor {
-  fill: var(--color-primary-3);
+  color: var(--color-primary-3);
+  fill: none;
+}
+
+.iconSecondaryColor {
+  color: var(--color-neutral-4);
+  fill: none;
 }
 
 .searchIconPrimary {
@@ -20,4 +26,24 @@
 
 .phoneIconSecondary {
   fill: var(--color-neutral-5);
+}
+
+.menuIcon path:nth-child(1) {
+  transform-origin: left top;
+  transform: rotateZ(0deg);
+  transition: transform 400ms cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+.menuIcon path:nth-child(2) {
+  transform-origin: left bottom;
+  transform: rotateZ(0deg);
+  transition: transform 400ms cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+.menuIconClose path:nth-child(1) {
+  transform: rotateZ(45deg) translate(4px, -8px);
+}
+
+.menuIconClose path:nth-child(2) {
+  transform: rotateZ(-45deg) translate(5px, 7px);
 }

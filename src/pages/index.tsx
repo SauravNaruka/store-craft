@@ -1,12 +1,11 @@
 import * as React from 'react'
 import Head from 'next/head'
 import CartIcon from '@components/icons/CartIcon'
-import MenuIcon from '@components/icons/MenuIcon'
-import IconButton from '@components/IconButton'
 import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
+import {MenuSection} from '@components/header/MenuSection'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
@@ -41,8 +40,13 @@ export default function Home({
   footer,
   featuredCollection,
 }: PropType) {
+  const [isMenuVisible, setMenuVisibility] = React.useState(false)
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        isMenuVisible ? styles.containerFixed : ''
+      }`}
+    >
       <Head>
         {/* <meta name="robots" content="INDEX,FOLLOW" /> */}
         {/*  TODO: Remove noindex meta tag */}
@@ -55,9 +59,10 @@ export default function Home({
       </Head>
 
       <Header>
-        <IconButton name={'Menu'}>
-          <MenuIcon />
-        </IconButton>
+        <MenuSection
+          menuVisiblity={isMenuVisible}
+          onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
+        />
         <SearchInput />
         <CartIcon name={'Shopping Cart'} />
       </Header>

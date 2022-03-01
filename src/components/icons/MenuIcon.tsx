@@ -2,14 +2,34 @@ import {getIconCommanProps} from '@helpers/iconProp.helper'
 import type {IconPropType} from '../../types/interfaces'
 import iconStyles from '@styles/icon.module.css'
 
-export const MenuIcon = (props: IconPropType) => (
-  <svg {...props} {...getIconCommanProps(props)}>
-    <path
-      className={iconStyles.iconPrimaryColor}
-      fillRule="evenodd"
-      d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-    />
-  </svg>
-)
+type PropType = IconPropType & {
+  close?: boolean
+}
+
+export const MenuIcon = (props: PropType) => {
+  const className = `h-6 w-6 ${iconStyles.iconPrimaryColor} ${
+    iconStyles.menuIcon
+  } ${props.close ? iconStyles.menuIconClose : ''} `
+  return (
+    <svg
+      {...props}
+      {...getIconCommanProps({...props, className})}
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 8h16M4"
+      />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 16h16"
+      />
+    </svg>
+  )
+}
 
 export default MenuIcon
