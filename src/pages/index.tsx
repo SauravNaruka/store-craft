@@ -5,7 +5,7 @@ import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
-import {MenuSection} from '@components/header/MenuSection'
+// import {MenuSection} from '@components/header/MenuSection'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
@@ -59,10 +59,10 @@ export default function Home({
       </Head>
 
       <Header>
-        <MenuSection
+        {/* <MenuSection
           menuVisiblity={isMenuVisible}
           onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
-        />
+        /> */}
         <SearchInput />
         <CartIcon name={'Shopping Cart'} />
       </Header>

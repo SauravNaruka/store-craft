@@ -17,18 +17,16 @@ describe('Footer navigation', () => {
     const footer = buildFooterResponse().Footer as FooterType
     render(<Footer data={footer} />)
 
-    const firstNavigationGroup = first(footer?.navigations)
-    const firstNavigationItem = first(firstNavigationGroup?.navigation?.items)
-
-    const navigationTitle =
-      firstNavigationGroup?.navigation?.title ?? 'Non Matching title'
+    const firstNavigation = first(footer?.navigations)
+    const firstNavigationItem = first(firstNavigation?.items)
+    const navigationTitle = firstNavigation?.title ?? 'Non Matching Nav title'
 
     const firstLinkTitle =
       isInternalLink(firstNavigationItem) &&
       isPage(firstNavigationItem.reference) &&
       firstNavigationItem.reference.title
         ? firstNavigationItem.reference.title
-        : 'Non Matching title'
+        : 'Non Matching link title'
 
     expect(
       screen.getByRole('heading', {name: new RegExp(navigationTitle)}),

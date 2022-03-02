@@ -244,10 +244,9 @@ export type Footer = Document & {
   _updatedAt?: Maybe<Scalars['DateTime']>
   /** Support email for the customer */
   email?: Maybe<Scalars['String']>
-  handle?: Maybe<Slug>
   /** Only used internally in the CMS */
   name?: Maybe<Scalars['String']>
-  navigations?: Maybe<Array<Maybe<NavigationGroup>>>
+  navigations?: Maybe<Array<Maybe<Navigation>>>
   /** Support contact number for the customer */
   phone?: Maybe<Scalars['String']>
   social?: Maybe<SocialLinks>
@@ -263,7 +262,6 @@ export type FooterFilter = {
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
   email?: InputMaybe<StringFilter>
-  handle?: InputMaybe<SlugFilter>
   name?: InputMaybe<StringFilter>
   phone?: InputMaybe<StringFilter>
   social?: InputMaybe<SocialLinksFilter>
@@ -277,7 +275,6 @@ export type FooterSorting = {
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
   email?: InputMaybe<SortOrder>
-  handle?: InputMaybe<SlugSorting>
   name?: InputMaybe<SortOrder>
   phone?: InputMaybe<SortOrder>
   social?: InputMaybe<SocialLinksSorting>
@@ -366,8 +363,7 @@ export type Header = Document & {
   _updatedAt?: Maybe<Scalars['DateTime']>
   /** Only used internally in the CMS */
   name?: Maybe<Scalars['String']>
-  navigations?: Maybe<Array<Maybe<NavigationGroup>>>
-  slug?: Maybe<Slug>
+  navigations?: Maybe<Array<Maybe<Navigation>>>
 }
 
 export type HeaderFilter = {
@@ -380,7 +376,6 @@ export type HeaderFilter = {
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
   name?: InputMaybe<StringFilter>
-  slug?: InputMaybe<SlugFilter>
 }
 
 export type HeaderSorting = {
@@ -391,7 +386,6 @@ export type HeaderSorting = {
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
   name?: InputMaybe<SortOrder>
-  slug?: InputMaybe<SlugSorting>
 }
 
 export type IdFilter = {
@@ -489,10 +483,10 @@ export type LinkExternalFilter = {
   url?: InputMaybe<StringFilter>
 }
 
-export type LinkExternalOrLinkInternalOrNavigationGroup =
+export type LinkExternalOrLinkInternalOrNavigation =
   | LinkExternal
   | LinkInternal
-  | NavigationGroup
+  | Navigation
 
 export type LinkExternalSorting = {
   _key?: InputMaybe<SortOrder>
@@ -535,8 +529,7 @@ export type Navigation = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
-  items?: Maybe<Array<Maybe<LinkExternalOrLinkInternalOrNavigationGroup>>>
-  link?: Maybe<LinkInternal>
+  items?: Maybe<Array<Maybe<LinkExternalOrLinkInternalOrNavigation>>>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Slug>
   title?: Maybe<Scalars['String']>
@@ -551,28 +544,9 @@ export type NavigationFilter = {
   _rev?: InputMaybe<StringFilter>
   _type?: InputMaybe<StringFilter>
   _updatedAt?: InputMaybe<DatetimeFilter>
-  link?: InputMaybe<LinkInternalFilter>
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
   title?: InputMaybe<StringFilter>
-}
-
-export type NavigationGroup = {
-  __typename?: 'NavigationGroup'
-  _key?: Maybe<Scalars['String']>
-  _type?: Maybe<Scalars['String']>
-  navigation?: Maybe<Navigation>
-}
-
-export type NavigationGroupFilter = {
-  _key?: InputMaybe<StringFilter>
-  _type?: InputMaybe<StringFilter>
-  navigation?: InputMaybe<NavigationFilter>
-}
-
-export type NavigationGroupSorting = {
-  _key?: InputMaybe<SortOrder>
-  _type?: InputMaybe<SortOrder>
 }
 
 export type NavigationSorting = {
@@ -582,7 +556,6 @@ export type NavigationSorting = {
   _rev?: InputMaybe<SortOrder>
   _type?: InputMaybe<SortOrder>
   _updatedAt?: InputMaybe<SortOrder>
-  link?: InputMaybe<LinkInternalSorting>
   name?: InputMaybe<SortOrder>
   slug?: InputMaybe<SlugSorting>
   title?: InputMaybe<SortOrder>
@@ -2272,36 +2245,6 @@ export type NavigationQuery = {
     | {
         __typename: 'Navigation'
         title?: string | null | undefined
-        link?:
-          | {
-              __typename: 'LinkInternal'
-              reference?:
-                | {__typename?: 'Author'}
-                | {
-                    __typename: 'Page'
-                    title?: string | null | undefined
-                    slug?:
-                      | {
-                          __typename?: 'Slug'
-                          current?: string | null | undefined
-                        }
-                      | null
-                      | undefined
-                  }
-                | {__typename?: 'Post'}
-                | {
-                    __typename: 'ShopifyCollection'
-                    shopifyId?: string | null | undefined
-                    title?: string | null | undefined
-                    subtitle?: string | null | undefined
-                    handle?: string | null | undefined
-                  }
-                | {__typename?: 'ShopifyProduct'}
-                | null
-                | undefined
-            }
-          | null
-          | undefined
         items?:
           | Array<
               | {
@@ -2338,42 +2281,48 @@ export type NavigationQuery = {
                     | undefined
                 }
               | {
-                  __typename?: 'NavigationGroup'
-                  navigation?:
-                    | {
-                        __typename: 'Navigation'
-                        title?: string | null | undefined
-                        link?:
-                          | {
-                              __typename: 'LinkInternal'
-                              reference?:
-                                | {__typename?: 'Author'}
-                                | {
-                                    __typename: 'Page'
-                                    title?: string | null | undefined
-                                    slug?:
-                                      | {
-                                          __typename?: 'Slug'
-                                          current?: string | null | undefined
-                                        }
-                                      | null
-                                      | undefined
-                                  }
-                                | {__typename?: 'Post'}
-                                | {
-                                    __typename: 'ShopifyCollection'
-                                    shopifyId?: string | null | undefined
-                                    title?: string | null | undefined
-                                    subtitle?: string | null | undefined
-                                    handle?: string | null | undefined
-                                  }
-                                | {__typename?: 'ShopifyProduct'}
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
-                      }
+                  __typename: 'Navigation'
+                  _type?: string | null | undefined
+                  title?: string | null | undefined
+                  items?:
+                    | Array<
+                        | {
+                            __typename: 'LinkExternal'
+                            title?: string | null | undefined
+                            url?: string | null | undefined
+                            newWindow?: boolean | null | undefined
+                          }
+                        | {
+                            __typename: 'LinkInternal'
+                            reference?:
+                              | {__typename?: 'Author'}
+                              | {
+                                  __typename: 'Page'
+                                  title?: string | null | undefined
+                                  slug?:
+                                    | {
+                                        __typename?: 'Slug'
+                                        current?: string | null | undefined
+                                      }
+                                    | null
+                                    | undefined
+                                }
+                              | {__typename?: 'Post'}
+                              | {
+                                  __typename: 'ShopifyCollection'
+                                  shopifyId?: string | null | undefined
+                                  title?: string | null | undefined
+                                  subtitle?: string | null | undefined
+                                  handle?: string | null | undefined
+                                }
+                              | {__typename?: 'ShopifyProduct'}
+                              | null
+                              | undefined
+                          }
+                        | {__typename?: 'Navigation'}
+                        | null
+                        | undefined
+                      >
                     | null
                     | undefined
                 }
@@ -2390,33 +2339,6 @@ export type NavigationQuery = {
 export type NavigationFieldsFragment = {
   __typename: 'Navigation'
   title?: string | null | undefined
-  link?:
-    | {
-        __typename: 'LinkInternal'
-        reference?:
-          | {__typename?: 'Author'}
-          | {
-              __typename: 'Page'
-              title?: string | null | undefined
-              slug?:
-                | {__typename?: 'Slug'; current?: string | null | undefined}
-                | null
-                | undefined
-            }
-          | {__typename?: 'Post'}
-          | {
-              __typename: 'ShopifyCollection'
-              shopifyId?: string | null | undefined
-              title?: string | null | undefined
-              subtitle?: string | null | undefined
-              handle?: string | null | undefined
-            }
-          | {__typename?: 'ShopifyProduct'}
-          | null
-          | undefined
-      }
-    | null
-    | undefined
   items?:
     | Array<
         | {
@@ -2450,42 +2372,48 @@ export type NavigationFieldsFragment = {
               | undefined
           }
         | {
-            __typename?: 'NavigationGroup'
-            navigation?:
-              | {
-                  __typename: 'Navigation'
-                  title?: string | null | undefined
-                  link?:
-                    | {
-                        __typename: 'LinkInternal'
-                        reference?:
-                          | {__typename?: 'Author'}
-                          | {
-                              __typename: 'Page'
-                              title?: string | null | undefined
-                              slug?:
-                                | {
-                                    __typename?: 'Slug'
-                                    current?: string | null | undefined
-                                  }
-                                | null
-                                | undefined
-                            }
-                          | {__typename?: 'Post'}
-                          | {
-                              __typename: 'ShopifyCollection'
-                              shopifyId?: string | null | undefined
-                              title?: string | null | undefined
-                              subtitle?: string | null | undefined
-                              handle?: string | null | undefined
-                            }
-                          | {__typename?: 'ShopifyProduct'}
-                          | null
-                          | undefined
-                      }
-                    | null
-                    | undefined
-                }
+            __typename: 'Navigation'
+            _type?: string | null | undefined
+            title?: string | null | undefined
+            items?:
+              | Array<
+                  | {
+                      __typename: 'LinkExternal'
+                      title?: string | null | undefined
+                      url?: string | null | undefined
+                      newWindow?: boolean | null | undefined
+                    }
+                  | {
+                      __typename: 'LinkInternal'
+                      reference?:
+                        | {__typename?: 'Author'}
+                        | {
+                            __typename: 'Page'
+                            title?: string | null | undefined
+                            slug?:
+                              | {
+                                  __typename?: 'Slug'
+                                  current?: string | null | undefined
+                                }
+                              | null
+                              | undefined
+                          }
+                        | {__typename?: 'Post'}
+                        | {
+                            __typename: 'ShopifyCollection'
+                            shopifyId?: string | null | undefined
+                            title?: string | null | undefined
+                            subtitle?: string | null | undefined
+                            handle?: string | null | undefined
+                          }
+                        | {__typename?: 'ShopifyProduct'}
+                        | null
+                        | undefined
+                    }
+                  | {__typename?: 'Navigation'}
+                  | null
+                  | undefined
+                >
               | null
               | undefined
           }
@@ -2532,145 +2460,98 @@ export type FooterQuery = {
         navigations?:
           | Array<
               | {
-                  __typename?: 'NavigationGroup'
-                  navigation?:
-                    | {
-                        __typename: 'Navigation'
-                        title?: string | null | undefined
-                        link?:
-                          | {
-                              __typename: 'LinkInternal'
-                              reference?:
-                                | {__typename?: 'Author'}
-                                | {
-                                    __typename: 'Page'
-                                    title?: string | null | undefined
-                                    slug?:
-                                      | {
-                                          __typename?: 'Slug'
-                                          current?: string | null | undefined
-                                        }
-                                      | null
-                                      | undefined
-                                  }
-                                | {__typename?: 'Post'}
-                                | {
-                                    __typename: 'ShopifyCollection'
-                                    shopifyId?: string | null | undefined
-                                    title?: string | null | undefined
-                                    subtitle?: string | null | undefined
-                                    handle?: string | null | undefined
-                                  }
-                                | {__typename?: 'ShopifyProduct'}
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
-                        items?:
-                          | Array<
+                  __typename: 'Navigation'
+                  title?: string | null | undefined
+                  items?:
+                    | Array<
+                        | {
+                            __typename: 'LinkExternal'
+                            title?: string | null | undefined
+                            url?: string | null | undefined
+                            newWindow?: boolean | null | undefined
+                          }
+                        | {
+                            __typename: 'LinkInternal'
+                            reference?:
+                              | {__typename?: 'Author'}
                               | {
-                                  __typename: 'LinkExternal'
+                                  __typename: 'Page'
                                   title?: string | null | undefined
-                                  url?: string | null | undefined
-                                  newWindow?: boolean | null | undefined
-                                }
-                              | {
-                                  __typename: 'LinkInternal'
-                                  reference?:
-                                    | {__typename?: 'Author'}
+                                  slug?:
                                     | {
-                                        __typename: 'Page'
-                                        title?: string | null | undefined
-                                        slug?:
-                                          | {
-                                              __typename?: 'Slug'
-                                              current?:
-                                                | string
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
-                                      }
-                                    | {__typename?: 'Post'}
-                                    | {
-                                        __typename: 'ShopifyCollection'
-                                        shopifyId?: string | null | undefined
-                                        title?: string | null | undefined
-                                        subtitle?: string | null | undefined
-                                        handle?: string | null | undefined
-                                      }
-                                    | {__typename?: 'ShopifyProduct'}
-                                    | null
-                                    | undefined
-                                }
-                              | {
-                                  __typename?: 'NavigationGroup'
-                                  navigation?:
-                                    | {
-                                        __typename: 'Navigation'
-                                        title?: string | null | undefined
-                                        link?:
-                                          | {
-                                              __typename: 'LinkInternal'
-                                              reference?:
-                                                | {__typename?: 'Author'}
-                                                | {
-                                                    __typename: 'Page'
-                                                    title?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    slug?:
-                                                      | {
-                                                          __typename?: 'Slug'
-                                                          current?:
-                                                            | string
-                                                            | null
-                                                            | undefined
-                                                        }
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | {__typename?: 'Post'}
-                                                | {
-                                                    __typename: 'ShopifyCollection'
-                                                    shopifyId?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    title?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    subtitle?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    handle?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | {
-                                                    __typename?: 'ShopifyProduct'
-                                                  }
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
+                                        __typename?: 'Slug'
+                                        current?: string | null | undefined
                                       }
                                     | null
                                     | undefined
                                 }
+                              | {__typename?: 'Post'}
+                              | {
+                                  __typename: 'ShopifyCollection'
+                                  shopifyId?: string | null | undefined
+                                  title?: string | null | undefined
+                                  subtitle?: string | null | undefined
+                                  handle?: string | null | undefined
+                                }
+                              | {__typename?: 'ShopifyProduct'}
                               | null
                               | undefined
-                            >
-                          | null
-                          | undefined
-                      }
+                          }
+                        | {
+                            __typename: 'Navigation'
+                            _type?: string | null | undefined
+                            title?: string | null | undefined
+                            items?:
+                              | Array<
+                                  | {
+                                      __typename: 'LinkExternal'
+                                      title?: string | null | undefined
+                                      url?: string | null | undefined
+                                      newWindow?: boolean | null | undefined
+                                    }
+                                  | {
+                                      __typename: 'LinkInternal'
+                                      reference?:
+                                        | {__typename?: 'Author'}
+                                        | {
+                                            __typename: 'Page'
+                                            title?: string | null | undefined
+                                            slug?:
+                                              | {
+                                                  __typename?: 'Slug'
+                                                  current?:
+                                                    | string
+                                                    | null
+                                                    | undefined
+                                                }
+                                              | null
+                                              | undefined
+                                          }
+                                        | {__typename?: 'Post'}
+                                        | {
+                                            __typename: 'ShopifyCollection'
+                                            shopifyId?:
+                                              | string
+                                              | null
+                                              | undefined
+                                            title?: string | null | undefined
+                                            subtitle?: string | null | undefined
+                                            handle?: string | null | undefined
+                                          }
+                                        | {__typename?: 'ShopifyProduct'}
+                                        | null
+                                        | undefined
+                                    }
+                                  | {__typename?: 'Navigation'}
+                                  | null
+                                  | undefined
+                                >
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                      >
                     | null
                     | undefined
                 }
@@ -2740,145 +2621,98 @@ export type HeaderQuery = {
         navigations?:
           | Array<
               | {
-                  __typename?: 'NavigationGroup'
-                  navigation?:
-                    | {
-                        __typename: 'Navigation'
-                        title?: string | null | undefined
-                        link?:
-                          | {
-                              __typename: 'LinkInternal'
-                              reference?:
-                                | {__typename?: 'Author'}
-                                | {
-                                    __typename: 'Page'
-                                    title?: string | null | undefined
-                                    slug?:
-                                      | {
-                                          __typename?: 'Slug'
-                                          current?: string | null | undefined
-                                        }
-                                      | null
-                                      | undefined
-                                  }
-                                | {__typename?: 'Post'}
-                                | {
-                                    __typename: 'ShopifyCollection'
-                                    shopifyId?: string | null | undefined
-                                    title?: string | null | undefined
-                                    subtitle?: string | null | undefined
-                                    handle?: string | null | undefined
-                                  }
-                                | {__typename?: 'ShopifyProduct'}
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
-                        items?:
-                          | Array<
+                  __typename: 'Navigation'
+                  title?: string | null | undefined
+                  items?:
+                    | Array<
+                        | {
+                            __typename: 'LinkExternal'
+                            title?: string | null | undefined
+                            url?: string | null | undefined
+                            newWindow?: boolean | null | undefined
+                          }
+                        | {
+                            __typename: 'LinkInternal'
+                            reference?:
+                              | {__typename?: 'Author'}
                               | {
-                                  __typename: 'LinkExternal'
+                                  __typename: 'Page'
                                   title?: string | null | undefined
-                                  url?: string | null | undefined
-                                  newWindow?: boolean | null | undefined
-                                }
-                              | {
-                                  __typename: 'LinkInternal'
-                                  reference?:
-                                    | {__typename?: 'Author'}
+                                  slug?:
                                     | {
-                                        __typename: 'Page'
-                                        title?: string | null | undefined
-                                        slug?:
-                                          | {
-                                              __typename?: 'Slug'
-                                              current?:
-                                                | string
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
-                                      }
-                                    | {__typename?: 'Post'}
-                                    | {
-                                        __typename: 'ShopifyCollection'
-                                        shopifyId?: string | null | undefined
-                                        title?: string | null | undefined
-                                        subtitle?: string | null | undefined
-                                        handle?: string | null | undefined
-                                      }
-                                    | {__typename?: 'ShopifyProduct'}
-                                    | null
-                                    | undefined
-                                }
-                              | {
-                                  __typename?: 'NavigationGroup'
-                                  navigation?:
-                                    | {
-                                        __typename: 'Navigation'
-                                        title?: string | null | undefined
-                                        link?:
-                                          | {
-                                              __typename: 'LinkInternal'
-                                              reference?:
-                                                | {__typename?: 'Author'}
-                                                | {
-                                                    __typename: 'Page'
-                                                    title?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    slug?:
-                                                      | {
-                                                          __typename?: 'Slug'
-                                                          current?:
-                                                            | string
-                                                            | null
-                                                            | undefined
-                                                        }
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | {__typename?: 'Post'}
-                                                | {
-                                                    __typename: 'ShopifyCollection'
-                                                    shopifyId?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    title?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    subtitle?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    handle?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | {
-                                                    __typename?: 'ShopifyProduct'
-                                                  }
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
+                                        __typename?: 'Slug'
+                                        current?: string | null | undefined
                                       }
                                     | null
                                     | undefined
                                 }
+                              | {__typename?: 'Post'}
+                              | {
+                                  __typename: 'ShopifyCollection'
+                                  shopifyId?: string | null | undefined
+                                  title?: string | null | undefined
+                                  subtitle?: string | null | undefined
+                                  handle?: string | null | undefined
+                                }
+                              | {__typename?: 'ShopifyProduct'}
                               | null
                               | undefined
-                            >
-                          | null
-                          | undefined
-                      }
+                          }
+                        | {
+                            __typename: 'Navigation'
+                            _type?: string | null | undefined
+                            title?: string | null | undefined
+                            items?:
+                              | Array<
+                                  | {
+                                      __typename: 'LinkExternal'
+                                      title?: string | null | undefined
+                                      url?: string | null | undefined
+                                      newWindow?: boolean | null | undefined
+                                    }
+                                  | {
+                                      __typename: 'LinkInternal'
+                                      reference?:
+                                        | {__typename?: 'Author'}
+                                        | {
+                                            __typename: 'Page'
+                                            title?: string | null | undefined
+                                            slug?:
+                                              | {
+                                                  __typename?: 'Slug'
+                                                  current?:
+                                                    | string
+                                                    | null
+                                                    | undefined
+                                                }
+                                              | null
+                                              | undefined
+                                          }
+                                        | {__typename?: 'Post'}
+                                        | {
+                                            __typename: 'ShopifyCollection'
+                                            shopifyId?:
+                                              | string
+                                              | null
+                                              | undefined
+                                            title?: string | null | undefined
+                                            subtitle?: string | null | undefined
+                                            handle?: string | null | undefined
+                                          }
+                                        | {__typename?: 'ShopifyProduct'}
+                                        | null
+                                        | undefined
+                                    }
+                                  | {__typename?: 'Navigation'}
+                                  | null
+                                  | undefined
+                                >
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                      >
                     | null
                     | undefined
                 }
@@ -2901,33 +2735,6 @@ export type NavigationsQuery = {
   allNavigation: Array<{
     __typename: 'Navigation'
     title?: string | null | undefined
-    link?:
-      | {
-          __typename: 'LinkInternal'
-          reference?:
-            | {__typename?: 'Author'}
-            | {
-                __typename: 'Page'
-                title?: string | null | undefined
-                slug?:
-                  | {__typename?: 'Slug'; current?: string | null | undefined}
-                  | null
-                  | undefined
-              }
-            | {__typename?: 'Post'}
-            | {
-                __typename: 'ShopifyCollection'
-                shopifyId?: string | null | undefined
-                title?: string | null | undefined
-                subtitle?: string | null | undefined
-                handle?: string | null | undefined
-              }
-            | {__typename?: 'ShopifyProduct'}
-            | null
-            | undefined
-        }
-      | null
-      | undefined
     items?:
       | Array<
           | {
@@ -2964,42 +2771,48 @@ export type NavigationsQuery = {
                 | undefined
             }
           | {
-              __typename?: 'NavigationGroup'
-              navigation?:
-                | {
-                    __typename: 'Navigation'
-                    title?: string | null | undefined
-                    link?:
-                      | {
-                          __typename: 'LinkInternal'
-                          reference?:
-                            | {__typename?: 'Author'}
-                            | {
-                                __typename: 'Page'
-                                title?: string | null | undefined
-                                slug?:
-                                  | {
-                                      __typename?: 'Slug'
-                                      current?: string | null | undefined
-                                    }
-                                  | null
-                                  | undefined
-                              }
-                            | {__typename?: 'Post'}
-                            | {
-                                __typename: 'ShopifyCollection'
-                                shopifyId?: string | null | undefined
-                                title?: string | null | undefined
-                                subtitle?: string | null | undefined
-                                handle?: string | null | undefined
-                              }
-                            | {__typename?: 'ShopifyProduct'}
-                            | null
-                            | undefined
-                        }
-                      | null
-                      | undefined
-                  }
+              __typename: 'Navigation'
+              _type?: string | null | undefined
+              title?: string | null | undefined
+              items?:
+                | Array<
+                    | {
+                        __typename: 'LinkExternal'
+                        title?: string | null | undefined
+                        url?: string | null | undefined
+                        newWindow?: boolean | null | undefined
+                      }
+                    | {
+                        __typename: 'LinkInternal'
+                        reference?:
+                          | {__typename?: 'Author'}
+                          | {
+                              __typename: 'Page'
+                              title?: string | null | undefined
+                              slug?:
+                                | {
+                                    __typename?: 'Slug'
+                                    current?: string | null | undefined
+                                  }
+                                | null
+                                | undefined
+                            }
+                          | {__typename?: 'Post'}
+                          | {
+                              __typename: 'ShopifyCollection'
+                              shopifyId?: string | null | undefined
+                              title?: string | null | undefined
+                              subtitle?: string | null | undefined
+                              handle?: string | null | undefined
+                            }
+                          | {__typename?: 'ShopifyProduct'}
+                          | null
+                          | undefined
+                      }
+                    | {__typename?: 'Navigation'}
+                    | null
+                    | undefined
+                  >
                 | null
                 | undefined
             }
@@ -3044,19 +2857,16 @@ export const NavigationFieldsFragmentDoc = gql`
   fragment NavigationFields on Navigation {
     __typename
     title
-    link {
-      ...LinkInternalFields
-    }
     items {
       ...LinkInternalFields
       ...LinkExternallFields
-      ... on NavigationGroup {
-        navigation {
-          __typename
-          title
-          link {
-            ...LinkInternalFields
-          }
+      ... on Navigation {
+        _type
+        __typename
+        title
+        items {
+          ...LinkInternalFields
+          ...LinkExternallFields
         }
       }
     }
@@ -3094,9 +2904,7 @@ export const FooterDocument = gql`
         twitter
       }
       navigations {
-        navigation {
-          ...NavigationFields
-        }
+        ...NavigationFields
       }
     }
   }
@@ -3121,9 +2929,7 @@ export const HeaderDocument = gql`
     Header(id: $id) {
       name
       navigations {
-        navigation {
-          ...NavigationFields
-        }
+        ...NavigationFields
       }
     }
   }

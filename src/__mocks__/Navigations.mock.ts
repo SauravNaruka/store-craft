@@ -20,7 +20,6 @@ export function buildNavigation(): Navigation {
     __typename: 'Navigation',
     name: faker.random.words(),
     title: faker.random.words(),
-    link: buildLinkInternalShopifyCollection(),
     items: Array(NUMBER_OF_NAVIGATIONITEMS)
       .fill(undefined)
       .map(() => buildLinkInternalShopifyCollection()),
@@ -32,10 +31,36 @@ export function buildNavigationWithPageLinks(): Navigation {
     __typename: 'Navigation',
     name: faker.random.words(),
     title: faker.random.words(),
-    link: buildLinkInternalShopifyCollection(),
     items: Array(NUMBER_OF_NAVIGATIONITEMS)
       .fill(undefined)
       .map(() => buildLinkInternalPage()),
+  }
+}
+
+/**
+ * Level 1 Should be created by caller function
+ *
+ * @example
+ *  - Level 1: Bedroom, Dining
+ *  - Level 2: Bed, Storage, Side table
+ *  - Level 3: King Size Bed, Queen Size Bed etc
+ *
+ */
+export function buildNavigationWithTwoLevelOfNavigation(): Navigation {
+  return {
+    __typename: 'Navigation',
+    name: faker.random.words(),
+    title: faker.random.words(),
+    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 2
+      .fill(undefined)
+      .map(() => {
+        return {
+          ...buildNavigation(),
+          items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 3
+            .fill(undefined)
+            .map(() => buildNavigation()),
+        }
+      }),
   }
 }
 

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import faker from 'faker'
-import {buildNavigationGroup} from './NavigationGroup.mock'
+import {buildNavigationWithPageLinks} from './Navigations.mock'
 import {buildSocialLinks} from './SocialLinks.mock'
-import type {FooterQuery} from '@generated/cms.types'
+import type {FooterQuery, Navigation} from '@generated/cms.types'
 
 export const NUMBER_OF_NAVIGATIONI_GROUP = 2
 
@@ -13,7 +14,7 @@ export function buildFooterResponse(): FooterQuery {
       social: buildSocialLinks(),
       navigations: Array(NUMBER_OF_NAVIGATIONI_GROUP)
         .fill(undefined)
-        .map(() => buildNavigationGroup()),
+        .map(() => buildNavigationWithPageLinks())!,
     },
   }
 }
