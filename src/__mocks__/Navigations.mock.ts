@@ -38,7 +38,6 @@ export function buildNavigationWithPageLinks(): Navigation {
 }
 
 /**
- * Level 1 Should be created by caller function
  *
  * @example
  *  - Level 1: Bedroom, Dining
@@ -46,17 +45,49 @@ export function buildNavigationWithPageLinks(): Navigation {
  *  - Level 3: King Size Bed, Queen Size Bed etc
  *
  */
+export function buildNavigationWithThreeLevelOfNavigation(): Navigation {
+  return {
+    __typename: 'Navigation',
+    name: faker.random.words(),
+    title: faker.random.words(),
+    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 1
+      .fill(undefined)
+      .map(() => {
+        return {
+          ...buildNavigation(),
+          items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 2
+            .fill(undefined)
+            .map(() => {
+              return {
+                ...buildNavigation(),
+                items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 3
+                  .fill(undefined)
+                  .map(() => buildNavigation()),
+              }
+            }),
+        }
+      }),
+  }
+}
+
+/**
+ *
+ * @example
+ *  - Level 1: Bedroom, Dining
+ *  - Level 2: Bed, Storage, Side table
+ *
+ */
 export function buildNavigationWithTwoLevelOfNavigation(): Navigation {
   return {
     __typename: 'Navigation',
     name: faker.random.words(),
     title: faker.random.words(),
-    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 2
+    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 1
       .fill(undefined)
       .map(() => {
         return {
           ...buildNavigation(),
-          items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 3
+          items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 2
             .fill(undefined)
             .map(() => buildNavigation()),
         }

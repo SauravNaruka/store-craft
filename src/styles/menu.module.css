@@ -52,6 +52,7 @@ button.mobileMenuBackButton {
   display: inline-block;
   width: 100%;
   transition: all 200ms ease-out 0s;
+  position: absolute;
 }
 
 .mobileMenuPaneCenter {
@@ -60,10 +61,14 @@ button.mobileMenuBackButton {
 .mobileMenuPaneLeft {
   transform: translateX(-100%);
   width: 0px;
+  height: 0px;
   overflow: hidden;
+  position: static;
 }
 .mobileMenuPaneRight {
   transform: translateX(100%) scaleX(0);
   width: 0px;
+  height: 0px;
   overflow: hidden;
+  position: static;
 }

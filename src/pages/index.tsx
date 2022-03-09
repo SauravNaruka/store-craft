@@ -5,15 +5,16 @@ import {Header} from '@components/header/Header'
 import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
-// import {MenuSection} from '@components/header/MenuSection'
+import {MenuSection} from '@components/header/MenuSection'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
-import {getFooterID, getTheme} from '@helpers/globalConfig.helper'
+import {getFooterID, getHeaderID, getTheme} from '@helpers/globalConfig.helper'
 import {fetchNavigationAndRelatedCollectionBySlug} from '@api/fetchNavigations'
 import {fetchCollectionBySlug} from '@api/fetchCollection'
 import {fetchGlobalConfig} from '@api/fetchGlobalConfig'
 import {fetchFooter} from '@api/fetchFooter'
+import {fetchHeader} from '@api/fetchHeader'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
@@ -21,7 +22,10 @@ import {
 } from '@constants/navigation.constants'
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
 import type {NavigationAndCollectionsByID} from '@LocalTypes/interfaces'
-import type {Footer as FooterType} from '@generated/cms.types'
+import type {
+  Footer as FooterType,
+  Header as HeaderType,
+} from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.css'
 
@@ -30,6 +34,7 @@ export type PropType = {
   heroNavigationAndCollectionsByID: NavigationAndCollectionsByID
   roomNavigationAndCollectionsByID: NavigationAndCollectionsByID
   footer: FooterType
+  header: HeaderType
   featuredCollection: Collection
 }
 
@@ -38,6 +43,7 @@ export default function Home({
   heroNavigationAndCollectionsByID,
   roomNavigationAndCollectionsByID,
   footer,
+  header,
   featuredCollection,
 }: PropType) {
   const [isMenuVisible, setMenuVisibility] = React.useState(false)
@@ -59,10 +65,11 @@ export default function Home({
       </Head>
 
       <Header>
-        {/* <MenuSection
+        <MenuSection
           menuVisiblity={isMenuVisible}
           onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
-        /> */}
+          header={header}
+        />
         <SearchInput />
         <CartIcon name={'Shopping Cart'} />
       </Header>
@@ -92,18 +99,21 @@ export const getStaticProps = async () => {
   const globalConfig = await fetchGlobalConfig()
   const theme = getTheme(globalConfig)
   const footerID = getFooterID(theme)
+  const headerID = getHeaderID(theme)
 
   const [
     productNavigationAndCollectionsByID,
     heroNavigationAndCollectionsByID,
     roomNavigationAndCollectionsByID,
     footer,
+    header,
     featuredCollection,
   ] = await Promise.all([
     fetchNavigationAndRelatedCollectionBySlug({slug: PRODUCT_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: HERO_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: ROOM_NAVIGATION}),
     fetchFooter({id: footerID}),
+    fetchHeader({id: headerID}),
     fetchCollectionBySlug({
       handle: FEATURED_PRODUCTS_HANDLE,
       numberOfProducts: 10,
@@ -117,6 +127,7 @@ export const getStaticProps = async () => {
       heroNavigationAndCollectionsByID,
       roomNavigationAndCollectionsByID,
       footer,
+      header,
       featuredCollection,
     },
   }

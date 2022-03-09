@@ -1,7 +1,7 @@
 import * as React from 'react'
 import MenuIcon from '@components/icons/MenuIcon'
 import IconButton from '@components/IconButton'
-import NavGroups from '@components/header/NavGroups'
+import NavigationDrawer from '@components/header/NavigationDrawer'
 import {Header} from '@generated/cms.types'
 
 type PropType = {
@@ -25,7 +25,7 @@ export function MenuSection({
       >
         <MenuIcon close={menuVisiblity} />
       </IconButton>
-      <NavGroups
+      <NavigationDrawer
         id="main-navigation-mobile"
         visible={menuVisiblity}
         navigations={header?.navigations ?? []}

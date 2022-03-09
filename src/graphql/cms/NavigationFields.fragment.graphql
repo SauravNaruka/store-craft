@@ -1,5 +1,6 @@
 fragment NavigationFields on Navigation {
   __typename
+  _id
   title
   items {
     ...LinkInternalFields

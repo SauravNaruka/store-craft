@@ -15,3 +15,7 @@ export function getFirstShopifyCollection(
 
   return shopifyCollection
 }
+
+export function isNavigation(object?: unknown): object is Navigation {
+  return (object as Navigation)?.__typename === 'Navigation'
+}

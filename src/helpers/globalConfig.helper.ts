@@ -25,3 +25,12 @@ export function getFooterID(theme: Theme): string {
 
   throw new Error('Missing footer id')
 }
+
+export function getHeaderID(theme: Theme): string {
+  const headerID = theme.headerMenu?._id ?? null
+  if (headerID) {
+    return headerID
+  }
+
+  throw new Error('Missing header id')
+}

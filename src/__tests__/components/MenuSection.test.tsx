@@ -1,34 +1,54 @@
 import {render, screen} from '@testing-library/react'
 import MenuSection from '@components/header/MenuSection'
-import {buildNavigationGroupWithShopifyCollection} from '../../__mocks__/NavigationGroup.mock'
 import {
+  buildNavigationWithThreeLevelOfNavigation,
+  buildNavigationWithTwoLevelOfNavigation,
+} from '../../__mocks__/Navigations.mock'
+import type {
   LinkInternal,
-  NavigationGroup,
+  Navigation,
   ShopifyCollection,
 } from '@generated/cms.types'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
+import {isShopifyCollection} from '@helpers/collection.helper'
 
 describe('MenuSection functionality ', () => {
   test('menu section has links to collection', () => {
-    const navigationGroup = buildNavigationGroupWithShopifyCollection()
+    const navigations = Array(2)
+      .fill(undefined)
+      .map(() => buildNavigationWithTwoLevelOfNavigation())
+
     const mockCB = jest.fn()
-    render(<MenuSection menuVisiblity={true} onMenuToggleClick={mockCB} />)
+    render(
+      <MenuSection
+        menuVisiblity={true}
+        onMenuToggleClick={mockCB}
+        navigations={navigations}
+      />,
+    )
 
     const shopifyCollection =
-      getFirstShopifyCollectionFromNavigationGroup(navigationGroup)
+      getFirstShopifyCollectionFromNavigations(navigations)
 
     expect(
       screen.getByRole('link', {
-        name: shopifyCollection.title ?? 'Non-matching title',
+        name: shopifyCollection?.title ?? 'Non-matching title',
       }),
     ).toBeInTheDocument()
   })
 })
 
-function getFirstShopifyCollectionFromNavigationGroup(
-  navigationGroup: NavigationGroup,
-): ShopifyCollection {
-  const linkInternal = navigationGroup.navigation?.items?.[0] as LinkInternal
-  const shopifyCollection = linkInternal.reference as ShopifyCollection
+function getFirstShopifyCollectionFromNavigations(
+  navigations: Navigation[],
+): ShopifyCollection | undefined {
+  let shopifyCollection: ShopifyCollection | undefined = undefined
+  navigations.forEach(navigation => {
+    navigation?.items?.forEach(item => {
+      if (item && isInternalLink(item) && isShopifyCollection(item.reference)) {
+        shopifyCollection = item.reference
+      }
+    })
+  })
 
   return shopifyCollection
 }

@@ -5,6 +5,7 @@ import {
 } from './Collection.handlers'
 import {getGlobalConfig} from './GlobalConfig.handlers'
 import {getFooter} from './Footer.handlers'
+import {getHeader} from './header.handler'
 
 const handlers = [
   getNavigationsHandler,
@@ -12,6 +13,7 @@ const handlers = [
   getCollectionShortInfoHandler,
   getGlobalConfig,
   getFooter,
+  getHeader,
 ]
 
 export {handlers}

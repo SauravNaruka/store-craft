@@ -2244,6 +2244,7 @@ export type NavigationQuery = {
   Navigation?:
     | {
         __typename: 'Navigation'
+        _id?: string | null | undefined
         title?: string | null | undefined
         items?:
           | Array<
@@ -2338,6 +2339,7 @@ export type NavigationQuery = {
 
 export type NavigationFieldsFragment = {
   __typename: 'Navigation'
+  _id?: string | null | undefined
   title?: string | null | undefined
   items?:
     | Array<
@@ -2461,6 +2463,7 @@ export type FooterQuery = {
           | Array<
               | {
                   __typename: 'Navigation'
+                  _id?: string | null | undefined
                   title?: string | null | undefined
                   items?:
                     | Array<
@@ -2622,6 +2625,7 @@ export type HeaderQuery = {
           | Array<
               | {
                   __typename: 'Navigation'
+                  _id?: string | null | undefined
                   title?: string | null | undefined
                   items?:
                     | Array<
@@ -2734,6 +2738,7 @@ export type NavigationsQuery = {
   __typename?: 'RootQuery'
   allNavigation: Array<{
     __typename: 'Navigation'
+    _id?: string | null | undefined
     title?: string | null | undefined
     items?:
       | Array<
@@ -2856,6 +2861,7 @@ export const LinkExternallFieldsFragmentDoc = gql`
 export const NavigationFieldsFragmentDoc = gql`
   fragment NavigationFields on Navigation {
     __typename
+    _id
     title
     items {
       ...LinkInternalFields
