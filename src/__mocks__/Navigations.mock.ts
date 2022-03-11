@@ -1,5 +1,9 @@
-import {build, fake} from '@jackfranklin/test-data-bot'
+import {build} from '@jackfranklin/test-data-bot'
 import faker from 'faker'
+import {buildCollectionShortInfo} from './Collection.mock'
+import {buildShopifyProduct} from './ShopifyProduct.mock'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {
   buildLinkInternalShopifyCollection,
   buildLinkInternalPage,
@@ -9,11 +13,9 @@ import type {
   NavigationAndCollectionsByID,
 } from '@LocalTypes/interfaces'
 import type {NavigationsQuery, Navigation} from '@generated/cms.types'
-import {isInternalLink} from '@helpers/LinkInternal.helper'
-import {isShopifyCollection} from '@helpers/collection.helper'
-import {buildCollectionShortInfo} from './Collection.mock'
 
 export const NUMBER_OF_NAVIGATIONITEMS = 3
+export const NUMBER_OF_FEATURED_PRODUCTS = 2
 
 export function buildNavigation(): Navigation {
   return {
@@ -24,6 +26,9 @@ export function buildNavigation(): Navigation {
     items: Array(NUMBER_OF_NAVIGATIONITEMS)
       .fill(undefined)
       .map(() => buildLinkInternalShopifyCollection()),
+    featured: Array(NUMBER_OF_FEATURED_PRODUCTS)
+      .fill(undefined)
+      .map(() => buildShopifyProduct()),
   }
 }
 

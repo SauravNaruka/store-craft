@@ -1,0 +1,18 @@
+fragment ShopifyProductFields on ShopifyProduct {
+  _id
+  title
+  handle
+  sourceData {
+    images {
+      edges {
+        node {
+          w100
+          w300
+          w800
+          w1200
+          w1600
+        }
+      }
+    }
+  }
+}

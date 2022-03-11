@@ -3818,6 +3818,7 @@ export type MetafieldEdge = {
  * - `number_integer`
  * - `number_decimal`
  * - `single_line_text_field`
+ * - `boolean` as of 2022-04.
  *
  */
 export type MetafieldFilter = {

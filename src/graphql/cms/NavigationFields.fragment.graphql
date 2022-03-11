@@ -15,6 +15,12 @@ fragment NavigationFields on Navigation {
         ...LinkInternalFields
         ...LinkExternallFields
       }
+      featured {
+        ...ShopifyProductFields
+      }
     }
+  }
+  featured {
+    ...ShopifyProductFields
   }
 }
