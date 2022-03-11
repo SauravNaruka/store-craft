@@ -2,13 +2,13 @@ import * as React from 'react'
 import cx from 'classnames'
 import isArray from 'lodash/isArray'
 import NavigationDrawerPane from './NavigationDrawerPane'
-import menuStyles from '@styles/menu.module.css'
+import {isNavigation} from '@helpers/navigation.helper'
+import type {Maybe} from '@LocalTypes/interfaces'
 import type {
   Navigation,
   LinkExternalOrLinkInternalOrNavigation,
 } from '@generated/cms.types'
-import {Maybe} from '@LocalTypes/interfaces'
-import {isNavigation} from '@helpers/navigation.helper'
+import menuStyles from '@styles/menu.module.css'
 
 type LinkedNavigation = {
   link: Navigation | Maybe<LinkExternalOrLinkInternalOrNavigation>[]
@@ -38,9 +38,8 @@ export function NavigationDrawer({navigations, id, visible}: PropType) {
     >
       <div className={menuStyles.mobileMenuPaneWraper}>
         {linkedNavigation.map(({link, parentID}, index) => {
-          const [navigation, items] = isNavigation(link)
-            ? [link, link.items]
-            : [null, link]
+          const [navigation, items] = getNavigationAndItemsFromLink(link)
+
           return (
             <NavigationDrawerPane
               key={navigation?._id ?? index}
@@ -98,4 +97,17 @@ function getLinkedNavigationsFromNavigation({
   }
 
   return [{parentID, link}, ...results]
+}
+
+function getNavigationAndItemsFromLink(
+  link: Navigation | Maybe<LinkExternalOrLinkInternalOrNavigation>[],
+): [
+  link: Navigation | null,
+  items: Maybe<Maybe<LinkExternalOrLinkInternalOrNavigation>[]>,
+] {
+  if (isNavigation(link)) {
+    return [link, link.items]
+  } else {
+    return [null, link]
+  }
 }

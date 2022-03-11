@@ -2,15 +2,15 @@ import * as React from 'react'
 import cx from 'classnames'
 import ChevronLeftIcon from '@components/icons/ChevronLeftIcon'
 import ChevronRightIcon from '@components/icons/ChevronRightIcon'
+import {isShopifyCollection} from '@helpers/collection.helper'
+import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isNavigation} from '@helpers/navigation.helper'
+import type {Maybe, Valueof} from '@LocalTypes/interfaces'
 import type {
   LinkExternalOrLinkInternalOrNavigation,
   Navigation,
 } from '@generated/cms.types'
-import type {Maybe, Valueof} from '@LocalTypes/interfaces'
 import menuStyles from '@styles/menu.module.css'
-import {isInternalLink} from '@helpers/LinkInternal.helper'
-import {isShopifyCollection} from '@helpers/collection.helper'
 
 export const PANE_PLACEMENT_OPTION = {
   LEFT: 'left',
