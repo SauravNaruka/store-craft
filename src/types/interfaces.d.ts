@@ -6,7 +6,7 @@ export type IconPropType = React.SVGProps<SVGSVGElement>
 
 export type Valueof<T> = T[keyof T]
 
-export type Maybe<T> = T | null
+export type Maybe<T> = T | null | undefined
 
 export interface ImageSource {
   w96: string

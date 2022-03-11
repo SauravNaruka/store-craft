@@ -31,13 +31,13 @@
 .menuIcon path:nth-child(1) {
   transform-origin: left top;
   transform: rotateZ(0deg);
-  transition: transform 400ms cubic-bezier(0.3, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
 .menuIcon path:nth-child(2) {
   transform-origin: left bottom;
   transform: rotateZ(0deg);
-  transition: transform 400ms cubic-bezier(0.3, 0, 0.2, 1);
+  transition: transform 200ms cubic-bezier(0.3, 0, 0.2, 1);
 }
 
 .menuIconClose path:nth-child(1) {

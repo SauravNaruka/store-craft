@@ -18,6 +18,7 @@ export const NUMBER_OF_NAVIGATIONITEMS = 3
 export function buildNavigation(): Navigation {
   return {
     __typename: 'Navigation',
+    _id: faker.datatype.uuid(),
     name: faker.random.words(),
     title: faker.random.words(),
     items: Array(NUMBER_OF_NAVIGATIONITEMS)
@@ -47,9 +48,7 @@ export function buildNavigationWithPageLinks(): Navigation {
  */
 export function buildNavigationWithThreeLevelOfNavigation(): Navigation {
   return {
-    __typename: 'Navigation',
-    name: faker.random.words(),
-    title: faker.random.words(),
+    ...buildNavigation(),
     items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 1
       .fill(undefined)
       .map(() => {
@@ -79,19 +78,10 @@ export function buildNavigationWithThreeLevelOfNavigation(): Navigation {
  */
 export function buildNavigationWithTwoLevelOfNavigation(): Navigation {
   return {
-    __typename: 'Navigation',
-    name: faker.random.words(),
-    title: faker.random.words(),
-    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 1
+    ...buildNavigation(), //Level 1
+    items: Array(NUMBER_OF_NAVIGATIONITEMS) //Level 2
       .fill(undefined)
-      .map(() => {
-        return {
-          ...buildNavigation(),
-          items: Array(NUMBER_OF_NAVIGATIONITEMS) // Level 2
-            .fill(undefined)
-            .map(() => buildNavigation()),
-        }
-      }),
+      .map(() => buildNavigation()),
   }
 }
 

@@ -8,30 +8,16 @@ import type {Footer as FooterType} from '@generated/cms.types'
 
 describe('Home / index page', () => {
   test('render of the header', async () => {
-    const footer = buildFooterResponse().Footer as FooterType
+    // const footer = buildFooterResponse().Footer as FooterType
 
-    const data: {props: PropType} = await getStaticProps({})
-    const props = data.props
-    render(
-      <Home
-        productNavigationAndCollectionsByID={
-          props.productNavigationAndCollectionsByID
-        }
-        heroNavigationAndCollectionsByID={
-          props.heroNavigationAndCollectionsByID
-        }
-        roomNavigationAndCollectionsByID={
-          props.roomNavigationAndCollectionsByID
-        }
-        featuredCollection={collection}
-        footer={footer}
-      />,
-    )
+    const data: {props: PropType} = await getStaticProps()
+    // const props = data.props
+    render(<Home {...data.props} />)
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
   test('static props method', async () => {
-    const props = await getStaticProps({})
+    const props = await getStaticProps()
     expect(props).toHaveProperty('props.productNavigationAndCollectionsByID')
     expect(props).toHaveProperty('props.heroNavigationAndCollectionsByID')
     expect(props).toHaveProperty('props.roomNavigationAndCollectionsByID')

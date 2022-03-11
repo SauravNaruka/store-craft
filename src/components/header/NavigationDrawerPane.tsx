@@ -12,37 +12,41 @@ import menuStyles from '@styles/menu.module.css'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isShopifyCollection} from '@helpers/collection.helper'
 
-const PANE_PLACEMENT_OPTION = {
+export const PANE_PLACEMENT_OPTION = {
   LEFT: 'left',
   CENTER: 'center',
   RIGHT: 'right',
 } as const
 
-type PanePlacement = Valueof<typeof PANE_PLACEMENT_OPTION>
+export type PanePlacement = Valueof<typeof PANE_PLACEMENT_OPTION>
 
-type CallbackProp = {
+type PropType = {
+  navigation: Navigation | null
   links: Maybe<LinkExternalOrLinkInternalOrNavigation>[]
-  parentNavigation: Navigation | null
+  parentID: Maybe<string>
   activePaneID: string | null
   setActivePaneID: (arg0: string | null) => void
 }
-type PropType = CallbackProp & {
-  children?: (props: CallbackProp) => React.ReactNode
-}
 
 export function NavigationDrawerPane({
+  navigation,
   links,
-  parentNavigation,
+  parentID,
   activePaneID,
   setActivePaneID,
-  children: render,
 }: PropType) {
   const [isChildPaneActive, setChildPaneActiveStatus] = React.useState(false)
   const panePlacement = getPanePlacement(
-    parentNavigation,
+    navigation?._id ?? null,
     activePaneID,
     isChildPaneActive,
   )
+
+  React.useEffect(() => {
+    if (!activePaneID || activePaneID === navigation?._id) {
+      setChildPaneActiveStatus(false)
+    }
+  }, [activePaneID, navigation])
 
   return (
     <ul
@@ -58,33 +62,31 @@ export function NavigationDrawerPane({
           panePlacement === PANE_PLACEMENT_OPTION.RIGHT,
       })}
     >
-      {parentNavigation && (
+      {navigation && (
         <li>
           <button
             className={menuStyles.mobileMenuBackButton}
-            onClick={() => setActivePaneID(parentNavigation?._id ?? null)}
+            onClick={() => setActivePaneID(parentID ?? null)}
           >
             <ChevronLeftIcon className={menuStyles.mobileMenuBackButtonIcon} />
-            <span>{parentNavigation.title}</span>
+            <span>{navigation.title}</span>
           </button>
         </li>
       )}
-      {links.map((link, index) => {
+      {links?.map((link, index) => {
         if (isNavigation(link)) {
           const buttonKey = link?._id ?? `${index}`
           return (
             <li key={buttonKey}>
-              <button onClick={() => setActivePaneID(buttonKey)}>
-                Bedroom
+              <button
+                onClick={() => {
+                  setActivePaneID(buttonKey)
+                  setChildPaneActiveStatus(true)
+                }}
+              >
+                {link.title}
                 <ChevronRightIcon />
               </button>
-              {render &&
-                render({
-                  links: link.items ?? [],
-                  parentNavigation: link,
-                  activePaneID,
-                  setActivePaneID,
-                })}
             </li>
           )
         } else if (
@@ -110,16 +112,13 @@ export function NavigationDrawerPane({
 export default NavigationDrawerPane
 
 function getPanePlacement(
-  navigation: Navigation | null,
-  activePaneID: string | null,
+  paneID: Maybe<string>,
+  activePaneID: Maybe<string>,
   isChildPaneActive: boolean,
 ): PanePlacement {
   if (isChildPaneActive) {
     return PANE_PLACEMENT_OPTION.LEFT
-  } else if (
-    (!activePaneID && !navigation) ||
-    navigation?._id === activePaneID
-  ) {
+  } else if (paneID === activePaneID) {
     return PANE_PLACEMENT_OPTION.CENTER
   } else {
     return PANE_PLACEMENT_OPTION.RIGHT

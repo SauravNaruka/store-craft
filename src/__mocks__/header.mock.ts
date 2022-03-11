@@ -1,4 +1,7 @@
-import {buildNavigationWithTwoLevelOfNavigation} from './Navigations.mock'
+import {
+  buildNavigationWithTwoLevelOfNavigation,
+  buildNavigation,
+} from './Navigations.mock'
 import type {HeaderQuery} from '@generated/cms.types'
 
 export const NUMBER_OF_NAVIGATIONI_GROUP = 2

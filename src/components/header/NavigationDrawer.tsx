@@ -1,11 +1,19 @@
 import * as React from 'react'
 import cx from 'classnames'
-import NavLinks from './NavLinks'
+import isArray from 'lodash/isArray'
 import NavigationDrawerPane from './NavigationDrawerPane'
-import ChevronRightIcon from '@components/icons/ChevronRightIcon'
 import menuStyles from '@styles/menu.module.css'
-import type {Navigation} from '@generated/cms.types'
+import type {
+  Navigation,
+  LinkExternalOrLinkInternalOrNavigation,
+} from '@generated/cms.types'
 import {Maybe} from '@LocalTypes/interfaces'
+import {isNavigation} from '@helpers/navigation.helper'
+
+type LinkedNavigation = {
+  link: Navigation | Maybe<LinkExternalOrLinkInternalOrNavigation>[]
+  parentID: Maybe<string>
+}
 
 type PropType = {
   navigations: Maybe<Navigation>[]
@@ -15,6 +23,10 @@ type PropType = {
 
 export function NavigationDrawer({navigations, id, visible}: PropType) {
   const [activePaneID, setActivePaneID] = React.useState<string | null>(null)
+  const linkedNavigation = React.useMemo(
+    () => convertLinksToLinkedNavigations(navigations),
+    [navigations],
+  )
   return (
     <div
       id={id}
@@ -25,20 +37,21 @@ export function NavigationDrawer({navigations, id, visible}: PropType) {
       })}
     >
       <div className={menuStyles.mobileMenuPaneWraper}>
-        <NavigationDrawerPane
-          links={navigations}
-          parentNavigation={null}
-          activePaneID={activePaneID}
-          setActivePaneID={setActivePaneID}
-        >
-          {args1 => (
-            <NavigationDrawerPane {...args1}>
-              {args2 => (
-                <NavigationDrawerPane {...args2}></NavigationDrawerPane>
-              )}
-            </NavigationDrawerPane>
-          )}
-        </NavigationDrawerPane>
+        {linkedNavigation.map(({link, parentID}, index) => {
+          const [navigation, items] = isNavigation(link)
+            ? [link, link.items]
+            : [null, link]
+          return (
+            <NavigationDrawerPane
+              key={navigation?._id ?? index}
+              links={items ?? []}
+              navigation={navigation}
+              parentID={parentID}
+              activePaneID={activePaneID}
+              setActivePaneID={setActivePaneID}
+            />
+          )
+        })}
       </div>
     </div>
   )
@@ -46,10 +59,43 @@ export function NavigationDrawer({navigations, id, visible}: PropType) {
 
 export default NavigationDrawer
 
-{
-  /* <NavLinks
-          title="Bedroom"
-          visible={activeMenuID === 'menu1'}
-          onClose={() => setActiveMenuID(null)}
-        /> */
+function convertLinksToLinkedNavigations(
+  navigations: Maybe<LinkExternalOrLinkInternalOrNavigation>[],
+): LinkedNavigation[] {
+  let results: LinkedNavigation[] = []
+
+  if (navigations || isArray(navigations)) {
+    navigations.forEach(link => {
+      if (isNavigation(link)) {
+        const navigationList = getLinkedNavigationsFromNavigation({
+          link,
+          parentID: null,
+        })
+        results = [...results, ...navigationList]
+      }
+    })
+  }
+
+  return [{parentID: null, link: navigations}, ...results]
+}
+
+function getLinkedNavigationsFromNavigation({
+  link,
+  parentID,
+}: LinkedNavigation): LinkedNavigation[] {
+  let results: LinkedNavigation[] = []
+
+  if (isNavigation(link)) {
+    link.items?.forEach(item => {
+      if (isNavigation(item)) {
+        const navigationList = getLinkedNavigationsFromNavigation({
+          link: item,
+          parentID: link?._id ?? null,
+        })
+        results = [...results, ...navigationList]
+      }
+    })
+  }
+
+  return [{parentID, link}, ...results]
 }

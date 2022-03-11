@@ -1,34 +1,28 @@
 import {render, screen} from '@testing-library/react'
 import MenuSection from '@components/header/MenuSection'
-import {
-  buildNavigationWithThreeLevelOfNavigation,
-  buildNavigationWithTwoLevelOfNavigation,
-} from '../../__mocks__/Navigations.mock'
-import type {
-  LinkInternal,
-  Navigation,
-  ShopifyCollection,
-} from '@generated/cms.types'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isShopifyCollection} from '@helpers/collection.helper'
+import {buildHeaderResponse} from '../../__mocks__/header.mock'
+import type {Maybe} from '@LocalTypes/interfaces'
+import type {Header, Navigation, ShopifyCollection} from '@generated/cms.types'
+import {isNavigation} from '@helpers/navigation.helper'
 
 describe('MenuSection functionality ', () => {
   test('menu section has links to collection', () => {
-    const navigations = Array(2)
-      .fill(undefined)
-      .map(() => buildNavigationWithTwoLevelOfNavigation())
+    const header = buildHeaderResponse().Header as Header
 
     const mockCB = jest.fn()
     render(
       <MenuSection
         menuVisiblity={true}
         onMenuToggleClick={mockCB}
-        navigations={navigations}
+        header={header}
       />,
     )
 
-    const shopifyCollection =
-      getFirstShopifyCollectionFromNavigations(navigations)
+    const shopifyCollection = getFirstShopifyCollectionFromNavigations(
+      header.navigations,
+    )
 
     expect(
       screen.getByRole('link', {
@@ -39,13 +33,21 @@ describe('MenuSection functionality ', () => {
 })
 
 function getFirstShopifyCollectionFromNavigations(
-  navigations: Navigation[],
+  navigations: Maybe<Maybe<Navigation>[]>,
 ): ShopifyCollection | undefined {
   let shopifyCollection: ShopifyCollection | undefined = undefined
-  navigations.forEach(navigation => {
+  navigations?.forEach(navigation => {
     navigation?.items?.forEach(item => {
-      if (item && isInternalLink(item) && isShopifyCollection(item.reference)) {
-        shopifyCollection = item.reference
+      if (isNavigation(item)) {
+        item.items?.forEach(links => {
+          if (
+            links &&
+            isInternalLink(links) &&
+            isShopifyCollection(links.reference)
+          ) {
+            shopifyCollection = links.reference
+          }
+        })
       }
     })
   })
