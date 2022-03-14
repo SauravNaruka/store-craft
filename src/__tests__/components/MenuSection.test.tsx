@@ -30,6 +30,28 @@ describe('MenuSection functionality ', () => {
       }),
     ).toBeInTheDocument()
   })
+
+  test('Display featured image when navigation has featured image', () => {
+    const header = buildHeaderResponse().Header as Header
+    const mockCB = jest.fn()
+
+    render(
+      <MenuSection
+        menuVisiblity={true}
+        onMenuToggleClick={mockCB}
+        header={header}
+      />,
+    )
+
+    const featuredImageTitle =
+      header.navigations?.[0]?.featured?.[0]?.title ?? 'Non-matching title'
+
+    expect(
+      screen.getByRole('link', {
+        name: featuredImageTitle,
+      }),
+    ).toBeInTheDocument()
+  })
 })
 
 function getFirstShopifyCollectionFromNavigations(

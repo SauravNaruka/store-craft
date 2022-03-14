@@ -1,4 +1,5 @@
 fragment ShopifyProductFields on ShopifyProduct {
+  __typename
   _id
   title
   handle
@@ -6,6 +7,10 @@ fragment ShopifyProductFields on ShopifyProduct {
     images {
       edges {
         node {
+          __typename
+          id
+          altText
+          originalSrc
           w100
           w300
           w800

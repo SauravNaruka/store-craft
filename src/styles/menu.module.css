@@ -9,8 +9,9 @@
   overflow: hidden auto;
 }
 
-.mobileMenu button,
-.mobileMenu a {
+.mobileMenuButton,
+.mobileMenuLink,
+.mobileMenuLinksTitle {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,6 +23,10 @@
   font-size: var(--font-size-medium-xx);
   text-transform: capitalize;
   letter-spacing: 1px;
+}
+
+.mobileMenuLinksTitle {
+  border: none;
 }
 
 .mobileMenu a {

@@ -1,4 +1,5 @@
 import faker from 'faker'
+import {buildShopifySourceImage} from './ShopifySourceImage.mock'
 import {ShopifyProduct} from '@generated/cms.types'
 
 export function buildShopifyProduct(
@@ -15,14 +16,7 @@ export function buildShopifyProduct(
         edges: [
           {
             __typename: 'ShopifySourceImageEdge',
-            node: {
-              __typename: 'ShopifySourceImage',
-              w100: faker.internet.url(),
-              w300: faker.internet.url(),
-              w800: faker.internet.url(),
-              w1200: faker.internet.url(),
-              w1600: faker.internet.url(),
-            },
+            node: buildShopifySourceImage(),
           },
         ],
       },

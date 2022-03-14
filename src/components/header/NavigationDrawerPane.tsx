@@ -1,14 +1,12 @@
 import * as React from 'react'
 import cx from 'classnames'
-import ChevronLeftIcon from '@components/icons/ChevronLeftIcon'
-import ChevronRightIcon from '@components/icons/ChevronRightIcon'
-import {isShopifyCollection} from '@helpers/collection.helper'
-import {isInternalLink} from '@helpers/LinkInternal.helper'
-import {isNavigation} from '@helpers/navigation.helper'
+import {NavigationDrawerBackButton} from './NavigationDrawerBackButton'
+import {NavigationDrawerFeaturedImage} from './NavigationDrawerFeaturedImage'
+import {NavigationDrawerLinks} from './NavigationDrawerLinks'
 import type {Maybe, Valueof} from '@LocalTypes/interfaces'
 import type {
-  LinkExternalOrLinkInternalOrNavigation,
   Navigation,
+  LinkExternalOrLinkInternalOrNavigation,
 } from '@generated/cms.types'
 import menuStyles from '@styles/menu.module.css'
 
@@ -21,7 +19,7 @@ export const PANE_PLACEMENT_OPTION = {
 export type PanePlacement = Valueof<typeof PANE_PLACEMENT_OPTION>
 
 type PropType = {
-  navigation: Navigation | null
+  navigation: Maybe<Navigation>
   links: Maybe<LinkExternalOrLinkInternalOrNavigation>[]
   parentID: Maybe<string>
   activePaneID: string | null
@@ -62,49 +60,18 @@ export function NavigationDrawerPane({
           panePlacement === PANE_PLACEMENT_OPTION.RIGHT,
       })}
     >
-      {navigation && (
-        <li>
-          <button
-            className={menuStyles.mobileMenuBackButton}
-            onClick={() => setActivePaneID(parentID ?? null)}
-          >
-            <ChevronLeftIcon className={menuStyles.mobileMenuBackButtonIcon} />
-            <span>{navigation.title}</span>
-          </button>
-        </li>
-      )}
-      {links?.map((link, index) => {
-        if (isNavigation(link)) {
-          const buttonKey = link?._id ?? `${index}`
-          return (
-            <li key={buttonKey}>
-              <button
-                onClick={() => {
-                  setActivePaneID(buttonKey)
-                  setChildPaneActiveStatus(true)
-                }}
-              >
-                {link.title}
-                <ChevronRightIcon />
-              </button>
-            </li>
-          )
-        } else if (
-          isInternalLink(link) &&
-          isShopifyCollection(link.reference)
-        ) {
-          return (
-            <li>
-              <a
-                href={link.reference.handle ?? '#'}
-                className="block py-2 px-4 text-sm hover:bg-grey-200"
-              >
-                {link.reference.title}
-              </a>
-            </li>
-          )
-        }
-      })}
+      <NavigationDrawerBackButton
+        title={navigation?.title ?? null}
+        onClick={() => setActivePaneID(parentID ?? null)}
+      />
+
+      <NavigationDrawerLinks
+        links={links}
+        setActivePaneID={setActivePaneID}
+        setChildPaneActiveStatus={setChildPaneActiveStatus}
+      />
+
+      <NavigationDrawerFeaturedImage navigation={navigation} />
     </ul>
   )
 }

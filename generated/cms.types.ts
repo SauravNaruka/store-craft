@@ -2331,7 +2331,7 @@ export type NavigationQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename?: 'ShopifyProduct'
+                            __typename: 'ShopifyProduct'
                             _id?: string | null | undefined
                             title?: string | null | undefined
                             handle?: string | null | undefined
@@ -2347,7 +2347,19 @@ export type NavigationQuery = {
                                                   __typename?: 'ShopifySourceImageEdge'
                                                   node?:
                                                     | {
-                                                        __typename?: 'ShopifySourceImage'
+                                                        __typename: 'ShopifySourceImage'
+                                                        id?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        altText?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        originalSrc?:
+                                                          | string
+                                                          | null
+                                                          | undefined
                                                         w100?:
                                                           | string
                                                           | null
@@ -2398,7 +2410,7 @@ export type NavigationQuery = {
         featured?:
           | Array<
               | {
-                  __typename?: 'ShopifyProduct'
+                  __typename: 'ShopifyProduct'
                   _id?: string | null | undefined
                   title?: string | null | undefined
                   handle?: string | null | undefined
@@ -2414,7 +2426,16 @@ export type NavigationQuery = {
                                         __typename?: 'ShopifySourceImageEdge'
                                         node?:
                                           | {
-                                              __typename?: 'ShopifySourceImage'
+                                              __typename: 'ShopifySourceImage'
+                                              id?: string | null | undefined
+                                              altText?:
+                                                | string
+                                                | null
+                                                | undefined
+                                              originalSrc?:
+                                                | string
+                                                | null
+                                                | undefined
                                               w100?: string | null | undefined
                                               w300?: string | null | undefined
                                               w800?: string | null | undefined
@@ -2531,7 +2552,7 @@ export type NavigationFieldsFragment = {
             featured?:
               | Array<
                   | {
-                      __typename?: 'ShopifyProduct'
+                      __typename: 'ShopifyProduct'
                       _id?: string | null | undefined
                       title?: string | null | undefined
                       handle?: string | null | undefined
@@ -2547,7 +2568,16 @@ export type NavigationFieldsFragment = {
                                             __typename?: 'ShopifySourceImageEdge'
                                             node?:
                                               | {
-                                                  __typename?: 'ShopifySourceImage'
+                                                  __typename: 'ShopifySourceImage'
+                                                  id?: string | null | undefined
+                                                  altText?:
+                                                    | string
+                                                    | null
+                                                    | undefined
+                                                  originalSrc?:
+                                                    | string
+                                                    | null
+                                                    | undefined
                                                   w100?:
                                                     | string
                                                     | null
@@ -2598,7 +2628,7 @@ export type NavigationFieldsFragment = {
   featured?:
     | Array<
         | {
-            __typename?: 'ShopifyProduct'
+            __typename: 'ShopifyProduct'
             _id?: string | null | undefined
             title?: string | null | undefined
             handle?: string | null | undefined
@@ -2614,7 +2644,10 @@ export type NavigationFieldsFragment = {
                                   __typename?: 'ShopifySourceImageEdge'
                                   node?:
                                     | {
-                                        __typename?: 'ShopifySourceImage'
+                                        __typename: 'ShopifySourceImage'
+                                        id?: string | null | undefined
+                                        altText?: string | null | undefined
+                                        originalSrc?: string | null | undefined
                                         w100?: string | null | undefined
                                         w300?: string | null | undefined
                                         w800?: string | null | undefined
@@ -2644,7 +2677,7 @@ export type NavigationFieldsFragment = {
 }
 
 export type ShopifyProductFieldsFragment = {
-  __typename?: 'ShopifyProduct'
+  __typename: 'ShopifyProduct'
   _id?: string | null | undefined
   title?: string | null | undefined
   handle?: string | null | undefined
@@ -2660,7 +2693,10 @@ export type ShopifyProductFieldsFragment = {
                         __typename?: 'ShopifySourceImageEdge'
                         node?:
                           | {
-                              __typename?: 'ShopifySourceImage'
+                              __typename: 'ShopifySourceImage'
+                              id?: string | null | undefined
+                              altText?: string | null | undefined
+                              originalSrc?: string | null | undefined
                               w100?: string | null | undefined
                               w300?: string | null | undefined
                               w800?: string | null | undefined
@@ -2812,7 +2848,7 @@ export type FooterQuery = {
                             featured?:
                               | Array<
                                   | {
-                                      __typename?: 'ShopifyProduct'
+                                      __typename: 'ShopifyProduct'
                                       _id?: string | null | undefined
                                       title?: string | null | undefined
                                       handle?: string | null | undefined
@@ -2828,7 +2864,19 @@ export type FooterQuery = {
                                                             __typename?: 'ShopifySourceImageEdge'
                                                             node?:
                                                               | {
-                                                                  __typename?: 'ShopifySourceImage'
+                                                                  __typename: 'ShopifySourceImage'
+                                                                  id?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
+                                                                  altText?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
+                                                                  originalSrc?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
                                                                   w100?:
                                                                     | string
                                                                     | null
@@ -2879,7 +2927,7 @@ export type FooterQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename?: 'ShopifyProduct'
+                            __typename: 'ShopifyProduct'
                             _id?: string | null | undefined
                             title?: string | null | undefined
                             handle?: string | null | undefined
@@ -2895,7 +2943,19 @@ export type FooterQuery = {
                                                   __typename?: 'ShopifySourceImageEdge'
                                                   node?:
                                                     | {
-                                                        __typename?: 'ShopifySourceImage'
+                                                        __typename: 'ShopifySourceImage'
+                                                        id?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        altText?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        originalSrc?:
+                                                          | string
+                                                          | null
+                                                          | undefined
                                                         w100?:
                                                           | string
                                                           | null
@@ -3097,7 +3157,7 @@ export type HeaderQuery = {
                             featured?:
                               | Array<
                                   | {
-                                      __typename?: 'ShopifyProduct'
+                                      __typename: 'ShopifyProduct'
                                       _id?: string | null | undefined
                                       title?: string | null | undefined
                                       handle?: string | null | undefined
@@ -3113,7 +3173,19 @@ export type HeaderQuery = {
                                                             __typename?: 'ShopifySourceImageEdge'
                                                             node?:
                                                               | {
-                                                                  __typename?: 'ShopifySourceImage'
+                                                                  __typename: 'ShopifySourceImage'
+                                                                  id?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
+                                                                  altText?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
+                                                                  originalSrc?:
+                                                                    | string
+                                                                    | null
+                                                                    | undefined
                                                                   w100?:
                                                                     | string
                                                                     | null
@@ -3164,7 +3236,7 @@ export type HeaderQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename?: 'ShopifyProduct'
+                            __typename: 'ShopifyProduct'
                             _id?: string | null | undefined
                             title?: string | null | undefined
                             handle?: string | null | undefined
@@ -3180,7 +3252,19 @@ export type HeaderQuery = {
                                                   __typename?: 'ShopifySourceImageEdge'
                                                   node?:
                                                     | {
-                                                        __typename?: 'ShopifySourceImage'
+                                                        __typename: 'ShopifySourceImage'
+                                                        id?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        altText?:
+                                                          | string
+                                                          | null
+                                                          | undefined
+                                                        originalSrc?:
+                                                          | string
+                                                          | null
+                                                          | undefined
                                                         w100?:
                                                           | string
                                                           | null
@@ -3327,7 +3411,7 @@ export type NavigationsQuery = {
               featured?:
                 | Array<
                     | {
-                        __typename?: 'ShopifyProduct'
+                        __typename: 'ShopifyProduct'
                         _id?: string | null | undefined
                         title?: string | null | undefined
                         handle?: string | null | undefined
@@ -3343,7 +3427,19 @@ export type NavigationsQuery = {
                                               __typename?: 'ShopifySourceImageEdge'
                                               node?:
                                                 | {
-                                                    __typename?: 'ShopifySourceImage'
+                                                    __typename: 'ShopifySourceImage'
+                                                    id?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    altText?:
+                                                      | string
+                                                      | null
+                                                      | undefined
+                                                    originalSrc?:
+                                                      | string
+                                                      | null
+                                                      | undefined
                                                     w100?:
                                                       | string
                                                       | null
@@ -3394,7 +3490,7 @@ export type NavigationsQuery = {
     featured?:
       | Array<
           | {
-              __typename?: 'ShopifyProduct'
+              __typename: 'ShopifyProduct'
               _id?: string | null | undefined
               title?: string | null | undefined
               handle?: string | null | undefined
@@ -3410,7 +3506,13 @@ export type NavigationsQuery = {
                                     __typename?: 'ShopifySourceImageEdge'
                                     node?:
                                       | {
-                                          __typename?: 'ShopifySourceImage'
+                                          __typename: 'ShopifySourceImage'
+                                          id?: string | null | undefined
+                                          altText?: string | null | undefined
+                                          originalSrc?:
+                                            | string
+                                            | null
+                                            | undefined
                                           w100?: string | null | undefined
                                           w300?: string | null | undefined
                                           w800?: string | null | undefined
@@ -3471,6 +3573,7 @@ export const LinkExternallFieldsFragmentDoc = gql`
 `
 export const ShopifyProductFieldsFragmentDoc = gql`
   fragment ShopifyProductFields on ShopifyProduct {
+    __typename
     _id
     title
     handle
@@ -3478,6 +3581,10 @@ export const ShopifyProductFieldsFragmentDoc = gql`
       images {
         edges {
           node {
+            __typename
+            id
+            altText
+            originalSrc
             w100
             w300
             w800
