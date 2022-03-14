@@ -12,7 +12,7 @@ const defaultClasses = `${headerStyles.mobileHeader} ${commonStyles.backgroundGl
 export function Header({children, ...props}: PropType) {
   return (
     <header className={defaultClasses} {...props}>
-      <nav>{children}</nav>
+      <nav className={headerStyles.headerActions}>{children}</nav>
     </header>
   )
 }

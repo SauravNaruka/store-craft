@@ -6,7 +6,7 @@
   z-index: 999;
 }
 
-.mobileHeader nav {
+.headerActions {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -10,7 +10,7 @@ import type {
   Navigation,
   NavigationsQuery,
   NavigationsQueryVariables,
-  LinkExternalOrLinkInternalOrNavigationGroup,
+  LinkExternalOrLinkInternalOrNavigation,
 } from '@generated/cms.types'
 import type {Collection} from '@generated/storefront.types'
 import type {Maybe, CollectionsByID} from '@LocalTypes/interfaces'
@@ -73,7 +73,7 @@ export async function fetchCollectionByNavigation(navigation: Navigation) {
 }
 
 async function makeCollectionPromiseFromNavigationItem(
-  item: Maybe<LinkExternalOrLinkInternalOrNavigationGroup>,
+  item: Maybe<LinkExternalOrLinkInternalOrNavigation>,
 ) {
   if (
     isInternalLink(item) &&

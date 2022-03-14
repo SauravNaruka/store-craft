@@ -3,6 +3,11 @@
   height: 100vh;
 }
 
+.containerFixed {
+  top: 0;
+  position: fixed;
+}
+
 .main {
   padding: 5rem 0 0 0;
   flex: 1;

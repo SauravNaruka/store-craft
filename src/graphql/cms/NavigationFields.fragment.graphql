@@ -1,21 +1,26 @@
 fragment NavigationFields on Navigation {
   __typename
+  _id
   title
-  link {
-    ...LinkInternalFields
-  }
   items {
     ...LinkInternalFields
     ...LinkExternallFields
 
-    ... on NavigationGroup {
-      navigation {
-        __typename
-        title
-        link {
-          ...LinkInternalFields
-        }
+    ... on Navigation {
+      _type
+      __typename
+      _id
+      title
+      items {
+        ...LinkInternalFields
+        ...LinkExternallFields
+      }
+      featured {
+        ...NavigationProductFields
       }
     }
+  }
+  featured {
+    ...NavigationProductFields
   }
 }

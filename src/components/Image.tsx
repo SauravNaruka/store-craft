@@ -49,30 +49,31 @@ export function shopifyImageLoader(
   {image}: ImageLoaderProps,
   {src, width}: NextImageLoaderProps,
 ): string {
-  switch (!!width) {
-    case width < 97:
-      return image.w96 ?? src
-    case width < 129:
-      return image.w128 ?? src
-    case width < 257:
-      return image.w256 ?? src
-    case width < 385:
-      return image.w384 ?? src
-    case width < 641:
-      return image.w640 ?? src
-    case width < 751:
-      return image.w750 ?? src
-    case width < 829:
-      return image.w828 ?? src
-    case width < 1081:
-      return image.w1080 ?? src
-    case width < 1921:
-      return image.w1920 ?? src
-    case width < 2049:
-      return image.w2048 ?? src
-    case width < 3841:
-      return image.w3840 ?? src
-    default:
-      return src
+  if (width >= 3840 && image.w3840) {
+    return image.w3840
+  } else if (width >= 2048 && image.w2048) {
+    return image.w2048
+  } else if (width >= 1920 && image.w1920) {
+    return image.w1920
+  } else if (width >= 1200 && image.w1200) {
+    return image.w1200
+  } else if (width >= 1080 && image.w1080) {
+    return image.w1080
+  } else if (width >= 828 && image.w828) {
+    return image.w828
+  } else if (width >= 750 && image.w750) {
+    return image.w750
+  } else if (width >= 640 && image.w640) {
+    return image.w640
+  } else if (width >= 384 && image.w384) {
+    return image.w384
+  } else if (width >= 256 && image.w256) {
+    return image.w256
+  } else if (width >= 128 && image.w128) {
+    return image.w128
+  } else if (width < 128 && image.w96) {
+    return image.w96
+  } else {
+    return src
   }
 }

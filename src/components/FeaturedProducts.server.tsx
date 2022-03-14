@@ -27,7 +27,7 @@ export function FeaturedProducts({collection}: PropType) {
         <Products products={products}>
           {({
             title,
-            subtitle,
+            // subtitle,
             slug,
             currencyCode,
             amount,

@@ -2,36 +2,17 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import Home, {getStaticProps, PropType} from '../pages/index'
-import {collection} from '../__mocks__/Collection.mock'
-import {buildFooterResponse} from '../__mocks__/Footer.mock'
-import type {Footer as FooterType} from '@generated/cms.types'
 
 describe('Home / index page', () => {
   test('render of the header', async () => {
-    const footer = buildFooterResponse().Footer as FooterType
+    const data: {props: PropType} = await getStaticProps()
+    render(<Home {...data.props} />)
 
-    const data: {props: PropType} = await getStaticProps({})
-    const props = data.props
-    render(
-      <Home
-        productNavigationAndCollectionsByID={
-          props.productNavigationAndCollectionsByID
-        }
-        heroNavigationAndCollectionsByID={
-          props.heroNavigationAndCollectionsByID
-        }
-        roomNavigationAndCollectionsByID={
-          props.roomNavigationAndCollectionsByID
-        }
-        featuredCollection={collection}
-        footer={footer}
-      />,
-    )
     expect(screen.getByRole('banner')).toBeInTheDocument()
   })
 
   test('static props method', async () => {
-    const props = await getStaticProps({})
+    const props = await getStaticProps()
     expect(props).toHaveProperty('props.productNavigationAndCollectionsByID')
     expect(props).toHaveProperty('props.heroNavigationAndCollectionsByID')
     expect(props).toHaveProperty('props.roomNavigationAndCollectionsByID')

@@ -431,7 +431,7 @@ export enum CardBrand {
   Visa = 'VISA',
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart). */
 export type Cart = Node & {
   __typename?: 'Cart'
   /** The attributes associated with the cart. Attributes are represented as key-value pairs. */
@@ -444,7 +444,7 @@ export type Cart = Node & {
   createdAt: Scalars['DateTime']
   /** The discount codes that have been applied to the cart. */
   discountCodes: Array<CartDiscountCode>
-  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-cart). */
+  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart). */
   estimatedCost: CartEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -456,7 +456,7 @@ export type Cart = Node & {
   updatedAt: Scalars['DateTime']
 }
 
-/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/custom-storefronts/cart). */
+/** A cart represents the merchandise that a buyer intends to purchase, and the estimated cost associated with the cart. To learn how to interact with a cart during a customer's session, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart). */
 export type CartLinesArgs = {
   after?: InputMaybe<Scalars['String']>
   before?: InputMaybe<Scalars['String']>
@@ -499,7 +499,7 @@ export type CartBuyerIdentity = {
 /**
  * Specifies the input fields to update the buyer information associated with a cart.
  * Buyer identity is used to determine
- * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout)
+ * [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
  * and should match the customer's shipping address.
  *
  */
@@ -582,7 +582,7 @@ export enum CartErrorCode {
 /**
  * The estimated costs that the buyer will pay at checkout.
  * It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
- * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-cart).
+ * [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
  *
  */
 export type CartEstimatedCost = {
@@ -601,7 +601,7 @@ export type CartEstimatedCost = {
 export type CartInput = {
   /** An array of key-value pairs that contains additional information about the cart. */
   attributes?: InputMaybe<Array<AttributeInput>>
-  /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
+  /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
   buyerIdentity?: InputMaybe<CartBuyerIdentityInput>
   /** The discount codes to apply to the cart. */
   discountCodes?: InputMaybe<Array<Scalars['String']>>
@@ -3423,7 +3423,7 @@ export type ImageTransformInput = {
 /** Information about the localized experiences configured for the shop. */
 export type Localization = {
   __typename?: 'Localization'
-  /** List of countries with enabled localized experiences. */
+  /** The list of countries with enabled localized experiences. */
   availableCountries: Array<Country>
   /** The country of the active localized experience. Use the `@inContext` directive to change this value. */
   country: Country
@@ -3818,6 +3818,7 @@ export type MetafieldEdge = {
  * - `number_integer`
  * - `number_decimal`
  * - `single_line_text_field`
+ * - `boolean` as of 2022-04.
  *
  */
 export type MetafieldFilter = {
@@ -3904,7 +3905,7 @@ export type Mutation = {
   /**
    * Updates customer information associated with a cart.
    * Buyer identity is used to determine
-   * [international pricing](https://shopify.dev/custom-storefronts/products/international-pricing#create-a-checkout)
+   * [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
    * and should match the customer's shipping address.
    *
    */
@@ -5653,7 +5654,7 @@ export type SellingPlan = {
 /** Represents an association between a variant and a selling plan. Selling plan allocations describe the options offered for each variant, and the price of the variant when purchased with a selling plan. */
 export type SellingPlanAllocation = {
   __typename?: 'SellingPlanAllocation'
-  /** A list of price adjustments, with a maximum of two. When there are two, the first price adjustment goes into effect at the time of purchase, while the second one starts after a certain number of orders. */
+  /** A list of price adjustments, with a maximum of two. When there are two, the first price adjustment goes into effect at the time of purchase, while the second one starts after a certain number of orders. A price adjustment represents how a selling plan affects pricing when a variant is purchased with a selling plan. Prices display in the customer's currency if the shop is configured for it. */
   priceAdjustments: Array<SellingPlanAllocationPriceAdjustment>
   /** A representation of how products and variants can be sold and purchased. For example, an individual selling plan could be '6 weeks of prepaid granola, delivered weekly'. */
   sellingPlan: SellingPlan
