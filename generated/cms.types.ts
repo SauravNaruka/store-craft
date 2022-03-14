@@ -529,7 +529,7 @@ export type Navigation = Document & {
   _type?: Maybe<Scalars['String']>
   /** Date the document was last modified */
   _updatedAt?: Maybe<Scalars['DateTime']>
-  featured?: Maybe<Array<Maybe<ShopifyProduct>>>
+  featured?: Maybe<Array<Maybe<NavigationProduct>>>
   items?: Maybe<Array<Maybe<LinkExternalOrLinkInternalOrNavigation>>>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Slug>
@@ -548,6 +548,33 @@ export type NavigationFilter = {
   name?: InputMaybe<StringFilter>
   slug?: InputMaybe<SlugFilter>
   title?: InputMaybe<StringFilter>
+}
+
+export type NavigationProduct = {
+  __typename?: 'NavigationProduct'
+  _key?: Maybe<Scalars['String']>
+  _type?: Maybe<Scalars['String']>
+  image?: Maybe<ImageBlock>
+  name?: Maybe<Scalars['String']>
+  product?: Maybe<ShopifyProduct>
+  title?: Maybe<Scalars['String']>
+}
+
+export type NavigationProductFilter = {
+  _key?: InputMaybe<StringFilter>
+  _type?: InputMaybe<StringFilter>
+  image?: InputMaybe<ImageBlockFilter>
+  name?: InputMaybe<StringFilter>
+  product?: InputMaybe<ShopifyProductFilter>
+  title?: InputMaybe<StringFilter>
+}
+
+export type NavigationProductSorting = {
+  _key?: InputMaybe<SortOrder>
+  _type?: InputMaybe<SortOrder>
+  image?: InputMaybe<ImageBlockSorting>
+  name?: InputMaybe<SortOrder>
+  title?: InputMaybe<SortOrder>
 }
 
 export type NavigationSorting = {
@@ -2331,64 +2358,25 @@ export type NavigationQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename: 'ShopifyProduct'
-                            _id?: string | null | undefined
+                            __typename: 'NavigationProduct'
+                            _type?: string | null | undefined
                             title?: string | null | undefined
-                            handle?: string | null | undefined
-                            sourceData?:
+                            product?:
                               | {
-                                  __typename?: 'ShopifySourceProduct'
-                                  images?:
+                                  __typename?: 'ShopifyProduct'
+                                  handle?: string | null | undefined
+                                }
+                              | null
+                              | undefined
+                            image?:
+                              | {
+                                  __typename?: 'ImageBlock'
+                                  caption?: string | null | undefined
+                                  asset?:
                                     | {
-                                        __typename?: 'ShopifySourceImages'
-                                        edges?:
-                                          | Array<
-                                              | {
-                                                  __typename?: 'ShopifySourceImageEdge'
-                                                  node?:
-                                                    | {
-                                                        __typename: 'ShopifySourceImage'
-                                                        id?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        altText?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        originalSrc?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w100?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w300?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w800?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1200?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1600?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                      }
-                                                    | null
-                                                    | undefined
-                                                }
-                                              | null
-                                              | undefined
-                                            >
-                                          | null
-                                          | undefined
+                                        __typename?: 'SanityImageAsset'
+                                        url?: string | null | undefined
+                                        assetId?: string | null | undefined
                                       }
                                     | null
                                     | undefined
@@ -2410,46 +2398,25 @@ export type NavigationQuery = {
         featured?:
           | Array<
               | {
-                  __typename: 'ShopifyProduct'
-                  _id?: string | null | undefined
+                  __typename: 'NavigationProduct'
+                  _type?: string | null | undefined
                   title?: string | null | undefined
-                  handle?: string | null | undefined
-                  sourceData?:
+                  product?:
                     | {
-                        __typename?: 'ShopifySourceProduct'
-                        images?:
+                        __typename?: 'ShopifyProduct'
+                        handle?: string | null | undefined
+                      }
+                    | null
+                    | undefined
+                  image?:
+                    | {
+                        __typename?: 'ImageBlock'
+                        caption?: string | null | undefined
+                        asset?:
                           | {
-                              __typename?: 'ShopifySourceImages'
-                              edges?:
-                                | Array<
-                                    | {
-                                        __typename?: 'ShopifySourceImageEdge'
-                                        node?:
-                                          | {
-                                              __typename: 'ShopifySourceImage'
-                                              id?: string | null | undefined
-                                              altText?:
-                                                | string
-                                                | null
-                                                | undefined
-                                              originalSrc?:
-                                                | string
-                                                | null
-                                                | undefined
-                                              w100?: string | null | undefined
-                                              w300?: string | null | undefined
-                                              w800?: string | null | undefined
-                                              w1200?: string | null | undefined
-                                              w1600?: string | null | undefined
-                                            }
-                                          | null
-                                          | undefined
-                                      }
-                                    | null
-                                    | undefined
-                                  >
-                                | null
-                                | undefined
+                              __typename?: 'SanityImageAsset'
+                              url?: string | null | undefined
+                              assetId?: string | null | undefined
                             }
                           | null
                           | undefined
@@ -2552,61 +2519,25 @@ export type NavigationFieldsFragment = {
             featured?:
               | Array<
                   | {
-                      __typename: 'ShopifyProduct'
-                      _id?: string | null | undefined
+                      __typename: 'NavigationProduct'
+                      _type?: string | null | undefined
                       title?: string | null | undefined
-                      handle?: string | null | undefined
-                      sourceData?:
+                      product?:
                         | {
-                            __typename?: 'ShopifySourceProduct'
-                            images?:
+                            __typename?: 'ShopifyProduct'
+                            handle?: string | null | undefined
+                          }
+                        | null
+                        | undefined
+                      image?:
+                        | {
+                            __typename?: 'ImageBlock'
+                            caption?: string | null | undefined
+                            asset?:
                               | {
-                                  __typename?: 'ShopifySourceImages'
-                                  edges?:
-                                    | Array<
-                                        | {
-                                            __typename?: 'ShopifySourceImageEdge'
-                                            node?:
-                                              | {
-                                                  __typename: 'ShopifySourceImage'
-                                                  id?: string | null | undefined
-                                                  altText?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  originalSrc?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  w100?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  w300?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  w800?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  w1200?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                  w1600?:
-                                                    | string
-                                                    | null
-                                                    | undefined
-                                                }
-                                              | null
-                                              | undefined
-                                          }
-                                        | null
-                                        | undefined
-                                      >
-                                    | null
-                                    | undefined
+                                  __typename?: 'SanityImageAsset'
+                                  url?: string | null | undefined
+                                  assetId?: string | null | undefined
                                 }
                               | null
                               | undefined
@@ -2628,40 +2559,25 @@ export type NavigationFieldsFragment = {
   featured?:
     | Array<
         | {
-            __typename: 'ShopifyProduct'
-            _id?: string | null | undefined
+            __typename: 'NavigationProduct'
+            _type?: string | null | undefined
             title?: string | null | undefined
-            handle?: string | null | undefined
-            sourceData?:
+            product?:
               | {
-                  __typename?: 'ShopifySourceProduct'
-                  images?:
+                  __typename?: 'ShopifyProduct'
+                  handle?: string | null | undefined
+                }
+              | null
+              | undefined
+            image?:
+              | {
+                  __typename?: 'ImageBlock'
+                  caption?: string | null | undefined
+                  asset?:
                     | {
-                        __typename?: 'ShopifySourceImages'
-                        edges?:
-                          | Array<
-                              | {
-                                  __typename?: 'ShopifySourceImageEdge'
-                                  node?:
-                                    | {
-                                        __typename: 'ShopifySourceImage'
-                                        id?: string | null | undefined
-                                        altText?: string | null | undefined
-                                        originalSrc?: string | null | undefined
-                                        w100?: string | null | undefined
-                                        w300?: string | null | undefined
-                                        w800?: string | null | undefined
-                                        w1200?: string | null | undefined
-                                        w1600?: string | null | undefined
-                                      }
-                                    | null
-                                    | undefined
-                                }
-                              | null
-                              | undefined
-                            >
-                          | null
-                          | undefined
+                        __typename?: 'SanityImageAsset'
+                        url?: string | null | undefined
+                        assetId?: string | null | undefined
                       }
                     | null
                     | undefined
@@ -2672,6 +2588,31 @@ export type NavigationFieldsFragment = {
         | null
         | undefined
       >
+    | null
+    | undefined
+}
+
+export type NavigationProductFieldsFragment = {
+  __typename: 'NavigationProduct'
+  _type?: string | null | undefined
+  title?: string | null | undefined
+  product?:
+    | {__typename?: 'ShopifyProduct'; handle?: string | null | undefined}
+    | null
+    | undefined
+  image?:
+    | {
+        __typename?: 'ImageBlock'
+        caption?: string | null | undefined
+        asset?:
+          | {
+              __typename?: 'SanityImageAsset'
+              url?: string | null | undefined
+              assetId?: string | null | undefined
+            }
+          | null
+          | undefined
+      }
     | null
     | undefined
 }
@@ -2848,62 +2789,29 @@ export type FooterQuery = {
                             featured?:
                               | Array<
                                   | {
-                                      __typename: 'ShopifyProduct'
-                                      _id?: string | null | undefined
+                                      __typename: 'NavigationProduct'
+                                      _type?: string | null | undefined
                                       title?: string | null | undefined
-                                      handle?: string | null | undefined
-                                      sourceData?:
+                                      product?:
                                         | {
-                                            __typename?: 'ShopifySourceProduct'
-                                            images?:
+                                            __typename?: 'ShopifyProduct'
+                                            handle?: string | null | undefined
+                                          }
+                                        | null
+                                        | undefined
+                                      image?:
+                                        | {
+                                            __typename?: 'ImageBlock'
+                                            caption?: string | null | undefined
+                                            asset?:
                                               | {
-                                                  __typename?: 'ShopifySourceImages'
-                                                  edges?:
-                                                    | Array<
-                                                        | {
-                                                            __typename?: 'ShopifySourceImageEdge'
-                                                            node?:
-                                                              | {
-                                                                  __typename: 'ShopifySourceImage'
-                                                                  id?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  altText?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  originalSrc?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w100?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w300?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w800?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w1200?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w1600?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                }
-                                                              | null
-                                                              | undefined
-                                                          }
-                                                        | null
-                                                        | undefined
-                                                      >
+                                                  __typename?: 'SanityImageAsset'
+                                                  url?:
+                                                    | string
+                                                    | null
+                                                    | undefined
+                                                  assetId?:
+                                                    | string
                                                     | null
                                                     | undefined
                                                 }
@@ -2927,64 +2835,25 @@ export type FooterQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename: 'ShopifyProduct'
-                            _id?: string | null | undefined
+                            __typename: 'NavigationProduct'
+                            _type?: string | null | undefined
                             title?: string | null | undefined
-                            handle?: string | null | undefined
-                            sourceData?:
+                            product?:
                               | {
-                                  __typename?: 'ShopifySourceProduct'
-                                  images?:
+                                  __typename?: 'ShopifyProduct'
+                                  handle?: string | null | undefined
+                                }
+                              | null
+                              | undefined
+                            image?:
+                              | {
+                                  __typename?: 'ImageBlock'
+                                  caption?: string | null | undefined
+                                  asset?:
                                     | {
-                                        __typename?: 'ShopifySourceImages'
-                                        edges?:
-                                          | Array<
-                                              | {
-                                                  __typename?: 'ShopifySourceImageEdge'
-                                                  node?:
-                                                    | {
-                                                        __typename: 'ShopifySourceImage'
-                                                        id?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        altText?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        originalSrc?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w100?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w300?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w800?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1200?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1600?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                      }
-                                                    | null
-                                                    | undefined
-                                                }
-                                              | null
-                                              | undefined
-                                            >
-                                          | null
-                                          | undefined
+                                        __typename?: 'SanityImageAsset'
+                                        url?: string | null | undefined
+                                        assetId?: string | null | undefined
                                       }
                                     | null
                                     | undefined
@@ -3157,62 +3026,29 @@ export type HeaderQuery = {
                             featured?:
                               | Array<
                                   | {
-                                      __typename: 'ShopifyProduct'
-                                      _id?: string | null | undefined
+                                      __typename: 'NavigationProduct'
+                                      _type?: string | null | undefined
                                       title?: string | null | undefined
-                                      handle?: string | null | undefined
-                                      sourceData?:
+                                      product?:
                                         | {
-                                            __typename?: 'ShopifySourceProduct'
-                                            images?:
+                                            __typename?: 'ShopifyProduct'
+                                            handle?: string | null | undefined
+                                          }
+                                        | null
+                                        | undefined
+                                      image?:
+                                        | {
+                                            __typename?: 'ImageBlock'
+                                            caption?: string | null | undefined
+                                            asset?:
                                               | {
-                                                  __typename?: 'ShopifySourceImages'
-                                                  edges?:
-                                                    | Array<
-                                                        | {
-                                                            __typename?: 'ShopifySourceImageEdge'
-                                                            node?:
-                                                              | {
-                                                                  __typename: 'ShopifySourceImage'
-                                                                  id?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  altText?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  originalSrc?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w100?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w300?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w800?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w1200?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                  w1600?:
-                                                                    | string
-                                                                    | null
-                                                                    | undefined
-                                                                }
-                                                              | null
-                                                              | undefined
-                                                          }
-                                                        | null
-                                                        | undefined
-                                                      >
+                                                  __typename?: 'SanityImageAsset'
+                                                  url?:
+                                                    | string
+                                                    | null
+                                                    | undefined
+                                                  assetId?:
+                                                    | string
                                                     | null
                                                     | undefined
                                                 }
@@ -3236,64 +3072,25 @@ export type HeaderQuery = {
                   featured?:
                     | Array<
                         | {
-                            __typename: 'ShopifyProduct'
-                            _id?: string | null | undefined
+                            __typename: 'NavigationProduct'
+                            _type?: string | null | undefined
                             title?: string | null | undefined
-                            handle?: string | null | undefined
-                            sourceData?:
+                            product?:
                               | {
-                                  __typename?: 'ShopifySourceProduct'
-                                  images?:
+                                  __typename?: 'ShopifyProduct'
+                                  handle?: string | null | undefined
+                                }
+                              | null
+                              | undefined
+                            image?:
+                              | {
+                                  __typename?: 'ImageBlock'
+                                  caption?: string | null | undefined
+                                  asset?:
                                     | {
-                                        __typename?: 'ShopifySourceImages'
-                                        edges?:
-                                          | Array<
-                                              | {
-                                                  __typename?: 'ShopifySourceImageEdge'
-                                                  node?:
-                                                    | {
-                                                        __typename: 'ShopifySourceImage'
-                                                        id?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        altText?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        originalSrc?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w100?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w300?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w800?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1200?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                        w1600?:
-                                                          | string
-                                                          | null
-                                                          | undefined
-                                                      }
-                                                    | null
-                                                    | undefined
-                                                }
-                                              | null
-                                              | undefined
-                                            >
-                                          | null
-                                          | undefined
+                                        __typename?: 'SanityImageAsset'
+                                        url?: string | null | undefined
+                                        assetId?: string | null | undefined
                                       }
                                     | null
                                     | undefined
@@ -3411,64 +3208,25 @@ export type NavigationsQuery = {
               featured?:
                 | Array<
                     | {
-                        __typename: 'ShopifyProduct'
-                        _id?: string | null | undefined
+                        __typename: 'NavigationProduct'
+                        _type?: string | null | undefined
                         title?: string | null | undefined
-                        handle?: string | null | undefined
-                        sourceData?:
+                        product?:
                           | {
-                              __typename?: 'ShopifySourceProduct'
-                              images?:
+                              __typename?: 'ShopifyProduct'
+                              handle?: string | null | undefined
+                            }
+                          | null
+                          | undefined
+                        image?:
+                          | {
+                              __typename?: 'ImageBlock'
+                              caption?: string | null | undefined
+                              asset?:
                                 | {
-                                    __typename?: 'ShopifySourceImages'
-                                    edges?:
-                                      | Array<
-                                          | {
-                                              __typename?: 'ShopifySourceImageEdge'
-                                              node?:
-                                                | {
-                                                    __typename: 'ShopifySourceImage'
-                                                    id?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    altText?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    originalSrc?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w100?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w300?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w800?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1200?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                    w1600?:
-                                                      | string
-                                                      | null
-                                                      | undefined
-                                                  }
-                                                | null
-                                                | undefined
-                                            }
-                                          | null
-                                          | undefined
-                                        >
-                                      | null
-                                      | undefined
+                                    __typename?: 'SanityImageAsset'
+                                    url?: string | null | undefined
+                                    assetId?: string | null | undefined
                                   }
                                 | null
                                 | undefined
@@ -3490,43 +3248,25 @@ export type NavigationsQuery = {
     featured?:
       | Array<
           | {
-              __typename: 'ShopifyProduct'
-              _id?: string | null | undefined
+              __typename: 'NavigationProduct'
+              _type?: string | null | undefined
               title?: string | null | undefined
-              handle?: string | null | undefined
-              sourceData?:
+              product?:
                 | {
-                    __typename?: 'ShopifySourceProduct'
-                    images?:
+                    __typename?: 'ShopifyProduct'
+                    handle?: string | null | undefined
+                  }
+                | null
+                | undefined
+              image?:
+                | {
+                    __typename?: 'ImageBlock'
+                    caption?: string | null | undefined
+                    asset?:
                       | {
-                          __typename?: 'ShopifySourceImages'
-                          edges?:
-                            | Array<
-                                | {
-                                    __typename?: 'ShopifySourceImageEdge'
-                                    node?:
-                                      | {
-                                          __typename: 'ShopifySourceImage'
-                                          id?: string | null | undefined
-                                          altText?: string | null | undefined
-                                          originalSrc?:
-                                            | string
-                                            | null
-                                            | undefined
-                                          w100?: string | null | undefined
-                                          w300?: string | null | undefined
-                                          w800?: string | null | undefined
-                                          w1200?: string | null | undefined
-                                          w1600?: string | null | undefined
-                                        }
-                                      | null
-                                      | undefined
-                                  }
-                                | null
-                                | undefined
-                              >
-                            | null
-                            | undefined
+                          __typename?: 'SanityImageAsset'
+                          url?: string | null | undefined
+                          assetId?: string | null | undefined
                         }
                       | null
                       | undefined
@@ -3571,6 +3311,53 @@ export const LinkExternallFieldsFragmentDoc = gql`
     newWindow
   }
 `
+export const NavigationProductFieldsFragmentDoc = gql`
+  fragment NavigationProductFields on NavigationProduct {
+    __typename
+    _type
+    title
+    product {
+      handle
+    }
+    image {
+      asset {
+        url
+        assetId
+      }
+      caption
+    }
+  }
+`
+export const NavigationFieldsFragmentDoc = gql`
+  fragment NavigationFields on Navigation {
+    __typename
+    _id
+    title
+    items {
+      ...LinkInternalFields
+      ...LinkExternallFields
+      ... on Navigation {
+        _type
+        __typename
+        _id
+        title
+        items {
+          ...LinkInternalFields
+          ...LinkExternallFields
+        }
+        featured {
+          ...NavigationProductFields
+        }
+      }
+    }
+    featured {
+      ...NavigationProductFields
+    }
+  }
+  ${LinkInternalFieldsFragmentDoc}
+  ${LinkExternallFieldsFragmentDoc}
+  ${NavigationProductFieldsFragmentDoc}
+`
 export const ShopifyProductFieldsFragmentDoc = gql`
   fragment ShopifyProductFields on ShopifyProduct {
     __typename
@@ -3595,36 +3382,6 @@ export const ShopifyProductFieldsFragmentDoc = gql`
       }
     }
   }
-`
-export const NavigationFieldsFragmentDoc = gql`
-  fragment NavigationFields on Navigation {
-    __typename
-    _id
-    title
-    items {
-      ...LinkInternalFields
-      ...LinkExternallFields
-      ... on Navigation {
-        _type
-        __typename
-        _id
-        title
-        items {
-          ...LinkInternalFields
-          ...LinkExternallFields
-        }
-        featured {
-          ...ShopifyProductFields
-        }
-      }
-    }
-    featured {
-      ...ShopifyProductFields
-    }
-  }
-  ${LinkInternalFieldsFragmentDoc}
-  ${LinkExternallFieldsFragmentDoc}
-  ${ShopifyProductFieldsFragmentDoc}
 `
 export const ThemeFieldsFragmentDoc = gql`
   fragment ThemeFields on Theme {

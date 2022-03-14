@@ -1,0 +1,15 @@
+fragment NavigationProductFields on NavigationProduct {
+  __typename
+  _type
+  title
+  product {
+    handle
+  }
+  image {
+    asset {
+      url
+      assetId
+    }
+    caption
+  }
+}

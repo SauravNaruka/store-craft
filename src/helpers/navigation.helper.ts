@@ -1,6 +1,10 @@
-import {Navigation, ShopifyCollection} from '@generated/cms.types'
 import {isShopifyCollection} from './collection.helper'
 import {isInternalLink} from './LinkInternal.helper'
+import type {
+  Navigation,
+  NavigationProduct,
+  ShopifyCollection,
+} from '@generated/cms.types'
 
 export function getFirstShopifyCollection(
   navigation: Navigation,
@@ -18,4 +22,10 @@ export function getFirstShopifyCollection(
 
 export function isNavigation(object?: unknown): object is Navigation {
   return (object as Navigation)?.__typename === 'Navigation'
+}
+
+export function isNavigationProduct(
+  object?: unknown,
+): object is NavigationProduct {
+  return (object as NavigationProduct)?.__typename === 'NavigationProduct'
 }

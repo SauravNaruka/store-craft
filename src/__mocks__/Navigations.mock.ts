@@ -1,7 +1,7 @@
 import {build} from '@jackfranklin/test-data-bot'
 import faker from 'faker'
 import {buildCollectionShortInfo} from './Collection.mock'
-import {buildShopifyProduct} from './ShopifyProduct.mock'
+import {buildNavigationProduct} from './NavigationProduct.mock'
 import {isShopifyCollection} from '@helpers/collection.helper'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {
@@ -28,7 +28,7 @@ export function buildNavigation(): Navigation {
       .map(() => buildLinkInternalShopifyCollection()),
     featured: Array(NUMBER_OF_FEATURED_PRODUCTS)
       .fill(undefined)
-      .map(() => buildShopifyProduct()),
+      .map(() => buildNavigationProduct()),
   }
 }
 
