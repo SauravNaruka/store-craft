@@ -45,6 +45,7 @@ export function RoomNavigation({navigation, collectionsByID}: PropType) {
                 image={image}
                 aspectRatio={{width: 4, height: 3}}
                 style={style}
+                role="listitem"
               />
             )
           }

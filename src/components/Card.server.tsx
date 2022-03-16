@@ -13,11 +13,12 @@ type PropType = ImageComponentProps & {
   subtitle?: JSX.Element | string | null
   link: string
   style: CardStyle
+  role?: string | null
 }
 
-export function Card({title, subtitle, link, style, ...rest}: PropType) {
+export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
   return (
-    <div className={style.rootClass} role="listitem">
+    <div className={style.rootClass} {...(role ? {role} : {})}>
       <a
         aria-hidden="true"
         tabIndex={-1}

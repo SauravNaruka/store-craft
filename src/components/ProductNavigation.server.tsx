@@ -39,6 +39,7 @@ export function ProductNavigation({navigation, collectionsByID}: PropType) {
                 aspectRatio={{width: 4, height: 3}}
                 priority={true}
                 style={style}
+                role="listitem"
               />
             )
           }
