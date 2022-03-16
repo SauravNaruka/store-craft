@@ -53,6 +53,7 @@ export function FeaturedProducts({collection}: PropType) {
                 image={image}
                 aspectRatio={{width: 4, height: 3}}
                 style={style}
+                role="listitem"
               />
             )
           }
