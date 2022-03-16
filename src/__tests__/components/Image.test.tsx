@@ -23,7 +23,7 @@ function buildNextImageLoaderProps(
   }
 }
 
-const sizes = [96, 128, 256, 384, 640, 750, 828, 1080, 1920, 2048, 3840]
+const sizes = [96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840]
 
 describe('Image component ', () => {
   test('imageLoader handle sanity image', () => {
@@ -59,13 +59,6 @@ describe('Image component ', () => {
     const nextImageLoaderProps = buildNextImageLoaderProps({
       src: url,
     })
-
-    expect(
-      imageLoader(imageProp, {
-        ...nextImageLoaderProps,
-        width: 3842,
-      }),
-    ).toMatch(url)
 
     sizes.forEach(width => {
       expect(
