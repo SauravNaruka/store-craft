@@ -54,7 +54,11 @@ button.mobileMenuBackButton {
   display: inline-block;
   position: absolute;
   width: 100%;
-  transition: all 200ms ease-out 0s;
+  /* transition: all 200ms ease-out 0s; */
+  transition-duration: 250ms;
+  transition-timing-function: initial;
+  transition-delay: initial;
+  transition-property: all;
 }
 
 .mobileMenuPaneCenter {
