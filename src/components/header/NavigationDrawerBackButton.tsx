@@ -23,6 +23,7 @@ export function NavigationDrawerBackButton({
       >
         <ChevronLeftIcon className={menuStyles.mobileMenuBackButtonIcon} />
         <span>{title}</span>
+        <span aria-hidden={true} />
       </button>
     </li>
   )

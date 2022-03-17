@@ -34,13 +34,10 @@
 }
 
 button.mobileMenuBackButton {
-  justify-content: center !important;
   background-color: var(--color-primary-11) !important;
 }
 
 .mobileMenuBackButtonIcon {
-  position: absolute;
-  left: 36px;
 }
 
 .mobileMenuPaneWraper {
@@ -55,9 +52,9 @@ button.mobileMenuBackButton {
 .mobileMenuPane,
 .mobileSubMenu {
   display: inline-block;
+  position: absolute;
   width: 100%;
   transition: all 200ms ease-out 0s;
-  position: absolute;
 }
 
 .mobileMenuPaneCenter {
@@ -65,9 +62,7 @@ button.mobileMenuBackButton {
 }
 .mobileMenuPaneLeft {
   transform: translateX(-100%);
-  overflow: hidden;
 }
 .mobileMenuPaneRight {
-  transform: translateX(100%) scaleX(0);
-  overflow: hidden;
+  transform: translateX(100%);
 }
