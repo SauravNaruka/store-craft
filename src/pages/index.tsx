@@ -1,11 +1,8 @@
 import * as React from 'react'
 import Head from 'next/head'
-import CartIcon from '@components/icons/CartIcon'
 import {Header} from '@components/header/Header'
-import {SearchInput} from '@components/SearchInput'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
-import {MenuSection} from '@components/header/MenuSection'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {Footer} from '@components/footer/Footer.server'
@@ -64,15 +61,11 @@ export default function Home({
         />
       </Head>
 
-      <Header>
-        <MenuSection
-          menuVisiblity={isMenuVisible}
-          onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
-          header={header}
-        />
-        <SearchInput />
-        <CartIcon name={'Shopping Cart'} />
-      </Header>
+      <Header
+        isMenuVisible={isMenuVisible}
+        onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
+        header={header}
+      />
 
       <main className={styles.main}>
         <ProductNavigation

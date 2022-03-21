@@ -14,7 +14,7 @@ describe('MenuSection functionality ', () => {
     const mockCB = jest.fn()
     render(
       <MenuSection
-        menuVisiblity={true}
+        isMenuVisible={true}
         onMenuToggleClick={mockCB}
         header={header}
       />,
@@ -37,7 +37,7 @@ describe('MenuSection functionality ', () => {
 
     render(
       <MenuSection
-        menuVisiblity={true}
+        isMenuVisible={true}
         onMenuToggleClick={mockCB}
         header={header}
       />,

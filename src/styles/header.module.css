@@ -13,3 +13,27 @@
   align-items: center;
   width: 100%;
 }
+
+.search {
+  display: flex;
+  justify-content: center;
+}
+
+.activeSearch {
+  width: 100%;
+}
+
+.activeSearchInput {
+  max-width: initial;
+  flex: 1;
+  box-shadow: none;
+}
+
+.activeSearchInput input {
+  max-width: initial !important;
+  flex: 1;
+}
+
+.mobileHeaderActiveSearch {
+  background-color: white;
+}

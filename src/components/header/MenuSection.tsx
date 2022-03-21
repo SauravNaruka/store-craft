@@ -5,29 +5,32 @@ import IconButton from '@components/IconButton'
 import type {Header} from '@generated/cms.types'
 
 type PropType = {
+  isVisible: boolean
+  isMenuVisible: boolean
   header: Header
-  menuVisiblity: boolean
   onMenuToggleClick: () => void
 }
 
 export function MenuSection({
+  isVisible = true,
+  isMenuVisible,
   header,
-  menuVisiblity,
   onMenuToggleClick,
 }: PropType) {
   return (
     <>
       <IconButton
+        className={`${isVisible ? '' : 'hidden'}`}
         onClick={onMenuToggleClick}
         name="Toggle navigation"
-        aria-expanded={menuVisiblity}
+        aria-expanded={isMenuVisible}
         aria-controls="main-navigation-mobile"
       >
-        <MenuIcon close={menuVisiblity} />
+        <MenuIcon close={isMenuVisible} />
       </IconButton>
       <NavigationDrawer
         id="main-navigation-mobile"
-        visible={menuVisiblity}
+        visible={isMenuVisible}
         navigations={header?.navigations ?? []}
       />
     </>
