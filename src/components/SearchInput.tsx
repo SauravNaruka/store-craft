@@ -6,7 +6,6 @@ import SearchIcon from '@components/icons/SearchIcon'
 import commonStyles from '@styles/common.module.css'
 import inputStyles from '@styles/input.module.css'
 import headerStyles from '@styles/header.module.css'
-import menuStyles from '@styles/menu.module.css'
 
 type PropType = {
   isActive: boolean
