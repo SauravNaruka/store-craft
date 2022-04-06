@@ -1,15 +1,25 @@
 import * as React from 'react'
 import cx from 'classnames'
-import {TextInput} from './TextInput'
+import {Card} from '@components/Card.server'
 import ChevronLeftIcon from '@components/icons/ChevronLeftIcon'
 import SearchIcon from '@components/icons/SearchIcon'
+import {TextInput} from '@components/TextInput'
 import {useDebounce} from '@hooks/useDebounce'
-import {restClient} from '@api/clientRest'
 import {isProductConnection} from '@helpers/product.helper'
+import {restClient} from '@api/clientRest'
 import {ProductConnection} from '@generated/storefront.types'
+import cardStyles from '@styles/card.module.css'
 import commonStyles from '@styles/common.module.css'
-import inputStyles from '@styles/input.module.css'
 import headerStyles from '@styles/header.module.css'
+import inputStyles from '@styles/input.module.css'
+import navigationStyles from '@styles/navigation.module.css'
+import {isValidImageType} from '@helpers/image.helper'
+
+const style = {
+  rootClass: cardStyles.quickSearchCard,
+  imageClass: `${cardStyles.quickSearchImage} ${navigationStyles.roomNavigationImage}`,
+  linkTextClass: cardStyles.quickSearchLink,
+}
 
 type PropType = {
   isActive: boolean
@@ -26,10 +36,7 @@ export function SearchInput({
     ProductConnection | undefined
   >()
   const [searchQuery, setSearchQuery] = React.useState('')
-  const debouncedSearchQuery = useDebounce<typeof searchQuery>(
-    searchQuery,
-    1000,
-  )
+  const debouncedSearchQuery = useDebounce<typeof searchQuery>(searchQuery, 100)
 
   React.useEffect(() => {
     async function search() {
@@ -95,9 +102,29 @@ export function SearchInput({
           hidden: !isActive,
         })}
       >
-        {searchResults?.edges.map(product => (
-          <li key={product.node.id}>{product.node.title}</li>
-        ))}
+        {searchResults?.edges.map(product => {
+          if (isValidImageType(product.node.featuredImage)) {
+            return (
+              <li key={product.node.id}>
+                {
+                  <Card
+                    title={product.node.title}
+                    link={product.node.handle}
+                    layout="fill"
+                    objectFit="contain"
+                    objectPosition="50% 50%"
+                    sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
+                    image={product.node.featuredImage}
+                    aspectRatio={{width: 4, height: 3}}
+                    style={style}
+                  />
+                }
+              </li>
+            )
+          } else {
+            return <a href={product.node.handle}>{product.node.title}</a>
+          }
+        })}
       </ul>
     </>
   )
