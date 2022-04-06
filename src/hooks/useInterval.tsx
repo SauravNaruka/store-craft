@@ -1,8 +1,21 @@
 import * as React from 'react'
 
 export function useInterval(callback: () => void, delay: number | null) {
-  const savedCallback = React.useRef<any>()
-  const intervalIdRef = React.useRef<any>()
+  const savedCallback = React.useRef(callback)
+  const intervalIdRef = React.useRef<ReturnType<typeof setInterval>>()
+
+  const stopInterval = React.useCallback(() => {
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current)
+    }
+  }, [])
+
+  const resetInterval = React.useCallback(() => {
+    stopInterval()
+    if (delay !== null) {
+      intervalIdRef.current = setInterval(savedCallback.current, delay)
+    }
+  }, [delay, stopInterval])
 
   // Remember the latest callback.
   React.useEffect(() => {
@@ -15,7 +28,7 @@ export function useInterval(callback: () => void, delay: number | null) {
       savedCallback.current()
     }
     if (delay !== null) {
-      let id = setInterval(tick, delay)
+      const id = setInterval(tick, delay)
       intervalIdRef.current = id
       return () => clearInterval(id)
     }
@@ -23,17 +36,8 @@ export function useInterval(callback: () => void, delay: number | null) {
 
   React.useEffect(() => {
     // clear interval on when component gets removed to avoid memory leaks
-    return () => clearInterval(intervalIdRef.current)
-  }, [])
-
-  const resetInterval = React.useCallback(() => {
-    clearInterval(intervalIdRef.current)
-    if (delay !== null) {
-      intervalIdRef.current = setInterval(savedCallback.current, delay)
-    }
-  }, [delay])
-
-  const stopInterval = () => clearInterval(intervalIdRef.current)
+    return stopInterval
+  }, [stopInterval])
 
   return {
     resetInterval,

@@ -1,4 +1,4 @@
-import {isShopifyProduct} from '@helpers/shopifyProduct.helper'
+import {isShopifyProduct} from '@helpers/product.helper'
 import {buildShopifyProduct} from '../../__mocks__/ShopifyProduct.mock'
 import type {ShopifyProduct} from '@generated/cms.types'
 

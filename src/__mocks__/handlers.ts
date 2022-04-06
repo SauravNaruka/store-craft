@@ -6,6 +6,7 @@ import {
 import {getGlobalConfig} from './GlobalConfig.handlers'
 import {getFooter} from './Footer.handlers'
 import {getHeader} from './header.handler'
+import {getProductQuickSearchHandler} from './search.handler'
 
 const handlers = [
   getNavigationsHandler,
@@ -14,6 +15,7 @@ const handlers = [
   getGlobalConfig,
   getFooter,
   getHeader,
+  getProductQuickSearchHandler,
 ]
 
 export {handlers}

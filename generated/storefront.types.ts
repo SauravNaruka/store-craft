@@ -247,9 +247,8 @@ export enum ArticleSortKeys {
   /** Sort by the `published_at` value. */
   PublishedAt = 'PUBLISHED_AT',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -405,9 +404,8 @@ export enum BlogSortKeys {
   /** Sort by the `id` value. */
   Id = 'ID',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -587,9 +585,9 @@ export enum CartErrorCode {
  */
 export type CartEstimatedCost = {
   __typename?: 'CartEstimatedCost'
-  /** The estimated amount, before taxes and discounts, for the customer to pay at checkout. */
+  /** The estimated amount, before taxes and discounts, for the customer to pay. */
   subtotalAmount: MoneyV2
-  /** The estimated total amount for the customer to pay at checkout. */
+  /** The estimated total amount for the customer to pay. */
   totalAmount: MoneyV2
   /** The estimated duty amount for the customer to pay at checkout. */
   totalDutyAmount?: Maybe<MoneyV2>
@@ -754,7 +752,7 @@ export type Checkout = Node & {
   completedAt?: Maybe<Scalars['DateTime']>
   /** The date and time when the checkout was created. */
   createdAt: Scalars['DateTime']
-  /** The currency code for the Checkout. */
+  /** The currency code for the checkout. */
   currencyCode: CurrencyCode
   /** A list of extra information that is added to the checkout. */
   customAttributes: Array<Attribute>
@@ -807,9 +805,9 @@ export type Checkout = Node & {
   subtotalPrice: Scalars['Money']
   /** Price of the checkout before duties, shipping and taxes. */
   subtotalPriceV2: MoneyV2
-  /** Specifies if the Checkout is tax exempt. */
+  /** Whether the checkout is tax exempt. */
   taxExempt: Scalars['Boolean']
-  /** Specifies if taxes are included in the line item and shipping line prices. */
+  /** Whether taxes are included in the line item and shipping line prices. */
   taxesIncluded: Scalars['Boolean']
   /** The sum of all the duties applied to the line items in the checkout. */
   totalDuties?: Maybe<MoneyV2>
@@ -1605,9 +1603,8 @@ export enum CollectionSortKeys {
   /** Sort by the `id` value. */
   Id = 'ID',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -4662,9 +4659,8 @@ export enum OrderSortKeys {
   /** Sort by the `processed_at` value. */
   ProcessedAt = 'PROCESSED_AT',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -4763,9 +4759,8 @@ export enum PageSortKeys {
   /** Sort by the `id` value. */
   Id = 'ID',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5081,9 +5076,8 @@ export enum ProductCollectionSortKeys {
   /** Sort by the `price` value. */
   Price = 'PRICE',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5144,9 +5138,8 @@ export enum ProductImageSortKeys {
   /** Sort by the `position` value. */
   Position = 'POSITION',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5159,9 +5152,8 @@ export enum ProductMediaSortKeys {
   /** Sort by the `position` value. */
   Position = 'POSITION',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5205,9 +5197,8 @@ export enum ProductSortKeys {
   /** Sort by the `product_type` value. */
   ProductType = 'PRODUCT_TYPE',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5349,9 +5340,8 @@ export enum ProductVariantSortKeys {
   /** Sort by the `position` value. */
   Position = 'POSITION',
   /**
-   * During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-   * results by relevance to the search term(s). When no search query is specified, this sort key is not
-   * deterministic and should not be used.
+   * Sort by relevance to the search terms when the `query` parameter is specified on the connection.
+   * Don't use this sort key when no search query is specified.
    *
    */
   Relevance = 'RELEVANCE',
@@ -5643,9 +5633,9 @@ export type SellingPlan = {
   id: Scalars['ID']
   /** The name of the selling plan. For example, '6 weeks of prepaid granola, delivered weekly'. */
   name: Scalars['String']
-  /** Represents the selling plan options available in the drop-down list in the storefront. For example, 'Delivery every week' or 'Delivery every 2 weeks' specifies the delivery frequency options for the product. */
+  /** The selling plan options available in the drop-down list in the storefront. For example, 'Delivery every week' or 'Delivery every 2 weeks' specifies the delivery frequency options for the product. */
   options: Array<SellingPlanOption>
-  /** Represents how a selling plan affects pricing when a variant is purchased with a selling plan. */
+  /** The price adjustments that a selling plan makes when a variant is purchased with a selling plan. */
   priceAdjustments: Array<SellingPlanPriceAdjustment>
   /** Whether purchasing the selling plan will result in multiple deliveries. */
   recurringDeliveries: Scalars['Boolean']
@@ -6347,6 +6337,35 @@ export type CollectionShortInfoQuery = {
     | undefined
 }
 
+export type ProductQuickSearchQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>
+}>
+
+export type ProductQuickSearchQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      node: {
+        __typename?: 'Product'
+        title: string
+        handle: string
+        featuredImage?:
+          | {
+              __typename?: 'Image'
+              altText?: string | null | undefined
+              url: any
+              w96: any
+              w128: any
+            }
+          | null
+          | undefined
+      }
+    }>
+  }
+}
+
 export const CollectionDocument = gql`
   query Collection(
     $handle: String!
@@ -6478,6 +6497,37 @@ export const CollectionShortInfoDocument = gql`
     }
   }
 `
+export const ProductQuickSearchDocument = gql`
+  query ProductQuickSearch($query: String) {
+    products(query: $query, first: 3) {
+      __typename
+      edges {
+        node {
+          title
+          handle
+          featuredImage {
+            altText
+            url
+            w96: url(
+              transform: {
+                maxWidth: 96
+                maxHeight: 72
+                preferredContentType: WEBP
+              }
+            )
+            w128: url(
+              transform: {
+                maxWidth: 128
+                maxHeight: 96
+                preferredContentType: WEBP
+              }
+            )
+          }
+        }
+      }
+    }
+  }
+`
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -6516,6 +6566,20 @@ export function getSdk(
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
         'CollectionShortInfo',
+      )
+    },
+    ProductQuickSearch(
+      variables?: ProductQuickSearchQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<ProductQuickSearchQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<ProductQuickSearchQuery>(
+            ProductQuickSearchDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'ProductQuickSearch',
       )
     },
   }
