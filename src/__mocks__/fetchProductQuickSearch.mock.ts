@@ -19,7 +19,7 @@ export function buildProductQuickSearchResponse(
         .map(() => {
           return {
             __typename: 'ProductEdge',
-            node: buildProductQuickSearchResponse(),
+            node: buildProductQuickSearch(),
           }
         }),
       ...overrides,

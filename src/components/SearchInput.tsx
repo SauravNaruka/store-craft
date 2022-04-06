@@ -36,13 +36,13 @@ export function SearchInput({
     ProductConnection | undefined
   >()
   const [searchQuery, setSearchQuery] = React.useState('')
-  const debouncedSearchQuery = useDebounce<typeof searchQuery>(searchQuery, 100)
+  const debouncedSearchQuery = useDebounce<typeof searchQuery>(searchQuery, 250)
 
   React.useEffect(() => {
     async function search() {
       if (debouncedSearchQuery.length > 2) {
         const {products} = await restClient(
-          `/.netlify/functions/search?query=${encodeURIComponent(
+          `/.netlify/functions/quickSearch?query=${encodeURIComponent(
             debouncedSearchQuery,
           )}`,
         )
