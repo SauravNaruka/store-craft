@@ -6,6 +6,7 @@ import {isNavigation} from '@helpers/navigation.helper'
 import type {Maybe} from '@LocalTypes/interfaces'
 import type {LinkExternalOrLinkInternalOrNavigation} from '@generated/cms.types'
 import menuStyles from '@styles/menu.module.css'
+import Link from 'next/link'
 
 type PropType = {
   links: Maybe<LinkExternalOrLinkInternalOrNavigation>[]
@@ -47,12 +48,13 @@ export function NavigationDrawerLinks({
         ) {
           return (
             <li>
-              <a
-                href={link.reference.handle ?? '#'}
-                className={`${menuStyles.mobileMenuLink} block py-2 px-4 text-sm hover:bg-grey-200`}
-              >
-                {link.reference.title}
-              </a>
+              <Link href={link.reference.handle ?? '#'}>
+                <a
+                  className={`${menuStyles.mobileMenuLink} block py-2 px-4 text-sm hover:bg-grey-200`}
+                >
+                  {link.reference.title}
+                </a>
+              </Link>
             </li>
           )
         }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import cx from 'classnames'
 import CartIcon from '@components/icons/CartIcon'
-import {SearchInput} from '@components/SearchInput'
+import {SearchBar} from '@components/SearchBar'
 import {MenuSection} from '@components/header/MenuSection'
 import type {Header as HeaderType} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
@@ -32,7 +32,7 @@ export function Header({header, isMenuVisible, onMenuToggleClick}: PropType) {
           header={header}
         />
 
-        <SearchInput
+        <SearchBar
           isActive={isSearchActive}
           onFocus={() => setSeacrchActiveStatus(true)}
           onBackClick={() => setSeacrchActiveStatus(false)}

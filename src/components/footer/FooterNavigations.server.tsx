@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Link from 'next/link'
 import {NavigationalItems} from '@components/NavigationalItems'
 import type {Navigation} from '@generated/cms.types'
 import type {Maybe} from '@LocalTypes/interfaces'
@@ -26,7 +27,9 @@ export function FooterNavigations({navigations}: PropType) {
               >
                 {({title, slug}) => (
                   <li key={`Footer_NavigationItem_${title}`}>
-                    <a href={slug}>{title}</a>
+                    <Link href={slug}>
+                      <a>{title}</a>
+                    </Link>
                   </li>
                 )}
               </NavigationalItems>

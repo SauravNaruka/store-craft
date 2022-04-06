@@ -24,9 +24,9 @@
 }
 
 .activeSearchInput {
-  max-width: initial;
+  max-width: initial !important;
   flex: 1;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 .activeSearchInput input {
@@ -35,7 +35,7 @@
 }
 
 .mobileHeaderActiveSearch {
-  background-color: white;
+  background-color: white !important;
 }
 
 .searchSuggestions {

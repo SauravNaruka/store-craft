@@ -1,11 +1,11 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {SearchInput} from 'src/components/SearchInput'
+import {SearchBar} from '@components/SearchBar'
 
 describe('IconButton', () => {
   test('render of the Search Input tag ', () => {
     render(
-      <SearchInput
+      <SearchBar
         isActive={false}
         onBackClick={undefined}
         onFocus={undefined}
@@ -16,11 +16,7 @@ describe('IconButton', () => {
 
   test.skip('search suggestion displayed when typing ', async () => {
     render(
-      <SearchInput
-        isActive={true}
-        onBackClick={undefined}
-        onFocus={undefined}
-      />,
+      <SearchBar isActive={true} onBackClick={undefined} onFocus={undefined} />,
     )
 
     userEvent.type(
