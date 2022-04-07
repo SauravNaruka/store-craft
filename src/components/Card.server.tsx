@@ -24,7 +24,7 @@ export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
         <a aria-hidden="true" tabIndex={-1} className={cardStyles.hiddenLink} />
       </Link>
       <div className={style.imageClass}>
-        <Image {...rest} />
+        <Image alt="crafty Wing product image" {...rest} />
       </div>
       <Link href={link}>
         <a className={style.linkTextClass}>

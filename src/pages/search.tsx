@@ -1,9 +1,8 @@
 import * as React from 'react'
 import Head from 'next/head'
-import {Header} from '@components/header/Header'
 import styles from '@styles/common.module.css'
 
-export function Search() {
+export default function Search() {
   return (
     <div className={styles.container}>
       <Head>
