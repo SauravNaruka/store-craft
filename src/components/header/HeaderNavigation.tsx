@@ -11,14 +11,14 @@ type PropType = {
   onMenuToggleClick: () => void
 }
 
-export function MenuSection({
+export function HeaderNavigation({
   isVisible = true,
   isMenuVisible,
   header,
   onMenuToggleClick,
 }: PropType) {
   return (
-    <>
+    <nav>
       <IconButton
         className={`${isVisible ? '' : 'hidden'}`}
         onClick={onMenuToggleClick}
@@ -33,8 +33,8 @@ export function MenuSection({
         visible={isMenuVisible}
         navigations={header?.navigations ?? []}
       />
-    </>
+    </nav>
   )
 }
 
-export default MenuSection
+export default HeaderNavigation

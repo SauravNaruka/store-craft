@@ -2,18 +2,17 @@ import * as React from 'react'
 import cx from 'classnames'
 import CartIcon from '@components/icons/CartIcon'
 import {SearchBar} from '@components/SearchBar'
-import {MenuSection} from '@components/header/MenuSection'
+import {HeaderNavigation} from '@components/header/HeaderNavigation'
 import type {Header as HeaderType} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
 import headerStyles from '@styles/header.module.css'
 
 type PropType = {
-  isMenuVisible: boolean
   header: HeaderType
-  onMenuToggleClick: () => void
 }
 
-export function Header({header, isMenuVisible, onMenuToggleClick}: PropType) {
+export function Header({header}: PropType) {
+  const [isMenuVisible, setMenuVisibility] = React.useState(false)
   const [isSearchActive, setSeacrchActiveStatus] = React.useState(false)
 
   return (
@@ -21,24 +20,23 @@ export function Header({header, isMenuVisible, onMenuToggleClick}: PropType) {
       className={cx({
         [commonStyles.backgroundGlassmorphic]: true,
         [headerStyles.mobileHeader]: true,
+        [headerStyles.headerActions]: true,
         [headerStyles.mobileHeaderActiveSearch]: isSearchActive,
       })}
     >
-      <nav className={headerStyles.headerActions}>
-        <MenuSection
-          isVisible={!isSearchActive}
-          isMenuVisible={isMenuVisible && !isSearchActive}
-          onMenuToggleClick={onMenuToggleClick}
-          header={header}
-        />
+      <HeaderNavigation
+        isVisible={!isSearchActive}
+        isMenuVisible={isMenuVisible && !isSearchActive}
+        onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
+        header={header}
+      />
 
-        <SearchBar
-          isActive={isSearchActive}
-          onFocus={() => setSeacrchActiveStatus(true)}
-          onBackClick={() => setSeacrchActiveStatus(false)}
-        />
-        {!isSearchActive && <CartIcon name={'Shopping Cart'} />}
-      </nav>
+      <SearchBar
+        isActive={isSearchActive}
+        onFocus={() => setSeacrchActiveStatus(true)}
+        onBackClick={() => setSeacrchActiveStatus(false)}
+      />
+      {!isSearchActive && <CartIcon name={'Shopping Cart'} />}
     </header>
   )
 }

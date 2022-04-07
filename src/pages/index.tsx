@@ -43,13 +43,8 @@ export default function Home({
   header,
   featuredCollection,
 }: PropType) {
-  const [isMenuVisible, setMenuVisibility] = React.useState(false)
   return (
-    <div
-      className={`${styles.container} ${
-        isMenuVisible ? styles.containerFixed : ''
-      }`}
-    >
+    <div className={styles.container}>
       <Head>
         {/* <meta name="robots" content="INDEX,FOLLOW" /> */}
         {/*  TODO: Remove noindex meta tag */}
@@ -61,11 +56,7 @@ export default function Home({
         />
       </Head>
 
-      <Header
-        isMenuVisible={isMenuVisible}
-        onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
-        header={header}
-      />
+      <Header header={header} />
 
       <main className={styles.main}>
         <ProductNavigation
