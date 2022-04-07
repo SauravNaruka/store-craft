@@ -1,5 +1,5 @@
 import {render, screen} from '@testing-library/react'
-import MenuSection from '@components/header/MenuSection'
+import HeaderNavigation from '@components/header/HeaderNavigation'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isShopifyCollection} from '@helpers/collection.helper'
 import {buildHeaderResponse} from '../../__mocks__/header.mock'
@@ -13,8 +13,9 @@ describe('MenuSection functionality ', () => {
 
     const mockCB = jest.fn()
     render(
-      <MenuSection
-        menuVisiblity={true}
+      <HeaderNavigation
+        isVisible={true}
+        isMenuVisible={true}
         onMenuToggleClick={mockCB}
         header={header}
       />,
@@ -36,8 +37,9 @@ describe('MenuSection functionality ', () => {
     const mockCB = jest.fn()
 
     render(
-      <MenuSection
-        menuVisiblity={true}
+      <HeaderNavigation
+        isVisible={true}
+        isMenuVisible={true}
         onMenuToggleClick={mockCB}
         header={header}
       />,

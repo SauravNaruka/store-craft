@@ -1,20 +1,14 @@
 import * as React from 'react'
 import Head from 'next/head'
-import CartIcon from '@components/icons/CartIcon'
 import {Header} from '@components/header/Header'
-import {SearchInput} from '@components/SearchInput'
+import {Footer} from '@components/footer/Footer.server'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
-import {MenuSection} from '@components/header/MenuSection'
 import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
-import {Footer} from '@components/footer/Footer.server'
-import {getFooterID, getHeaderID, getTheme} from '@helpers/globalConfig.helper'
+import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import {fetchNavigationAndRelatedCollectionBySlug} from '@api/fetchNavigations'
 import {fetchCollectionBySlug} from '@api/fetchCollection'
-import {fetchGlobalConfig} from '@api/fetchGlobalConfig'
-import {fetchFooter} from '@api/fetchFooter'
-import {fetchHeader} from '@api/fetchHeader'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
@@ -22,37 +16,32 @@ import {
 } from '@constants/navigation.constants'
 import {FEATURED_PRODUCTS_HANDLE} from '@constants/collection.constants'
 import type {NavigationAndCollectionsByID} from '@LocalTypes/interfaces'
+import type {Collection} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
 } from '@generated/cms.types'
-import type {Collection} from '@generated/storefront.types'
 import styles from '@styles/common.module.css'
 
 export type PropType = {
   productNavigationAndCollectionsByID: NavigationAndCollectionsByID
   heroNavigationAndCollectionsByID: NavigationAndCollectionsByID
   roomNavigationAndCollectionsByID: NavigationAndCollectionsByID
-  footer: FooterType
-  header: HeaderType
   featuredCollection: Collection
+  header: HeaderType
+  footer: FooterType
 }
 
 export default function Home({
   productNavigationAndCollectionsByID,
   heroNavigationAndCollectionsByID,
   roomNavigationAndCollectionsByID,
-  footer,
-  header,
   featuredCollection,
+  header,
+  footer,
 }: PropType) {
-  const [isMenuVisible, setMenuVisibility] = React.useState(false)
   return (
-    <div
-      className={`${styles.container} ${
-        isMenuVisible ? styles.containerFixed : ''
-      }`}
-    >
+    <>
       <Head>
         {/* <meta name="robots" content="INDEX,FOLLOW" /> */}
         {/*  TODO: Remove noindex meta tag */}
@@ -63,17 +52,7 @@ export default function Home({
           content="Luxury Wood Furniture Online. Buy Hardwood furniture Online or from store near you in Jaipur. Get Sheesham furniture for the homes of your dream."
         />
       </Head>
-
-      <Header>
-        <MenuSection
-          menuVisiblity={isMenuVisible}
-          onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
-          header={header}
-        />
-        <SearchInput />
-        <CartIcon name={'Shopping Cart'} />
-      </Header>
-
+      <Header header={header} />
       <main className={styles.main}>
         <ProductNavigation
           navigation={productNavigationAndCollectionsByID.navigation}
@@ -91,34 +70,27 @@ export default function Home({
         />
       </main>
       <Footer data={footer} />
-    </div>
+    </>
   )
 }
 
 export const getStaticProps = async () => {
-  const globalConfig = await fetchGlobalConfig()
-  const theme = getTheme(globalConfig)
-  const footerID = getFooterID(theme)
-  const headerID = getHeaderID(theme)
-
   const [
     productNavigationAndCollectionsByID,
     heroNavigationAndCollectionsByID,
     roomNavigationAndCollectionsByID,
-    footer,
-    header,
     featuredCollection,
+    {header, footer},
   ] = await Promise.all([
     fetchNavigationAndRelatedCollectionBySlug({slug: PRODUCT_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: HERO_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: ROOM_NAVIGATION}),
-    fetchFooter({id: footerID}),
-    fetchHeader({id: headerID}),
     fetchCollectionBySlug({
       handle: FEATURED_PRODUCTS_HANDLE,
       numberOfProducts: 10,
       numberOfImages: 1,
     }),
+    fetchCommonNavigation(),
   ])
 
   return {
@@ -126,9 +98,9 @@ export const getStaticProps = async () => {
       productNavigationAndCollectionsByID,
       heroNavigationAndCollectionsByID,
       roomNavigationAndCollectionsByID,
-      footer,
-      header,
       featuredCollection,
+      header,
+      footer,
     },
   }
 }

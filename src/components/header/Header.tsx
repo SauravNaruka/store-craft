@@ -1,18 +1,41 @@
 import * as React from 'react'
+import cx from 'classnames'
+import CartIcon from '@components/icons/CartIcon'
+import {SearchBar} from '@components/SearchBar'
+import {HeaderNavigation} from '@components/header/HeaderNavigation'
+import type {Header as HeaderType} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
 import headerStyles from '@styles/header.module.css'
 
 type PropType = {
-  children: React.ReactNode
-  props?: {[key: string]: unknown}
+  header: HeaderType
 }
 
-const defaultClasses = `${headerStyles.mobileHeader} ${commonStyles.backgroundGlassmorphic}`
+export function Header({header}: PropType) {
+  const [isMenuVisible, setMenuVisibility] = React.useState(false)
+  const [isSearchActive, setSeacrchActiveStatus] = React.useState(false)
 
-export function Header({children, ...props}: PropType) {
   return (
-    <header className={defaultClasses} {...props}>
-      <nav className={headerStyles.headerActions}>{children}</nav>
+    <header
+      className={cx({
+        [commonStyles.backgroundGlassmorphic]: true,
+        [headerStyles.mobileHeader]: true,
+        [headerStyles.mobileHeaderActiveSearch]: isSearchActive,
+      })}
+    >
+      <HeaderNavigation
+        isVisible={!isSearchActive}
+        isMenuVisible={isMenuVisible && !isSearchActive}
+        onMenuToggleClick={() => setMenuVisibility(!isMenuVisible)}
+        header={header}
+      />
+
+      <SearchBar
+        isActive={isSearchActive}
+        onFocus={() => setSeacrchActiveStatus(true)}
+        onBackClick={() => setSeacrchActiveStatus(false)}
+      />
+      {!isSearchActive && <CartIcon name={'Shopping Cart'} />}
     </header>
   )
 }

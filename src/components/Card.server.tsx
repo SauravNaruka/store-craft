@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Link from 'next/link'
 import Image, {ImageComponentProps} from '@components/Image'
 import cardStyles from '@styles/card.module.css'
 
@@ -19,19 +20,18 @@ type PropType = ImageComponentProps & {
 export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
   return (
     <div className={style.rootClass} {...(role ? {role} : {})}>
-      <a
-        aria-hidden="true"
-        tabIndex={-1}
-        href={link}
-        className={cardStyles.hiddenLink}
-      />
+      <Link href={link}>
+        <a aria-hidden="true" tabIndex={-1} className={cardStyles.hiddenLink} />
+      </Link>
       <div className={style.imageClass}>
-        <Image {...rest} />
+        <Image alt="crafty Wing product image" {...rest} />
       </div>
-      <a className={style.linkTextClass} href={link}>
-        <span>{title}</span>
-        {subtitle && <span>{subtitle}</span>}
-      </a>
+      <Link href={link}>
+        <a className={style.linkTextClass}>
+          <span>{title}</span>
+          {subtitle && <span>{subtitle}</span>}
+        </a>
+      </Link>
     </div>
   )
 }

@@ -32,6 +32,14 @@
   border-radius: 16px;
 }
 
+.quickSearchCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
 .navigatonalCard {
   padding: 2px;
 }
@@ -55,6 +63,14 @@
   height: calc((50vw - 20px) * 3 / 4);
 }
 
+.quickSearchImage {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 60px;
+  height: calc(60px * 3 / 4);
+}
+
 .navigationalImage {
   width: calc(50vw - 5px);
   height: calc((50vw - 5px) * 4 / 3);
@@ -68,6 +84,15 @@
 .minimalLink,
 .glassmorphicLink {
   padding-top: 10px;
+  font-size: var(--font-size-small-x);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.quickSearchLink {
   font-size: var(--font-size-small-x);
   white-space: nowrap;
   overflow: hidden;
