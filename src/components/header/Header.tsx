@@ -20,7 +20,6 @@ export function Header({header}: PropType) {
       className={cx({
         [commonStyles.backgroundGlassmorphic]: true,
         [headerStyles.mobileHeader]: true,
-        [headerStyles.headerActions]: true,
         [headerStyles.mobileHeaderActiveSearch]: isSearchActive,
       })}
     >
