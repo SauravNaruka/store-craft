@@ -7,6 +7,7 @@ import {ProductConnection} from '@generated/storefront.types'
 import cardStyles from '@styles/card.module.css'
 import headerStyles from '@styles/header.module.css'
 import navigationStyles from '@styles/navigation.module.css'
+import {Maybe} from '@LocalTypes/interfaces'
 
 const style = {
   rootClass: cardStyles.quickSearchCard,
@@ -16,7 +17,7 @@ const style = {
 
 type PropType = {
   isActive: boolean
-  searchResults: ProductConnection | undefined
+  searchResults: Maybe<ProductConnection>
 }
 
 export function SearchQuickResults({isActive, searchResults}: PropType) {

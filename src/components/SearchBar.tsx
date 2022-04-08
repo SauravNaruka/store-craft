@@ -1,13 +1,16 @@
 import * as React from 'react'
+import {useRouter} from 'next/router'
 import cx from 'classnames'
 import {BackButton} from '@components/BackButton'
 import {SearchQuickResults} from '@components/SearchQuickResults'
 import {SearchInput} from '@components/SearchInput'
 import {useDebounce} from '@hooks/useDebounce'
 import {isProductConnection} from '@helpers/product.helper'
+import * as logger from '@helpers/logger'
 import {restClient} from '@api/clientRest'
 import {ProductConnection} from '@generated/storefront.types'
 import headerStyles from '@styles/header.module.css'
+import {Maybe} from '@LocalTypes/interfaces'
 
 type PropType = {
   isActive: boolean
@@ -20,26 +23,18 @@ export function SearchBar({
   onFocus: onFocusHandler,
   onBackClick: onBackClickHandler,
 }: PropType) {
-  const [searchResults, setSearchResults] = React.useState<
-    ProductConnection | undefined
-  >()
+  const router = useRouter()
+  const [searchResults, setSearchResults] =
+    React.useState<Maybe<ProductConnection>>()
   const [searchQuery, setSearchQuery] = React.useState('')
   const debouncedSearchQuery = useDebounce<typeof searchQuery>(searchQuery, 250)
 
   React.useEffect(() => {
-    async function search() {
-      if (debouncedSearchQuery.length > 2) {
-        const {products} = await restClient(
-          `/.netlify/functions/quickSearch?query=${encodeURIComponent(
-            debouncedSearchQuery,
-          )}`,
-        )
-        if (isProductConnection(products)) {
-          setSearchResults(products)
-        }
-      }
+    if (debouncedSearchQuery.length > 2) {
+      search(debouncedSearchQuery).then(productConnection => {
+        setSearchResults(productConnection)
+      })
     }
-    search()
   }, [debouncedSearchQuery])
 
   return (
@@ -63,9 +58,30 @@ export function SearchBar({
           onChange={event => {
             setSearchQuery(event.target.value)
           }}
+          onSubmit={() => {
+            router.push({
+              pathname: './search',
+              query: {q: searchQuery},
+            })
+          }}
         />
       </div>
       <SearchQuickResults isActive={isActive} searchResults={searchResults} />
     </>
   )
+}
+
+async function search(query: string): Promise<Maybe<ProductConnection>> {
+  try {
+    const {products} = await restClient(
+      `/.netlify/functions/quickSearch?query=${encodeURIComponent(query)}`,
+    )
+    if (isProductConnection(products)) {
+      return products
+    } else {
+      throw new Error(`Unknown result from quick search for query ${query}`)
+    }
+  } catch (error) {
+    logger.error(error)
+  }
 }

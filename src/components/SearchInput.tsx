@@ -10,12 +10,14 @@ type PropType = {
   isActive: boolean
   onFocus: React.FocusEventHandler<HTMLInputElement> | undefined
   onChange: React.ChangeEventHandler<HTMLInputElement> | undefined
+  onSubmit?: (e: React.FormEvent) => void
 }
 
 export function SearchInput({
   isActive,
   onFocus: onFocusHandler,
   onChange: onChangeHandler,
+  onSubmit: onSubmitHandler,
 }: PropType) {
   return (
     <form
@@ -25,6 +27,10 @@ export function SearchInput({
         [inputStyles.searchInput]: true,
         [headerStyles.activeSearchInput]: isActive,
       })}
+      onSubmit={(e: React.FormEvent) => {
+        e.preventDefault()
+        onSubmitHandler && onSubmitHandler(e)
+      }}
     >
       <TextInput
         type="search"
