@@ -19,6 +19,7 @@ export function Header({header}: PropType) {
     <header
       className={cx({
         [commonStyles.backgroundGlassmorphic]: true,
+        [commonStyles.shadowSmallX]: isSearchActive,
         [headerStyles.mobileHeader]: true,
         [headerStyles.mobileHeaderActiveSearch]: isSearchActive,
       })}

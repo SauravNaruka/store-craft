@@ -1,5 +1,5 @@
 import {Handler} from '@netlify/functions'
-import {fetchProductQuickSearch} from '@api/fetchProductQuickSearch'
+import {fetchQuickSearch} from '@api/fetchQuickSearch'
 
 const handler: Handler = async event => {
   const {query} = event.queryStringParameters ?? {}
@@ -13,10 +13,10 @@ const handler: Handler = async event => {
     }
   }
 
-  const products = await fetchProductQuickSearch(query)
+  const results = await fetchQuickSearch(query)
   return {
     statusCode: 200,
-    body: JSON.stringify(products),
+    body: JSON.stringify(results),
   }
 }
 

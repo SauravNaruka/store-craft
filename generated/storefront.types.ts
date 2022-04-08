@@ -19,7 +19,7 @@ export type Scalars = {
   Float: number
   /**
    * Represents an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded date and time string.
-   * For example, 3:30 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
+   * For example, 3:50 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
    * represented as `"2019-09-07T15:50:00Z`".
    *
    */
@@ -6301,6 +6301,26 @@ export type CollectionQuery = {
     | undefined
 }
 
+export type CollectionsQuickSearchQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>
+}>
+
+export type CollectionsQuickSearchQuery = {
+  __typename?: 'QueryRoot'
+  collections: {
+    __typename: 'CollectionConnection'
+    edges: Array<{
+      __typename?: 'CollectionEdge'
+      node: {
+        __typename?: 'Collection'
+        id: string
+        title: string
+        handle: string
+      }
+    }>
+  }
+}
+
 export type CollectionShortInfoQueryVariables = Exact<{
   id: Scalars['ID']
 }>
@@ -6423,6 +6443,20 @@ export const CollectionDocument = gql`
               description
             }
           }
+        }
+      }
+    }
+  }
+`
+export const CollectionsQuickSearchDocument = gql`
+  query CollectionsQuickSearch($query: String) {
+    collections(query: $query, first: 3) {
+      __typename
+      edges {
+        node {
+          id
+          title
+          handle
         }
       }
     }
@@ -6552,6 +6586,20 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'Collection',
+      )
+    },
+    CollectionsQuickSearch(
+      variables?: CollectionsQuickSearchQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionsQuickSearchQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionsQuickSearchQuery>(
+            CollectionsQuickSearchDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionsQuickSearch',
       )
     },
     CollectionShortInfo(

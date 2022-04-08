@@ -1,0 +1,12 @@
+query CollectionsQuickSearch($query: String) {
+  collections(query: $query, first: 3) {
+    __typename
+    edges {
+      node {
+        id
+        title
+        handle
+      }
+    }
+  }
+}

@@ -1,11 +1,18 @@
 import {isValidImageType} from './image.helper'
 import {CollectionsByID, NavigationalData, Maybe} from '@LocalTypes/interfaces'
 import {LinkInternal, ShopifyCollection} from '@generated/cms.types'
+import {CollectionConnection} from '@generated/storefront.types'
 
 export function isShopifyCollection(
   object?: unknown,
 ): object is ShopifyCollection {
   return (object as ShopifyCollection)?.__typename === 'ShopifyCollection'
+}
+
+export function isCollectionConnection(
+  object?: unknown,
+): object is CollectionConnection {
+  return (object as CollectionConnection)?.__typename === 'CollectionConnection'
 }
 
 export function getShopifyCollectionNavigationalData(
