@@ -6219,6 +6219,21 @@ export enum WeightUnit {
   Pounds = 'POUNDS',
 }
 
+export type CollectionsHandleQueryVariables = Exact<{
+  numberOfCollections?: InputMaybe<Scalars['Int']>
+}>
+
+export type CollectionsHandleQuery = {
+  __typename?: 'QueryRoot'
+  collections: {
+    __typename?: 'CollectionConnection'
+    edges: Array<{
+      __typename?: 'CollectionEdge'
+      node: {__typename?: 'Collection'; title: string; handle: string}
+    }>
+  }
+}
+
 export type CollectionQueryVariables = Exact<{
   handle: Scalars['String']
   numberOfProducts?: InputMaybe<Scalars['Int']>
@@ -6386,6 +6401,18 @@ export type ProductQuickSearchQuery = {
   }
 }
 
+export const CollectionsHandleDocument = gql`
+  query CollectionsHandle($numberOfCollections: Int) {
+    collections(first: $numberOfCollections) {
+      edges {
+        node {
+          title
+          handle
+        }
+      }
+    }
+  }
+`
 export const CollectionDocument = gql`
   query Collection(
     $handle: String!
@@ -6575,6 +6602,20 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    CollectionsHandle(
+      variables?: CollectionsHandleQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionsHandleQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionsHandleQuery>(
+            CollectionsHandleDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionsHandle',
+      )
+    },
     Collection(
       variables: CollectionQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],

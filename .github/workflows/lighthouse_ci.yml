@@ -27,6 +27,8 @@ jobs:
           SANITY_STUDIO_TOKEN: ${{ secrets.SANITY_STUDIO_TOKEN }}
           SANITY_STUDIO_GLOBAL_CONFIG_ID:
             ${{ secrets.SANITY_STUDIO_GLOBAL_CONFIG_ID }}
+          SHOPIFY_NUMBER_OF_STATIC_COLLECTIONS:
+            ${{ secrets.SHOPIFY_NUMBER_OF_STATIC_COLLECTIONS }}
       - name: run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.8.x

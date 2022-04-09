@@ -1,0 +1,10 @@
+query CollectionsHandle($numberOfCollections: Int) {
+  collections(first: $numberOfCollections) {
+    edges {
+      node {
+        title
+        handle
+      }
+    }
+  }
+}
