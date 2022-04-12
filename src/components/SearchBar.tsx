@@ -95,16 +95,14 @@ async function search(query: string): Promise<{
   collectionConnection: Maybe<CollectionConnection>
 }> {
   try {
-    const {products, collections} = await restClient(
+    const {collections, products} = await restClient(
       `/.netlify/functions/quickSearch?query=${encodeURIComponent(query)}`,
     )
-    if (
-      isProductConnection(products?.products) &&
-      isCollectionConnection(collections?.collections)
-    ) {
+
+    if (isProductConnection(products) && isCollectionConnection(collections)) {
       return {
-        productConnection: products.products,
-        collectionConnection: collections.collections,
+        productConnection: products,
+        collectionConnection: collections,
       }
     } else {
       throw new Error(`Unknown result from quick search for query ${query}`)

@@ -1,12 +1,13 @@
-import {aProductPriceRange} from 'generated/storefront.types'
 import {
   getMaxPriceFromProductPriceRange,
   getMinPriceFromProductPriceRange,
 } from '@helpers/price.helper'
+import {buildProductPriceFields} from 'src/__mocks__/Product.mock'
+import {ProductPriceRange} from '@generated/storefront.types'
 
 describe('Price helper methods', () => {
   test('getMaxPriceFromProductPriceRange to return correct value', () => {
-    const priceRange = aProductPriceRange()
+    const priceRange = buildProductPriceFields().priceRange as ProductPriceRange
 
     expect(getMaxPriceFromProductPriceRange(priceRange)).toMatchObject({
       amount: priceRange.maxVariantPrice.amount,
@@ -15,7 +16,7 @@ describe('Price helper methods', () => {
   })
 
   test('getMinPriceFromProductPriceRange to return correct value', () => {
-    const priceRange = aProductPriceRange()
+    const priceRange = buildProductPriceFields().priceRange as ProductPriceRange
 
     expect(getMinPriceFromProductPriceRange(priceRange)).toMatchObject({
       amount: priceRange.minVariantPrice.amount,

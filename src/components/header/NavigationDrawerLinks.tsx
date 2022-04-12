@@ -47,7 +47,7 @@ export function NavigationDrawerLinks({
           isShopifyCollection(link.reference)
         ) {
           return (
-            <li>
+            <li key={link.reference.shopifyId}>
               <Link href={link.reference.handle ?? '#'}>
                 <a
                   className={`${menuStyles.mobileMenuLink} block py-2 px-4 text-sm hover:bg-grey-200`}

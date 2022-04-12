@@ -4,7 +4,7 @@ import client from '@api/clientSainty'
 import * as logger from '@helpers/logger'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isShopifyCollection} from '@helpers/collection.helper'
-import {fetchCollectionShortInfoByID} from './fetchCollection'
+import {fetchCollectionWithImageByID} from './fetchCollection'
 import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import type {
   Navigation,
@@ -80,7 +80,7 @@ async function makeCollectionPromiseFromNavigationItem(
     isShopifyCollection(item.reference) &&
     item.reference.shopifyId
   ) {
-    return fetchCollectionShortInfoByID(item.reference.shopifyId)
+    return fetchCollectionWithImageByID(item.reference.shopifyId)
   }
 
   return null

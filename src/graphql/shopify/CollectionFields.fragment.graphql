@@ -1,0 +1,6 @@
+fragment CollectionFields on Collection {
+  __typename
+  id
+  title
+  handle
+}

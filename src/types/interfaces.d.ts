@@ -1,5 +1,3 @@
-import type {PageInfo} from 'generated/storefront.types'
-
 export type BasicType = boolean | string | number
 
 export type IconPropType = React.SVGProps<SVGSVGElement>
@@ -44,7 +42,6 @@ export type AspectRatio =
 
 export type Connection<Node> = {
   edges: Edge<Node>[]
-  pageInfo: PageInfo
 }
 
 export type Edge<Node> = {

@@ -3,9 +3,9 @@ import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import * as logger from '@helpers/logger'
 import type {
   Collection,
-  CollectionQuery,
-  CollectionShortInfoQuery,
-  CollectionQueryVariables,
+  CollectionProductsByHandleQuery,
+  CollectionProductsByHandleQueryVariables,
+  CollectionWithImageByIdQuery,
 } from '@generated/storefront.types'
 
 export async function fetchCollectionBySlug({
@@ -13,10 +13,10 @@ export async function fetchCollectionBySlug({
   numberOfProducts,
   numberOfImages,
   cursor,
-}: CollectionQueryVariables): Promise<Collection> {
+}: CollectionProductsByHandleQueryVariables): Promise<Collection> {
   try {
     const response = await client
-      .Collection({
+      .CollectionProductsByHandle({
         handle,
         numberOfProducts,
         numberOfImages,
@@ -30,12 +30,12 @@ export async function fetchCollectionBySlug({
   }
 }
 
-export async function fetchCollectionShortInfoByID(
+export async function fetchCollectionWithImageByID(
   id: string,
 ): Promise<Collection> {
   try {
     const response = await client
-      .CollectionShortInfo({id})
+      .CollectionWithImageByID({id})
       .then(getCollectionFromCollectionQuery)
     return response
   } catch (error) {
@@ -45,7 +45,9 @@ export async function fetchCollectionShortInfoByID(
 }
 
 function getCollectionFromCollectionQuery(
-  collectionQuery: CollectionQuery | CollectionShortInfoQuery,
+  collectionQuery:
+    | CollectionProductsByHandleQuery
+    | CollectionWithImageByIdQuery,
 ) {
   const collection = collectionQuery.collection
   if (collection) {

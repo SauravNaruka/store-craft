@@ -8,6 +8,14 @@ jest.mock('next/image', () => ({
   },
 }))
 
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      prefetch: () => null,
+    }
+  },
+}))
+
 // Establish API mocking before all tests.
 beforeAll(() => server.listen())
 // Reset any request handlers that we may add during the tests,

@@ -1,7 +1,7 @@
 import {ImageLoaderProps as NextImageLoaderProps} from 'next/image'
 import {imageLoader, ImageLoaderProps} from '@components/Image'
-import {buildCollectionShortInfo} from '../../__mocks__/Collection.mock'
 import {ImageType} from '@LocalTypes/interfaces'
+import {buildImage} from 'src/__mocks__/Image.mock'
 
 function buildImageLoaderProps(
   url: string,
@@ -49,11 +49,10 @@ describe('Image component ', () => {
     expect(sanityImageURL).toMatch(/shopify/i)
   })
 
-  test('shopifyImageLoader return right url', () => {
-    const collection = buildCollectionShortInfo()
+  test('shopifyImageLoader return right url for defined sizes', () => {
+    const image = buildImage() as ImageType
     const url = 'http://shopify'
 
-    const image = collection.image as ImageType
     const imageProp = buildImageLoaderProps(url, image)
 
     const nextImageLoaderProps = buildNextImageLoaderProps({

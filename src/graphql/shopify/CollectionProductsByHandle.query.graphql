@@ -1,0 +1,28 @@
+query CollectionProductsByHandle(
+  $handle: String!
+  $numberOfProducts: Int
+  $numberOfImages: Int
+  $cursor: String
+) {
+  collection(handle: $handle) {
+    ...CollectionFields
+    products(first: $numberOfProducts, after: $cursor) {
+      __typename
+      edges {
+        cursor
+        node {
+          ...ProductShortInfoFields
+          ...ProductPriceFields
+          description
+          images(first: $numberOfImages) {
+            edges {
+              node {
+                ...ImageSmallFields
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

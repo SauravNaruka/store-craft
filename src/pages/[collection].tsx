@@ -12,7 +12,7 @@ import type {
   Header as HeaderType,
 } from '@generated/cms.types'
 import styles from '@styles/common.module.css'
-import {fetchAllCollectionsSlug} from '@api/fetchCollections'
+import {fetchAllCollections} from '@api/fetchCollections'
 
 export type PropType = {
   header: HeaderType
@@ -44,7 +44,7 @@ export default function Search({header, footer}: PropType) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const collectionConnections = await fetchAllCollectionsSlug()
+  const collectionConnections = await fetchAllCollections()
 
   const paths = collectionConnections.edges.map(({node}) => ({
     params: {slug: node.handle},

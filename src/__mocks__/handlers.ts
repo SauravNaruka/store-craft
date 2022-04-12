@@ -1,23 +1,26 @@
-import {getNavigationsHandler} from './Navigations.handlers'
-import {
-  getCollectionHandler,
-  getCollectionShortInfoHandler,
-} from './Collection.handlers'
-import {getGlobalConfig} from './GlobalConfig.handlers'
 import {getFooter} from './Footer.handlers'
 import {getHeader} from './header.handler'
-import {getProductQuickSearchHandler} from './search.handler'
-import {quickSearchHandler} from './quickSearch.handler'
+import {getGlobalConfig} from './GlobalConfig.handlers'
+import {getNavigationsHandler} from './Navigations.handlers'
+import {
+  getCollectionProductsByHandleHandler,
+  getCollectionsBySearchQueryHandler,
+  getCollectionWithImageByIDHandler,
+} from './Collection.handlers'
+import {getProductShortInfoBySearchQueryHandler} from './Product.handlers'
 
 const handlers = [
-  getNavigationsHandler,
-  getCollectionHandler,
-  getCollectionShortInfoHandler,
-  getGlobalConfig,
+  // Sanity handlers
   getFooter,
   getHeader,
-  getProductQuickSearchHandler,
-  quickSearchHandler,
+  getGlobalConfig,
+  getNavigationsHandler,
+
+  // shopify handler
+  getCollectionsBySearchQueryHandler,
+  getCollectionProductsByHandleHandler,
+  getCollectionWithImageByIDHandler,
+  getProductShortInfoBySearchQueryHandler,
 ]
 
 export {handlers}
