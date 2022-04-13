@@ -5,7 +5,11 @@ import {
   ProductConnection,
   ProductEdge,
 } from '@generated/storefront.types'
-import {buildImagesSmallConnection} from './Image.mock'
+import {
+  buildImage,
+  buildImageSmall,
+  buildImagesSmallConnection,
+} from './Image.mock'
 
 export const NUMBER_OF_PRODUCTS = 3
 export function buildProductConnection(): Partial<ProductConnection> {
@@ -28,6 +32,7 @@ export function buildProductNodeWithImageSmallConnection() {
     ...buildProductPriceFields(),
     description: faker.random.words(),
     images: buildImagesSmallConnection(),
+    featuredImage: buildImage(),
   }
 }
 

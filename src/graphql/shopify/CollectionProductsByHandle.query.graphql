@@ -21,6 +21,9 @@ query CollectionProductsByHandle(
               }
             }
           }
+          featuredImage {
+            ...ImageFields
+          }
         }
       }
     }

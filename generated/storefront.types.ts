@@ -6278,6 +6278,26 @@ export type CollectionProductsByHandleQuery = {
                   }
                 }>
               }
+              featuredImage?:
+                | {
+                    __typename: 'Image'
+                    altText?: string | null | undefined
+                    url: any
+                    w96: any
+                    w128: any
+                    w256: any
+                    w384: any
+                    w640: any
+                    w750: any
+                    w828: any
+                    w1080: any
+                    w1200: any
+                    w1920: any
+                    w2048: any
+                    w3840: any
+                  }
+                | null
+                | undefined
               compareAtPriceRange: {
                 __typename?: 'ProductPriceRange'
                 maxVariantPrice: {
@@ -6588,6 +6608,9 @@ export const CollectionProductsByHandleDocument = gql`
                 }
               }
             }
+            featuredImage {
+              ...ImageFields
+            }
           }
         }
       }
@@ -6597,6 +6620,7 @@ export const CollectionProductsByHandleDocument = gql`
   ${ProductShortInfoFieldsFragmentDoc}
   ${ProductPriceFieldsFragmentDoc}
   ${ImageSmallFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
 `
 export const CollectionWithImageByIdDocument = gql`
   query CollectionWithImageByID($id: ID!) {
