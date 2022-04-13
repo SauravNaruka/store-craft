@@ -6326,6 +6326,18 @@ export type CollectionProductsByHandleQuery = {
               }
             }
           }>
+          filters: Array<{
+            __typename: 'Filter'
+            id: string
+            label: string
+            type: FilterType
+            values: Array<{
+              __typename: 'FilterValue'
+              id: string
+              input: any
+              label: string
+            }>
+          }>
         }
       }
     | null
@@ -6611,6 +6623,18 @@ export const CollectionProductsByHandleDocument = gql`
             featuredImage {
               ...ImageFields
             }
+          }
+        }
+        filters {
+          __typename
+          id
+          label
+          type
+          values {
+            __typename
+            id
+            input
+            label
           }
         }
       }

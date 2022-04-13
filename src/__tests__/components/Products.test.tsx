@@ -28,7 +28,7 @@ describe('Products', () => {
       currencyCode: firstProduct.priceRange.minVariantPrice.currencyCode,
       amount: firstProduct.priceRange.minVariantPrice.amount,
       originalAmount: firstProduct.compareAtPriceRange.maxVariantPrice.amount,
-      image: firstProduct.images.edges[0].node,
+      image: firstProduct.featuredImage,
       index: 0,
     })
   })

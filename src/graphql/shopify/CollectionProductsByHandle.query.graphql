@@ -26,6 +26,18 @@ query CollectionProductsByHandle(
           }
         }
       }
+      filters {
+        __typename
+        id
+        label
+        type
+        values {
+          __typename
+          id
+          input
+          label
+        }
+      }
     }
   }
 }
