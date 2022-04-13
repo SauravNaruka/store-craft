@@ -5,11 +5,8 @@ import {
   ProductConnection,
   ProductEdge,
 } from '@generated/storefront.types'
-import {
-  buildImage,
-  buildImageSmall,
-  buildImagesSmallConnection,
-} from './Image.mock'
+import {buildImage, buildImagesSmallConnection} from './Image.mock'
+import {buildFilters} from './Filter.mock'
 
 export const NUMBER_OF_PRODUCTS = 3
 export function buildProductConnection(): Partial<ProductConnection> {
@@ -23,6 +20,7 @@ export function buildProductConnection(): Partial<ProductConnection> {
           node: buildProductNodeWithImageSmallConnection(),
         }
       }) as unknown as ProductEdge[],
+    filters: buildFilters(),
   }
 }
 
