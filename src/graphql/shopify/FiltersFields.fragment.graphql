@@ -1,0 +1,12 @@
+fragment FilterFields on Filter {
+  __typename
+  id
+  label
+  type
+  values {
+    __typename
+    id
+    input
+    label
+  }
+}

@@ -440,7 +440,10 @@ export type Cart = Node & {
   checkoutUrl: Scalars['URL']
   /** The date and time when the cart was created. */
   createdAt: Scalars['DateTime']
-  /** The discount codes that have been applied to the cart. */
+  /**
+   * The case-insensitive discount codes that the customer added at checkout.
+   *
+   */
   discountCodes: Array<CartDiscountCode>
   /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart). */
   estimatedCost: CartEstimatedCost
@@ -601,7 +604,10 @@ export type CartInput = {
   attributes?: InputMaybe<Array<AttributeInput>>
   /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
   buyerIdentity?: InputMaybe<CartBuyerIdentityInput>
-  /** The discount codes to apply to the cart. */
+  /**
+   * The case-insensitive discount codes that the customer added at checkout.
+   *
+   */
   discountCodes?: InputMaybe<Array<Scalars['String']>>
   /** A list of merchandise lines to add to the cart. */
   lines?: InputMaybe<Array<CartLineInput>>
@@ -6241,8 +6247,8 @@ export type CollectionFieldsFragment = {
 export type CollectionProductsByHandleQueryVariables = Exact<{
   handle: Scalars['String']
   numberOfProducts?: InputMaybe<Scalars['Int']>
-  numberOfImages?: InputMaybe<Scalars['Int']>
   cursor?: InputMaybe<Scalars['String']>
+  filters?: InputMaybe<Array<ProductFilter> | ProductFilter>
 }>
 
 export type CollectionProductsByHandleQuery = {
@@ -6264,20 +6270,86 @@ export type CollectionProductsByHandleQuery = {
               id: string
               title: string
               handle: string
-              images: {
-                __typename?: 'ImageConnection'
-                edges: Array<{
-                  __typename?: 'ImageEdge'
-                  node: {
+              featuredImage?:
+                | {
                     __typename: 'Image'
                     altText?: string | null | undefined
                     url: any
                     w96: any
                     w128: any
                     w256: any
+                    w384: any
+                    w640: any
+                    w750: any
+                    w828: any
+                    w1080: any
+                    w1200: any
+                    w1920: any
+                    w2048: any
+                    w3840: any
                   }
-                }>
+                | null
+                | undefined
+              compareAtPriceRange: {
+                __typename?: 'ProductPriceRange'
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
               }
+              priceRange: {
+                __typename?: 'ProductPriceRange'
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+              }
+            }
+          }>
+        }
+      }
+    | null
+    | undefined
+}
+
+export type CollectionProductsWithFiltersByHandleQueryVariables = Exact<{
+  handle: Scalars['String']
+  numberOfProducts?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<Scalars['String']>
+  filters?: InputMaybe<Array<ProductFilter> | ProductFilter>
+}>
+
+export type CollectionProductsWithFiltersByHandleQuery = {
+  __typename?: 'QueryRoot'
+  collection?:
+    | {
+        __typename: 'Collection'
+        id: string
+        title: string
+        handle: string
+        products: {
+          __typename: 'ProductConnection'
+          edges: Array<{
+            __typename?: 'ProductEdge'
+            cursor: string
+            node: {
+              __typename: 'Product'
+              description: string
+              id: string
+              title: string
+              handle: string
               featuredImage?:
                 | {
                     __typename: 'Image'
@@ -6402,6 +6474,19 @@ export type CollectionsBySearchQueryQuery = {
   }
 }
 
+export type FilterFieldsFragment = {
+  __typename: 'Filter'
+  id: string
+  label: string
+  type: FilterType
+  values: Array<{
+    __typename: 'FilterValue'
+    id: string
+    input: any
+    label: string
+  }>
+}
+
 export type ImageFieldsFragment = {
   __typename: 'Image'
   altText?: string | null | undefined
@@ -6505,6 +6590,20 @@ export const CollectionFieldsFragmentDoc = gql`
     handle
   }
 `
+export const FilterFieldsFragmentDoc = gql`
+  fragment FilterFields on Filter {
+    __typename
+    id
+    label
+    type
+    values {
+      __typename
+      id
+      input
+      label
+    }
+  }
+`
 export const ImageFieldsFragmentDoc = gql`
   fragment ImageFields on Image {
     __typename
@@ -6600,12 +6699,12 @@ export const CollectionProductsByHandleDocument = gql`
   query CollectionProductsByHandle(
     $handle: String!
     $numberOfProducts: Int
-    $numberOfImages: Int
     $cursor: String
+    $filters: [ProductFilter!]
   ) {
     collection(handle: $handle) {
       ...CollectionFields
-      products(first: $numberOfProducts, after: $cursor) {
+      products(first: $numberOfProducts, after: $cursor, filters: $filters) {
         __typename
         edges {
           cursor
@@ -6613,28 +6712,9 @@ export const CollectionProductsByHandleDocument = gql`
             ...ProductShortInfoFields
             ...ProductPriceFields
             description
-            images(first: $numberOfImages) {
-              edges {
-                node {
-                  ...ImageSmallFields
-                }
-              }
-            }
             featuredImage {
               ...ImageFields
             }
-          }
-        }
-        filters {
-          __typename
-          id
-          label
-          type
-          values {
-            __typename
-            id
-            input
-            label
           }
         }
       }
@@ -6643,8 +6723,41 @@ export const CollectionProductsByHandleDocument = gql`
   ${CollectionFieldsFragmentDoc}
   ${ProductShortInfoFieldsFragmentDoc}
   ${ProductPriceFieldsFragmentDoc}
-  ${ImageSmallFieldsFragmentDoc}
   ${ImageFieldsFragmentDoc}
+`
+export const CollectionProductsWithFiltersByHandleDocument = gql`
+  query CollectionProductsWithFiltersByHandle(
+    $handle: String!
+    $numberOfProducts: Int
+    $cursor: String
+    $filters: [ProductFilter!]
+  ) {
+    collection(handle: $handle) {
+      ...CollectionFields
+      products(first: $numberOfProducts, after: $cursor, filters: $filters) {
+        __typename
+        edges {
+          cursor
+          node {
+            ...ProductShortInfoFields
+            ...ProductPriceFields
+            description
+            featuredImage {
+              ...ImageFields
+            }
+          }
+        }
+        filters {
+          ...FilterFields
+        }
+      }
+    }
+  }
+  ${CollectionFieldsFragmentDoc}
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ProductPriceFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+  ${FilterFieldsFragmentDoc}
 `
 export const CollectionWithImageByIdDocument = gql`
   query CollectionWithImageByID($id: ID!) {
@@ -6713,6 +6826,20 @@ export function getSdk(
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
         'CollectionProductsByHandle',
+      )
+    },
+    CollectionProductsWithFiltersByHandle(
+      variables: CollectionProductsWithFiltersByHandleQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionProductsWithFiltersByHandleQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionProductsWithFiltersByHandleQuery>(
+            CollectionProductsWithFiltersByHandleDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionProductsWithFiltersByHandle',
       )
     },
     CollectionWithImageByID(

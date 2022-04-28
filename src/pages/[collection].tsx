@@ -1,26 +1,28 @@
 import * as React from 'react'
 import Head from 'next/head'
-import {useRouter} from 'next/router'
-import {Header} from '@components/header/Header'
+import {Card} from '@components/Card.server'
 import {Footer} from '@components/footer/Footer.server'
+import Filters from '@components/filters/Filters'
+import {Header} from '@components/header/Header'
 import ProductsMap from '@components/Products'
 import {restClient} from '@api/clientRest'
 import {fetchAllCollections} from '@api/fetchCollections'
-import {fetchCollectionBySlug} from '@api/fetchCollection'
+import {fetchCollectionWithProductFiltersBySlug} from '@api/fetchCollection'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
+import {isCollection} from '@helpers/collection.helper'
+import {getNodesFromConnection} from '@helpers/connection.helper'
+import {Maybe} from '@LocalTypes/interfaces'
+import {formatAmount} from '@helpers/price.helper'
 import * as logger from '@helpers/logger'
+import {parseFilters} from '@helpers/scalars.helper'
 import type {GetStaticPaths} from 'next'
+import type {Filter, Product} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
 } from '@generated/cms.types'
-import type {Product} from '@generated/storefront.types'
-import styles from '@styles/common.module.css'
-import {getNodesFromConnection} from '@helpers/connection.helper'
-import {Card} from '@components/Card.server'
-import {formatAmount} from '@helpers/price.helper'
-import commonStyles from '@styles/common.module.css'
 import cardStyles from '@styles/card.module.css'
+import commonStyles from '@styles/common.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 
 const style = {
@@ -32,12 +34,32 @@ const style = {
 export type PropType = {
   header: HeaderType
   footer: FooterType
+  title: string
+  slug: string
   products: Product[]
+  filters: Filter[]
 }
 
-export default function CollectionPage({header, footer, products}: PropType) {
+export default function CollectionPage({
+  header,
+  footer,
+  title: pageTitle,
+  slug,
+  products: initialProducts,
+  filters,
+}: PropType) {
+  const [products, setProducts] = React.useState(initialProducts)
+
+  const search = React.useCallback(
+    async (filterString: string) => {
+      const filteredProducts = await searchCollection(slug, filterString)
+      filteredProducts && setProducts(filteredProducts)
+    },
+    [slug],
+  )
+
   return (
-    <div className={styles.container}>
+    <div className={commonStyles.container}>
       <Head>
         <title>Crafty Wing</title>
         <meta
@@ -46,12 +68,15 @@ export default function CollectionPage({header, footer, products}: PropType) {
         />
       </Head>
       <Header header={header} />
-      <main className={styles.main}>
+      <main className={commonStyles.main}>
+        <Filters filters={filters} search={search} />
+
+        <p>{pageTitle}</p>
         <ProductsMap products={products}>
           {({
             title,
             // subtitle,
-            slug,
+            slug: productSlug,
             currencyCode,
             amount,
             originalAmount,
@@ -70,7 +95,7 @@ export default function CollectionPage({header, footer, products}: PropType) {
                     )}
                   </div>
                 }
-                link={slug}
+                link={productSlug}
                 width={96}
                 height={72}
                 image={image}
@@ -103,34 +128,47 @@ type StaticProps = {
 export const getStaticProps = async ({params}: StaticProps) => {
   const [{header, footer}, collection] = await Promise.all([
     fetchCommonNavigation(),
-    fetchCollectionBySlug({
+    fetchCollectionWithProductFiltersBySlug({
       handle: params.collection,
       numberOfProducts: 25,
-      numberOfImages: 0,
     }),
   ])
+  const title = collection.title
   const products = getNodesFromConnection<Product>(collection.products)
+  const filters = parseFilters(collection.products.filters)
 
   return {
     props: {
       header,
       footer,
+      title,
+      slug: params.collection,
       products,
+      filters,
     },
   }
 }
 
-// async function search(query: string): Promise<Maybe<ProductConnection>> {
-//   try {
-//     const {products} = await restClient(
-//       `/.netlify/functions/search?query=${encodeURIComponent(query)}`,
-//     )
-//     if (isProductConnection(products)) {
-//       return products
-//     } else {
-//       throw new Error(`Unknown result from quick search for query ${query}`)
-//     }
-//   } catch (error) {
-//     logger.error(error)
-//   }
-// }
+async function searchCollection(
+  slug: string,
+  filterString: string,
+): Promise<Maybe<Product[]>> {
+  try {
+    const {collection} = await restClient(
+      `/.netlify/functions/searchCollection?collection=${encodeURIComponent(
+        slug,
+      )}&filter=${encodeURIComponent(filterString)}`,
+    )
+
+    if (isCollection(collection)) {
+      const products = getNodesFromConnection<Product>(collection.products)
+      return products
+    } else {
+      throw new Error(
+        `Unknown result from quick search for filter ${filterString}`,
+      )
+    }
+  } catch (error) {
+    logger.error(error)
+  }
+}

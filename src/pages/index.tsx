@@ -8,7 +8,7 @@ import {RoomNavigation} from '@components/RoomNavigation'
 import {ProductNavigation} from '@components/ProductNavigation.server'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import {fetchNavigationAndRelatedCollectionBySlug} from '@api/fetchNavigations'
-import {fetchCollectionBySlug} from '@api/fetchCollection'
+import {fetchCollectionWithProductsBySlug} from '@api/fetchCollection'
 import {
   PRODUCT_NAVIGATION,
   HERO_NAVIGATION,
@@ -85,10 +85,9 @@ export const getStaticProps = async () => {
     fetchNavigationAndRelatedCollectionBySlug({slug: PRODUCT_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: HERO_NAVIGATION}),
     fetchNavigationAndRelatedCollectionBySlug({slug: ROOM_NAVIGATION}),
-    fetchCollectionBySlug({
+    fetchCollectionWithProductsBySlug({
       handle: FEATURED_PRODUCTS_HANDLE,
       numberOfProducts: 10,
-      numberOfImages: 1,
     }),
     fetchCommonNavigation(),
   ])

@@ -4,6 +4,7 @@ import {getGlobalConfig} from './GlobalConfig.handlers'
 import {getNavigationsHandler} from './Navigations.handlers'
 import {
   getCollectionProductsByHandleHandler,
+  getCollectionProductsWithFiltersByHandleHandler,
   getCollectionsBySearchQueryHandler,
   getCollectionWithImageByIDHandler,
 } from './Collection.handlers'
@@ -19,6 +20,7 @@ const handlers = [
   // shopify handler
   getCollectionsBySearchQueryHandler,
   getCollectionProductsByHandleHandler,
+  getCollectionProductsWithFiltersByHandleHandler,
   getCollectionWithImageByIDHandler,
   getProductShortInfoBySearchQueryHandler,
 ]

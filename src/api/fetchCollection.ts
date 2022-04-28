@@ -8,19 +8,41 @@ import type {
   CollectionWithImageByIdQuery,
 } from '@generated/storefront.types'
 
-export async function fetchCollectionBySlug({
+export async function fetchCollectionWithProductsBySlug({
   handle,
   numberOfProducts,
-  numberOfImages,
   cursor,
+  filters,
 }: CollectionProductsByHandleQueryVariables): Promise<Collection> {
   try {
     const response = await client
       .CollectionProductsByHandle({
         handle,
         numberOfProducts,
-        numberOfImages,
         cursor,
+        filters,
+      })
+      .then(getCollectionFromCollectionQuery)
+    return response
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
+
+export async function fetchCollectionWithProductFiltersBySlug({
+  handle,
+  numberOfProducts,
+  cursor,
+  filters,
+}: CollectionProductsByHandleQueryVariables): Promise<Collection> {
+  try {
+    const response = await client
+      .CollectionProductsWithFiltersByHandle({
+        handle,
+        numberOfProducts,
+        cursor,
+        filters,
       })
       .then(getCollectionFromCollectionQuery)
     return response

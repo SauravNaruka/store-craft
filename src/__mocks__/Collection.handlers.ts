@@ -8,14 +8,21 @@ import {
 
 export const getCollectionProductsByHandleHandler = graphql.query(
   'CollectionProductsByHandle',
-  (req, res, ctx) => {
+  (_req, res, ctx) => {
+    return res(ctx.data({collection: buildCollectionProductsByHandle()}))
+  },
+)
+
+export const getCollectionProductsWithFiltersByHandleHandler = graphql.query(
+  'CollectionProductsWithFiltersByHandle',
+  (_req, res, ctx) => {
     return res(ctx.data({collection: buildCollectionProductsByHandle()}))
   },
 )
 
 export const getCollectionsBySearchQueryHandler = graphql.query(
   'CollectionsBySearchQuery',
-  (req, res, ctx) => {
+  (_req, res, ctx) => {
     return res(
       ctx.data({
         collection: buildCollectionsBySearchQuery() as CollectionConnection,

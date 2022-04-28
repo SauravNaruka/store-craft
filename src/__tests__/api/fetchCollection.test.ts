@@ -1,20 +1,19 @@
 import {graphql} from 'msw'
-import {fetchCollectionBySlug} from '@api/fetchCollection'
+import {fetchCollectionWithProductsBySlug} from '@api/fetchCollection'
 import {server} from '../../__mocks__/server'
 
 describe('fetch collection by handle', () => {
   test('error in api response', async () => {
     server.use(
-      graphql.query('CollectionProductsByHandle', (req, res, ctx) => {
+      graphql.query('CollectionProductsByHandle', (_req, res, ctx) => {
         return res.once(ctx.data({collection: null}))
       }),
     )
 
     await expect(
-      fetchCollectionBySlug({
+      fetchCollectionWithProductsBySlug({
         handle: 'FEATURED_PRODUCTS_HANDLE',
         numberOfProducts: 10,
-        numberOfImages: 1,
       }),
     ).rejects.toThrow()
   })
