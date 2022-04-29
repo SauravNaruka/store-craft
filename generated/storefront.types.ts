@@ -3988,7 +3988,7 @@ export type Mutation = {
   checkoutDiscountCodeApply?: Maybe<CheckoutDiscountCodeApplyPayload>
   /** Applies a discount to an existing checkout using a discount code. */
   checkoutDiscountCodeApplyV2?: Maybe<CheckoutDiscountCodeApplyV2Payload>
-  /** Removes the applied discount from an existing checkout. */
+  /** Removes the applied discounts from an existing checkout. */
   checkoutDiscountCodeRemove?: Maybe<CheckoutDiscountCodeRemovePayload>
   /**
    * Updates the email on an existing checkout.
@@ -6514,6 +6514,76 @@ export type ImageSmallFieldsFragment = {
   w256: any
 }
 
+export type ProductsBySearchQueryQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>
+  numberOfProducts?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<Scalars['String']>
+}>
+
+export type ProductsBySearchQueryQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      cursor: string
+      node: {
+        __typename: 'Product'
+        description: string
+        id: string
+        title: string
+        handle: string
+        featuredImage?:
+          | {
+              __typename: 'Image'
+              altText?: string | null | undefined
+              url: any
+              w96: any
+              w128: any
+              w256: any
+              w384: any
+              w640: any
+              w750: any
+              w828: any
+              w1080: any
+              w1200: any
+              w1920: any
+              w2048: any
+              w3840: any
+            }
+          | null
+          | undefined
+        compareAtPriceRange: {
+          __typename?: 'ProductPriceRange'
+          maxVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+          minVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+        priceRange: {
+          __typename?: 'ProductPriceRange'
+          maxVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+          minVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+      }
+    }>
+  }
+}
+
 export type ProductsShortInfoBySearchQueryQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>
 }>
@@ -6784,6 +6854,31 @@ export const CollectionsBySearchQueryDocument = gql`
   }
   ${CollectionFieldsFragmentDoc}
 `
+export const ProductsBySearchQueryDocument = gql`
+  query ProductsBySearchQuery(
+    $query: String
+    $numberOfProducts: Int
+    $cursor: String
+  ) {
+    products(query: $query, first: $numberOfProducts, after: $cursor) {
+      __typename
+      edges {
+        cursor
+        node {
+          ...ProductShortInfoFields
+          ...ProductPriceFields
+          description
+          featuredImage {
+            ...ImageFields
+          }
+        }
+      }
+    }
+  }
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ProductPriceFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+`
 export const ProductsShortInfoBySearchQueryDocument = gql`
   query ProductsShortInfoBySearchQuery($query: String) {
     products(query: $query, first: 3) {
@@ -6868,6 +6963,20 @@ export function getSdk(
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
         'CollectionsBySearchQuery',
+      )
+    },
+    ProductsBySearchQuery(
+      variables?: ProductsBySearchQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<ProductsBySearchQueryQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<ProductsBySearchQueryQuery>(
+            ProductsBySearchQueryDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'ProductsBySearchQuery',
       )
     },
     ProductsShortInfoBySearchQuery(

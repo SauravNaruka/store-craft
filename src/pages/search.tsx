@@ -1,32 +1,57 @@
 import * as React from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
+import isArray from 'lodash/isArray'
+import {Card} from '@components/Card.server'
+import {getNodesFromConnection} from '@helpers/connection.helper'
 import {Header} from '@components/header/Header'
+import ProductsMap from '@components/Products'
 import {Footer} from '@components/footer/Footer.server'
 import {restClient} from '@api/clientRest'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import * as logger from '@helpers/logger'
+
+import {Maybe} from '@LocalTypes/interfaces'
+import {Product} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
 } from '@generated/cms.types'
-import styles from '@styles/common.module.css'
+import {isProductConnection} from '@helpers/product.helper'
+
+import cardStyles from '@styles/card.module.css'
+import commonStyles from '@styles/common.module.css'
+import navigationStyles from '@styles/navigation.module.css'
+import {formatAmount} from '@helpers/price.helper'
 
 export type PropType = {
   header: HeaderType
   footer: FooterType
 }
 
+const style = {
+  rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
+  imageClass: `${cardStyles.glassmorphicImage} ${navigationStyles.productNavigationImage}`,
+  linkTextClass: `${cardStyles.glassmorphicLink} ${navigationStyles.textLeft}`,
+}
+
 export default function Search({header, footer}: PropType) {
+  const [products, setProducts] = React.useState<Maybe<Product[]>>()
   const router = useRouter()
   const searchedQuery = router.query.q
 
-  // React.useEffect(() => {
-  //   searchedQuery()
-  // }, [searchedQuery])
+  React.useEffect(() => {
+    async function handleSearch() {
+      if (searchedQuery) {
+        const response = await search(searchedQuery)
+        setProducts(response)
+      }
+    }
+    handleSearch()
+  }, [searchedQuery])
 
   return (
-    <div className={styles.container}>
+    <div className={commonStyles.container}>
       <Head>
         <title>Crafty Wing</title>
         <meta
@@ -35,7 +60,45 @@ export default function Search({header, footer}: PropType) {
         />
       </Head>
       <Header header={header} />
-      <main className={styles.main}>{router.query.q}</main>
+      <main className={commonStyles.main}>
+        {router.query.q}
+        {products && (
+          <ProductsMap products={products}>
+            {({
+              title,
+              // subtitle,
+              slug: productSlug,
+              currencyCode,
+              amount,
+              originalAmount,
+              image,
+              index,
+            }) =>
+              image && (
+                <Card
+                  key={title + index}
+                  title={title}
+                  subtitle={
+                    <div className={navigationStyles.navigationalPrice}>
+                      <span>{formatAmount(amount, currencyCode)}</span>
+                      {originalAmount && (
+                        <del>{formatAmount(originalAmount, currencyCode)}</del>
+                      )}
+                    </div>
+                  }
+                  link={productSlug}
+                  width={96}
+                  height={72}
+                  image={image}
+                  aspectRatio={{width: 4, height: 3}}
+                  style={style}
+                  role="listitem"
+                />
+              )
+            }
+          </ProductsMap>
+        )}
+      </main>
       <Footer data={footer} />
     </div>
   )
@@ -52,17 +115,23 @@ export const getStaticProps = async () => {
   }
 }
 
-// async function search(query: string): Promise<Maybe<ProductConnection>> {
-//   try {
-//     const {products} = await restClient(
-//       `/.netlify/functions/search?query=${encodeURIComponent(query)}`,
-//     )
-//     if (isProductConnection(products)) {
-//       return products
-//     } else {
-//       throw new Error(`Unknown result from quick search for query ${query}`)
-//     }
-//   } catch (error) {
-//     logger.error(error)
-//   }
-// }
+async function search(query: string | string[]): Promise<Maybe<Product[]>> {
+  try {
+    const searchedQuery = isArray(query) ? query.join(' ') : query
+    const {products: productsConnection} = await restClient(
+      `/.netlify/functions/searchProducts?query=${encodeURIComponent(
+        searchedQuery,
+      )}`,
+    )
+    if (isProductConnection(productsConnection)) {
+      const products = getNodesFromConnection<Product>(productsConnection)
+      return products
+    } else {
+      throw new Error(
+        `Unknown result from quick search for query ${searchedQuery}`,
+      )
+    }
+  } catch (error) {
+    logger.error(error)
+  }
+}

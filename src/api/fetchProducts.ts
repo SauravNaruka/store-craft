@@ -13,3 +13,20 @@ export async function fetchProductsShortInfoBySearchQuery(query: string) {
     throw error
   }
 }
+
+export async function fetchProductsBySearchQuery(
+  query: string,
+  numberOfProducts: number,
+) {
+  try {
+    const products = await client.ProductsBySearchQuery({
+      query,
+      numberOfProducts,
+    })
+
+    return products
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
