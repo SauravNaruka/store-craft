@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom/extend-expect'
+// Polyfill "window.fetch" used in the React component.
+import 'whatwg-fetch'
 import {server} from './src/__mocks__/server'
 
 jest.mock('next/image', () => ({
@@ -11,7 +13,8 @@ jest.mock('next/image', () => ({
 jest.mock('next/router', () => ({
   useRouter() {
     return {
-      prefetch: () => null,
+      prefetch: jest.fn(() => null),
+      push: jest.fn(),
     }
   },
 }))

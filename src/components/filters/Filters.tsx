@@ -4,7 +4,7 @@ import ListFilter from './ListFilter'
 import {Filter, FilterValue} from '@generated/storefront.types'
 import {isSmallScreen} from '@helpers/screen.helper'
 
-enum FilterType {
+export enum FilterType {
   AVAILABILITY = 'filter.v.availability',
   COLOR = 'filter.v.option.color',
   FABRIC = 'filter.v.option.fabric',

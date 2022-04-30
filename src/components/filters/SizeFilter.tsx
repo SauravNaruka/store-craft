@@ -23,7 +23,7 @@ export function SizeFilter({
           <li key={option.id}>
             <Checkbox
               id={option.id}
-              name={filter.id}
+              name={option.id}
               value={option.input}
               label={option.label}
               checked={value.includes(option.input)}

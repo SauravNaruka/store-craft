@@ -5,6 +5,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/__mocks__/**',
+    '!src/functions/**',
     '!**/*.d.ts',
     '!**/node_modules/**',
     '!**/coverage/**',
