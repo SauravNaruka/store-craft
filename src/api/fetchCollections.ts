@@ -8,9 +8,7 @@ import type {
 } from '@generated/storefront.types'
 import {isCollectionConnection} from '@helpers/collection.helper'
 
-const NUMBER_OF_STATIC_COLLECTIONS = parseInt(
-  process.env.SHOPIFY_NUMBER_OF_STATIC_COLLECTIONS as string,
-)
+const NUMBER_OF_STATIC_COLLECTIONS = 25
 
 export async function fetchAllCollections(): Promise<CollectionConnection> {
   try {

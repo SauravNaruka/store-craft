@@ -36,7 +36,5 @@ jobs:
           SANITY_STUDIO_TOKEN: ${{ secrets.SANITY_STUDIO_TOKEN }}
           SANITY_STUDIO_GLOBAL_CONFIG_ID:
             ${{ secrets.SANITY_STUDIO_GLOBAL_CONFIG_ID }}
-          SHOPIFY_NUMBER_OF_STATIC_COLLECTIONS:
-            ${{ secrets.SHOPIFY_NUMBER_OF_STATIC_COLLECTIONS }}
       - run: npm run test:coverage
       - run: npm run lint
