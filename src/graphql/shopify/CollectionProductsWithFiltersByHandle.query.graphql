@@ -1,0 +1,27 @@
+query CollectionProductsWithFiltersByHandle(
+  $handle: String!
+  $numberOfProducts: Int
+  $cursor: String
+  $filters: [ProductFilter!]
+) {
+  collection(handle: $handle) {
+    ...CollectionFields
+    products(first: $numberOfProducts, after: $cursor, filters: $filters) {
+      __typename
+      edges {
+        cursor
+        node {
+          ...ProductShortInfoFields
+          ...ProductPriceFields
+          description
+          featuredImage {
+            ...ImageFields
+          }
+        }
+      }
+      filters {
+        ...FilterFields
+      }
+    }
+  }
+}

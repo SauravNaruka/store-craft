@@ -1,57 +1,50 @@
-import {build, fake, sequence} from '@jackfranklin/test-data-bot'
-import {
-  aCollection,
-  aPageInfo,
-  aProduct,
+import faker from 'faker'
+import type {
   Collection,
+  CollectionConnection,
+  CollectionEdge,
+  Image,
+  ProductConnection,
 } from '@generated/storefront.types'
+import {buildProductConnection} from './Product.mock'
+import {buildImageSmall} from './Image.mock'
 
-export const product = aProduct({
-  collections: undefined,
-  metafield: null,
-  metafields: undefined,
-  media: undefined,
-  options: [],
-  sellingPlanGroups: undefined,
-  variantBySelectedOptions: undefined,
-  variants: undefined,
-})
+export const NUMBER_OF_COLLECTION = 3
+export function buildCollectionWithProductsBySlug(): Partial<Collection> {
+  return {
+    ...buildCollectionFields(),
+    products: buildProductConnection() as ProductConnection,
+  }
+}
 
-export const collection = aCollection({
-  metafield: null,
-  metafields: undefined,
-  products: {
-    edges: [
-      {
-        cursor: 'et',
-        node: product,
-      },
-    ],
-    filters: [],
-    pageInfo: aPageInfo(),
-  },
-})
+export function buildCollectionsBySearchQuery(): Partial<CollectionConnection> {
+  return {
+    __typename: 'CollectionConnection',
+    edges: Array(NUMBER_OF_COLLECTION)
+      .fill(undefined)
+      .map(() => {
+        return {node: buildCollectionFields()}
+      }) as CollectionEdge[],
+  }
+}
 
-export const buildCollectionShortInfo = build<Partial<Collection>>({
-  fields: {
+export function buildCollectionWithImageByID(
+  overrides?: Partial<Collection>,
+): Partial<Collection> {
+  return {
+    ...buildCollectionFields(overrides),
+    image: buildImageSmall() as Image,
+  }
+}
+
+export function buildCollectionFields(
+  overrides?: Partial<Collection>,
+): Partial<Collection> {
+  return {
     __typename: 'Collection',
-    id: sequence(),
-    handle: fake(f => f.internet.url()),
-    image: {
-      altText: fake(f => f.random.words()),
-      url: fake(f => f.internet.url()),
-      w96: fake(f => f.internet.url()),
-      w128: fake(f => f.internet.url()),
-      w256: fake(f => f.internet.url()),
-      w384: fake(f => f.internet.url()),
-      w640: fake(f => f.internet.url()),
-      w750: fake(f => f.internet.url()),
-      w828: fake(f => f.internet.url()),
-      w1080: fake(f => f.internet.url()),
-      w1200: fake(f => f.internet.url()),
-      w1920: fake(f => f.internet.url()),
-      w2048: fake(f => f.internet.url()),
-      w3840: fake(f => f.internet.url()),
-    },
-  },
-})
+    id: faker.datatype.uuid(),
+    title: faker.random.words(),
+    handle: faker.internet.url(),
+    ...(overrides ? overrides : {}),
+  }
+}

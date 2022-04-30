@@ -1,0 +1,12 @@
+fragment ImageSmallFields on Image {
+  __typename
+  altText
+  url
+  w96: url(transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP})
+  w128: url(
+    transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
+  )
+  w256: url(
+    transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
+  )
+}

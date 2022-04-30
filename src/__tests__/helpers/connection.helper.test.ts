@@ -3,7 +3,7 @@ import {
   getNodesFromConnection,
   getFirstNodeFromConnection,
 } from '../../helpers/connection.helper'
-import {aPageInfo} from 'generated/storefront.types'
+// import {aPageInfo} from 'generated/storefront.types'
 
 describe('Connection helper functions', () => {
   test('getNodesFromConnection return expected node', () => {
@@ -22,7 +22,6 @@ describe('Connection helper functions', () => {
           node: node2,
         },
       ],
-      pageInfo: aPageInfo(),
     }
 
     expect(getNodesFromConnection<string>(collection)?.length).toBe(2)
@@ -42,7 +41,6 @@ describe('Connection helper functions', () => {
   test('getNodesFromConnection return empty array when no node', () => {
     const collection = {
       edges: [],
-      pageInfo: aPageInfo(),
     }
     expect(getNodesFromConnection<string>(collection).length).toBe(0)
   })
@@ -62,11 +60,8 @@ describe('Connection helper functions', () => {
           node: node2,
         },
       ],
-      pageInfo: aPageInfo(),
     }
     expect(getFirstNodeFromConnection<string>(collection)).toBe(node1)
-    expect(
-      getFirstNodeFromConnection<string>({edges: [], pageInfo: aPageInfo()}),
-    ).toBeNull()
+    expect(getFirstNodeFromConnection<string>({edges: []})).toBeNull()
   })
 })

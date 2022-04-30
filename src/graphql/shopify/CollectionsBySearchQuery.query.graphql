@@ -1,0 +1,10 @@
+query CollectionsBySearchQuery($query: String, $numberOfCollections: Int) {
+  collections(query: $query, first: $numberOfCollections) {
+    __typename
+    edges {
+      node {
+        ...CollectionFields
+      }
+    }
+  }
+}

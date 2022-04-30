@@ -30,7 +30,7 @@ export function NavigationDrawerFeaturedImage({navigation}: PropType) {
       <li>
         <h3 className={menuStyles.mobileMenuLinksTitle}>Featured</h3>
         <ul className="flex">
-          {featuredProducts.map(navigationProduct => {
+          {featuredProducts.map((navigationProduct, index) => {
             if (
               isNavigationProduct(navigationProduct) &&
               isValidImageBlock(navigationProduct.image)
@@ -40,7 +40,7 @@ export function NavigationDrawerFeaturedImage({navigation}: PropType) {
               )
               if (image) {
                 return (
-                  <li>
+                  <li key={index}>
                     <Card
                       title={navigationProduct.title ?? ''}
                       link={navigationProduct.product?.handle ?? '#'}

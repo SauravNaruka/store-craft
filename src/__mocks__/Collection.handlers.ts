@@ -1,21 +1,44 @@
+import {Collection, CollectionConnection} from '@generated/storefront.types'
 import {graphql} from 'msw'
-import {collection, buildCollectionShortInfo} from './Collection.mock'
+import {
+  buildCollectionWithProductsBySlug,
+  buildCollectionsBySearchQuery,
+  buildCollectionWithImageByID,
+} from './Collection.mock'
 
-export const getCollectionHandler = graphql.query(
-  'Collection',
-  (req, res, ctx) => {
-    return res(ctx.data({collection: collection}))
+export const getCollectionProductsByHandleHandler = graphql.query(
+  'CollectionProductsByHandle',
+  (_req, res, ctx) => {
+    return res(ctx.data({collection: buildCollectionWithProductsBySlug()}))
   },
 )
 
-export const getCollectionShortInfoHandler = graphql.query(
-  'CollectionShortInfo',
+export const getCollectionProductsWithFiltersByHandleHandler = graphql.query(
+  'CollectionProductsWithFiltersByHandle',
+  (_req, res, ctx) => {
+    return res(ctx.data({collection: buildCollectionWithProductsBySlug()}))
+  },
+)
+
+export const getCollectionsBySearchQueryHandler = graphql.query(
+  'CollectionsBySearchQuery',
+  (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        collection: buildCollectionsBySearchQuery() as CollectionConnection,
+      }),
+    )
+  },
+)
+
+export const getCollectionWithImageByIDHandler = graphql.query(
+  'CollectionWithImageByID',
   (req, res, ctx) => {
     return res(
       ctx.data({
-        collection: buildCollectionShortInfo({
-          overrides: {id: req.variables.id},
-        }),
+        collection: buildCollectionWithImageByID({
+          id: req.variables.id,
+        }) as Collection,
       }),
     )
   },

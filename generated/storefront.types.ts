@@ -19,7 +19,7 @@ export type Scalars = {
   Float: number
   /**
    * Represents an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded date and time string.
-   * For example, 3:30 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
+   * For example, 3:50 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
    * represented as `"2019-09-07T15:50:00Z`".
    *
    */
@@ -440,7 +440,10 @@ export type Cart = Node & {
   checkoutUrl: Scalars['URL']
   /** The date and time when the cart was created. */
   createdAt: Scalars['DateTime']
-  /** The discount codes that have been applied to the cart. */
+  /**
+   * The case-insensitive discount codes that the customer added at checkout.
+   *
+   */
   discountCodes: Array<CartDiscountCode>
   /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart). */
   estimatedCost: CartEstimatedCost
@@ -601,7 +604,10 @@ export type CartInput = {
   attributes?: InputMaybe<Array<AttributeInput>>
   /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
   buyerIdentity?: InputMaybe<CartBuyerIdentityInput>
-  /** The discount codes to apply to the cart. */
+  /**
+   * The case-insensitive discount codes that the customer added at checkout.
+   *
+   */
   discountCodes?: InputMaybe<Array<Scalars['String']>>
   /** A list of merchandise lines to add to the cart. */
   lines?: InputMaybe<Array<CartLineInput>>
@@ -1678,7 +1684,13 @@ export type Country = {
   unitSystem: UnitSystem
 }
 
-/** ISO 3166-1 alpha-2 country codes with some differences. */
+/**
+ * The code designating a country, which generally follows ISO 3166-1 alpha-2 guidelines.
+ * If a territory doesn't have a country code value in the `CountryCode` enum, it might be considered a subdivision
+ * of another country. For example, the territories associated with Spain are represented by the country code `ES`,
+ * and the territories associated with the United States of America are represented by the country code `US`.
+ *
+ */
 export enum CountryCode {
   /** Ascension Island. */
   Ac = 'AC',
@@ -3158,7 +3170,13 @@ export type Filter = {
   values: Array<FilterValue>
 }
 
-/** Denotes the type of data this filter group represents. */
+/**
+ * The type of data that the filter group represents.
+ *
+ * For more information, refer to [Filter products in a collection with the Storefront API]
+ * (https://shopify.dev/api/examples/filter-products).
+ *
+ */
 export enum FilterType {
   /** A list of selectable values. */
   List = 'LIST',
@@ -3970,7 +3988,7 @@ export type Mutation = {
   checkoutDiscountCodeApply?: Maybe<CheckoutDiscountCodeApplyPayload>
   /** Applies a discount to an existing checkout using a discount code. */
   checkoutDiscountCodeApplyV2?: Maybe<CheckoutDiscountCodeApplyV2Payload>
-  /** Removes the applied discount from an existing checkout. */
+  /** Removes the applied discounts from an existing checkout. */
   checkoutDiscountCodeRemove?: Maybe<CheckoutDiscountCodeRemovePayload>
   /**
    * Updates the email on an existing checkout.
@@ -6219,36 +6237,59 @@ export enum WeightUnit {
   Pounds = 'POUNDS',
 }
 
-export type CollectionQueryVariables = Exact<{
+export type CollectionFieldsFragment = {
+  __typename: 'Collection'
+  id: string
+  title: string
+  handle: string
+}
+
+export type CollectionProductsByHandleQueryVariables = Exact<{
   handle: Scalars['String']
   numberOfProducts?: InputMaybe<Scalars['Int']>
-  numberOfImages?: InputMaybe<Scalars['Int']>
   cursor?: InputMaybe<Scalars['String']>
+  filters?: InputMaybe<Array<ProductFilter> | ProductFilter>
 }>
 
-export type CollectionQuery = {
+export type CollectionProductsByHandleQuery = {
   __typename?: 'QueryRoot'
   collection?:
     | {
-        __typename?: 'Collection'
+        __typename: 'Collection'
         id: string
         title: string
+        handle: string
         products: {
-          __typename?: 'ProductConnection'
-          pageInfo: {
-            __typename?: 'PageInfo'
-            hasNextPage: boolean
-            hasPreviousPage: boolean
-          }
+          __typename: 'ProductConnection'
           edges: Array<{
             __typename?: 'ProductEdge'
             cursor: string
             node: {
-              __typename?: 'Product'
-              id: string
-              handle: string
-              title: string
+              __typename: 'Product'
               description: string
+              id: string
+              title: string
+              handle: string
+              featuredImage?:
+                | {
+                    __typename: 'Image'
+                    altText?: string | null | undefined
+                    url: any
+                    w96: any
+                    w128: any
+                    w256: any
+                    w384: any
+                    w640: any
+                    w750: any
+                    w828: any
+                    w1080: any
+                    w1200: any
+                    w1920: any
+                    w2048: any
+                    w3840: any
+                  }
+                | null
+                | undefined
               compareAtPriceRange: {
                 __typename?: 'ProductPriceRange'
                 maxVariantPrice: {
@@ -6275,24 +6316,6 @@ export type CollectionQuery = {
                   currencyCode: CurrencyCode
                 }
               }
-              images: {
-                __typename?: 'ImageConnection'
-                edges: Array<{
-                  __typename?: 'ImageEdge'
-                  node: {
-                    __typename?: 'Image'
-                    altText?: string | null | undefined
-                    width?: number | null | undefined
-                    height?: number | null | undefined
-                    url: any
-                  }
-                }>
-              }
-              seo: {
-                __typename?: 'SEO'
-                title?: string | null | undefined
-                description?: string | null | undefined
-              }
             }
           }>
         }
@@ -6301,20 +6324,113 @@ export type CollectionQuery = {
     | undefined
 }
 
-export type CollectionShortInfoQueryVariables = Exact<{
-  id: Scalars['ID']
+export type CollectionProductsWithFiltersByHandleQueryVariables = Exact<{
+  handle: Scalars['String']
+  numberOfProducts?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<Scalars['String']>
+  filters?: InputMaybe<Array<ProductFilter> | ProductFilter>
 }>
 
-export type CollectionShortInfoQuery = {
+export type CollectionProductsWithFiltersByHandleQuery = {
   __typename?: 'QueryRoot'
   collection?:
     | {
         __typename: 'Collection'
         id: string
+        title: string
+        handle: string
+        products: {
+          __typename: 'ProductConnection'
+          edges: Array<{
+            __typename?: 'ProductEdge'
+            cursor: string
+            node: {
+              __typename: 'Product'
+              description: string
+              id: string
+              title: string
+              handle: string
+              featuredImage?:
+                | {
+                    __typename: 'Image'
+                    altText?: string | null | undefined
+                    url: any
+                    w96: any
+                    w128: any
+                    w256: any
+                    w384: any
+                    w640: any
+                    w750: any
+                    w828: any
+                    w1080: any
+                    w1200: any
+                    w1920: any
+                    w2048: any
+                    w3840: any
+                  }
+                | null
+                | undefined
+              compareAtPriceRange: {
+                __typename?: 'ProductPriceRange'
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+              }
+              priceRange: {
+                __typename?: 'ProductPriceRange'
+                maxVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                minVariantPrice: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+              }
+            }
+          }>
+          filters: Array<{
+            __typename: 'Filter'
+            id: string
+            label: string
+            type: FilterType
+            values: Array<{
+              __typename: 'FilterValue'
+              id: string
+              input: any
+              label: string
+            }>
+          }>
+        }
+      }
+    | null
+    | undefined
+}
+
+export type CollectionWithImageByIdQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type CollectionWithImageByIdQuery = {
+  __typename?: 'QueryRoot'
+  collection?:
+    | {
+        __typename: 'Collection'
+        id: string
+        title: string
         handle: string
         image?:
           | {
-              __typename?: 'Image'
+              __typename: 'Image'
               altText?: string | null | undefined
               url: any
               w96: any
@@ -6337,27 +6453,160 @@ export type CollectionShortInfoQuery = {
     | undefined
 }
 
-export type ProductQuickSearchQueryVariables = Exact<{
+export type CollectionsBySearchQueryQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>
+  numberOfCollections?: InputMaybe<Scalars['Int']>
+}>
+
+export type CollectionsBySearchQueryQuery = {
+  __typename?: 'QueryRoot'
+  collections: {
+    __typename: 'CollectionConnection'
+    edges: Array<{
+      __typename?: 'CollectionEdge'
+      node: {
+        __typename: 'Collection'
+        id: string
+        title: string
+        handle: string
+      }
+    }>
+  }
+}
+
+export type FilterFieldsFragment = {
+  __typename: 'Filter'
+  id: string
+  label: string
+  type: FilterType
+  values: Array<{
+    __typename: 'FilterValue'
+    id: string
+    input: any
+    label: string
+  }>
+}
+
+export type ImageFieldsFragment = {
+  __typename: 'Image'
+  altText?: string | null | undefined
+  url: any
+  w96: any
+  w128: any
+  w256: any
+  w384: any
+  w640: any
+  w750: any
+  w828: any
+  w1080: any
+  w1200: any
+  w1920: any
+  w2048: any
+  w3840: any
+}
+
+export type ImageSmallFieldsFragment = {
+  __typename: 'Image'
+  altText?: string | null | undefined
+  url: any
+  w96: any
+  w128: any
+  w256: any
+}
+
+export type ProductsBySearchQueryQueryVariables = Exact<{
+  query?: InputMaybe<Scalars['String']>
+  numberOfProducts?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<Scalars['String']>
+}>
+
+export type ProductsBySearchQueryQuery = {
+  __typename?: 'QueryRoot'
+  products: {
+    __typename: 'ProductConnection'
+    edges: Array<{
+      __typename?: 'ProductEdge'
+      cursor: string
+      node: {
+        __typename: 'Product'
+        description: string
+        id: string
+        title: string
+        handle: string
+        featuredImage?:
+          | {
+              __typename: 'Image'
+              altText?: string | null | undefined
+              url: any
+              w96: any
+              w128: any
+              w256: any
+              w384: any
+              w640: any
+              w750: any
+              w828: any
+              w1080: any
+              w1200: any
+              w1920: any
+              w2048: any
+              w3840: any
+            }
+          | null
+          | undefined
+        compareAtPriceRange: {
+          __typename?: 'ProductPriceRange'
+          maxVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+          minVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+        priceRange: {
+          __typename?: 'ProductPriceRange'
+          maxVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+          minVariantPrice: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+      }
+    }>
+  }
+}
+
+export type ProductsShortInfoBySearchQueryQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>
 }>
 
-export type ProductQuickSearchQuery = {
+export type ProductsShortInfoBySearchQueryQuery = {
   __typename?: 'QueryRoot'
   products: {
     __typename: 'ProductConnection'
     edges: Array<{
       __typename?: 'ProductEdge'
       node: {
-        __typename?: 'Product'
+        __typename: 'Product'
+        id: string
         title: string
         handle: string
         featuredImage?:
           | {
-              __typename?: 'Image'
+              __typename: 'Image'
               altText?: string | null | undefined
               url: any
               w96: any
               w128: any
+              w256: any
             }
           | null
           | undefined
@@ -6366,167 +6615,286 @@ export type ProductQuickSearchQuery = {
   }
 }
 
-export const CollectionDocument = gql`
-  query Collection(
+export type ProductPriceFieldsFragment = {
+  __typename?: 'Product'
+  compareAtPriceRange: {
+    __typename?: 'ProductPriceRange'
+    maxVariantPrice: {
+      __typename?: 'MoneyV2'
+      amount: any
+      currencyCode: CurrencyCode
+    }
+    minVariantPrice: {
+      __typename?: 'MoneyV2'
+      amount: any
+      currencyCode: CurrencyCode
+    }
+  }
+  priceRange: {
+    __typename?: 'ProductPriceRange'
+    maxVariantPrice: {
+      __typename?: 'MoneyV2'
+      amount: any
+      currencyCode: CurrencyCode
+    }
+    minVariantPrice: {
+      __typename?: 'MoneyV2'
+      amount: any
+      currencyCode: CurrencyCode
+    }
+  }
+}
+
+export type ProductShortInfoFieldsFragment = {
+  __typename: 'Product'
+  id: string
+  title: string
+  handle: string
+}
+
+export const CollectionFieldsFragmentDoc = gql`
+  fragment CollectionFields on Collection {
+    __typename
+    id
+    title
+    handle
+  }
+`
+export const FilterFieldsFragmentDoc = gql`
+  fragment FilterFields on Filter {
+    __typename
+    id
+    label
+    type
+    values {
+      __typename
+      id
+      input
+      label
+    }
+  }
+`
+export const ImageFieldsFragmentDoc = gql`
+  fragment ImageFields on Image {
+    __typename
+    altText
+    url
+    w96: url(
+      transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
+    )
+    w128: url(
+      transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
+    )
+    w256: url(
+      transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
+    )
+    w384: url(
+      transform: {maxWidth: 384, maxHeight: 288, preferredContentType: WEBP}
+    )
+    w640: url(
+      transform: {maxWidth: 640, maxHeight: 480, preferredContentType: WEBP}
+    )
+    w750: url(
+      transform: {maxWidth: 750, maxHeight: 562, preferredContentType: WEBP}
+    )
+    w828: url(
+      transform: {maxWidth: 828, maxHeight: 621, preferredContentType: WEBP}
+    )
+    w1080: url(
+      transform: {maxWidth: 1080, maxHeight: 810, preferredContentType: WEBP}
+    )
+    w1200: url(
+      transform: {maxWidth: 1200, maxHeight: 900, preferredContentType: WEBP}
+    )
+    w1920: url(
+      transform: {maxWidth: 1920, maxHeight: 1440, preferredContentType: WEBP}
+    )
+    w2048: url(
+      transform: {maxWidth: 2048, maxHeight: 1536, preferredContentType: WEBP}
+    )
+    w3840: url(
+      transform: {maxWidth: 3840, maxHeight: 2880, preferredContentType: WEBP}
+    )
+  }
+`
+export const ImageSmallFieldsFragmentDoc = gql`
+  fragment ImageSmallFields on Image {
+    __typename
+    altText
+    url
+    w96: url(
+      transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
+    )
+    w128: url(
+      transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
+    )
+    w256: url(
+      transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
+    )
+  }
+`
+export const ProductPriceFieldsFragmentDoc = gql`
+  fragment ProductPriceFields on Product {
+    compareAtPriceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+`
+export const ProductShortInfoFieldsFragmentDoc = gql`
+  fragment ProductShortInfoFields on Product {
+    __typename
+    id
+    title
+    handle
+  }
+`
+export const CollectionProductsByHandleDocument = gql`
+  query CollectionProductsByHandle(
     $handle: String!
     $numberOfProducts: Int
-    $numberOfImages: Int
     $cursor: String
+    $filters: [ProductFilter!]
   ) {
     collection(handle: $handle) {
-      id
-      title
-      products(first: $numberOfProducts, after: $cursor) {
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-        }
+      ...CollectionFields
+      products(first: $numberOfProducts, after: $cursor, filters: $filters) {
+        __typename
         edges {
           cursor
           node {
-            id
-            handle
-            title
+            ...ProductShortInfoFields
+            ...ProductPriceFields
             description
-            compareAtPriceRange {
-              maxVariantPrice {
-                amount
-                currencyCode
-              }
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            priceRange {
-              maxVariantPrice {
-                amount
-                currencyCode
-              }
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            images(first: $numberOfImages) {
-              edges {
-                node {
-                  url: url(transform: {maxWidth: 96, maxHeight: 72})
-                  altText
-                  width
-                  height
-                }
-              }
-            }
-            seo {
-              title
-              description
+            featuredImage {
+              ...ImageFields
             }
           }
         }
       }
     }
   }
+  ${CollectionFieldsFragmentDoc}
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ProductPriceFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
 `
-export const CollectionShortInfoDocument = gql`
-  query CollectionShortInfo($id: ID!) {
-    collection(id: $id) {
-      __typename
-      id
-      handle
-      image {
-        altText
-        url
-        w96: url(
-          transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
-        )
-        w128: url(
-          transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
-        )
-        w256: url(
-          transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
-        )
-        w384: url(
-          transform: {maxWidth: 384, maxHeight: 288, preferredContentType: WEBP}
-        )
-        w640: url(
-          transform: {maxWidth: 640, maxHeight: 480, preferredContentType: WEBP}
-        )
-        w750: url(
-          transform: {maxWidth: 750, maxHeight: 562, preferredContentType: WEBP}
-        )
-        w828: url(
-          transform: {maxWidth: 828, maxHeight: 621, preferredContentType: WEBP}
-        )
-        w1080: url(
-          transform: {
-            maxWidth: 1080
-            maxHeight: 810
-            preferredContentType: WEBP
+export const CollectionProductsWithFiltersByHandleDocument = gql`
+  query CollectionProductsWithFiltersByHandle(
+    $handle: String!
+    $numberOfProducts: Int
+    $cursor: String
+    $filters: [ProductFilter!]
+  ) {
+    collection(handle: $handle) {
+      ...CollectionFields
+      products(first: $numberOfProducts, after: $cursor, filters: $filters) {
+        __typename
+        edges {
+          cursor
+          node {
+            ...ProductShortInfoFields
+            ...ProductPriceFields
+            description
+            featuredImage {
+              ...ImageFields
+            }
           }
-        )
-        w1200: url(
-          transform: {
-            maxWidth: 1200
-            maxHeight: 900
-            preferredContentType: WEBP
-          }
-        )
-        w1920: url(
-          transform: {
-            maxWidth: 1920
-            maxHeight: 1440
-            preferredContentType: WEBP
-          }
-        )
-        w2048: url(
-          transform: {
-            maxWidth: 2048
-            maxHeight: 1536
-            preferredContentType: WEBP
-          }
-        )
-        w3840: url(
-          transform: {
-            maxWidth: 3840
-            maxHeight: 2880
-            preferredContentType: WEBP
-          }
-        )
+        }
+        filters {
+          ...FilterFields
+        }
       }
     }
   }
+  ${CollectionFieldsFragmentDoc}
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ProductPriceFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+  ${FilterFieldsFragmentDoc}
 `
-export const ProductQuickSearchDocument = gql`
-  query ProductQuickSearch($query: String) {
+export const CollectionWithImageByIdDocument = gql`
+  query CollectionWithImageByID($id: ID!) {
+    collection(id: $id) {
+      ...CollectionFields
+      image {
+        ...ImageFields
+      }
+    }
+  }
+  ${CollectionFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+`
+export const CollectionsBySearchQueryDocument = gql`
+  query CollectionsBySearchQuery($query: String, $numberOfCollections: Int) {
+    collections(query: $query, first: $numberOfCollections) {
+      __typename
+      edges {
+        node {
+          ...CollectionFields
+        }
+      }
+    }
+  }
+  ${CollectionFieldsFragmentDoc}
+`
+export const ProductsBySearchQueryDocument = gql`
+  query ProductsBySearchQuery(
+    $query: String
+    $numberOfProducts: Int
+    $cursor: String
+  ) {
+    products(query: $query, first: $numberOfProducts, after: $cursor) {
+      __typename
+      edges {
+        cursor
+        node {
+          ...ProductShortInfoFields
+          ...ProductPriceFields
+          description
+          featuredImage {
+            ...ImageFields
+          }
+        }
+      }
+    }
+  }
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ProductPriceFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+`
+export const ProductsShortInfoBySearchQueryDocument = gql`
+  query ProductsShortInfoBySearchQuery($query: String) {
     products(query: $query, first: 3) {
       __typename
       edges {
         node {
-          title
-          handle
+          ...ProductShortInfoFields
           featuredImage {
-            altText
-            url
-            w96: url(
-              transform: {
-                maxWidth: 96
-                maxHeight: 72
-                preferredContentType: WEBP
-              }
-            )
-            w128: url(
-              transform: {
-                maxWidth: 128
-                maxHeight: 96
-                preferredContentType: WEBP
-              }
-            )
+            ...ImageSmallFields
           }
         }
       }
     }
   }
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ImageSmallFieldsFragmentDoc}
 `
 
 export type SdkFunctionWrapper = <T>(
@@ -6541,5208 +6909,90 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
-    Collection(
-      variables: CollectionQueryVariables,
+    CollectionProductsByHandle(
+      variables: CollectionProductsByHandleQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<CollectionQuery> {
+    ): Promise<CollectionProductsByHandleQuery> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.request<CollectionQuery>(CollectionDocument, variables, {
-            ...requestHeaders,
-            ...wrappedRequestHeaders,
-          }),
-        'Collection',
-      )
-    },
-    CollectionShortInfo(
-      variables: CollectionShortInfoQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<CollectionShortInfoQuery> {
-      return withWrapper(
-        wrappedRequestHeaders =>
-          client.request<CollectionShortInfoQuery>(
-            CollectionShortInfoDocument,
+          client.request<CollectionProductsByHandleQuery>(
+            CollectionProductsByHandleDocument,
             variables,
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
-        'CollectionShortInfo',
+        'CollectionProductsByHandle',
       )
     },
-    ProductQuickSearch(
-      variables?: ProductQuickSearchQueryVariables,
+    CollectionProductsWithFiltersByHandle(
+      variables: CollectionProductsWithFiltersByHandleQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
-    ): Promise<ProductQuickSearchQuery> {
+    ): Promise<CollectionProductsWithFiltersByHandleQuery> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.request<ProductQuickSearchQuery>(
-            ProductQuickSearchDocument,
+          client.request<CollectionProductsWithFiltersByHandleQuery>(
+            CollectionProductsWithFiltersByHandleDocument,
             variables,
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
-        'ProductQuickSearch',
+        'CollectionProductsWithFiltersByHandle',
+      )
+    },
+    CollectionWithImageByID(
+      variables: CollectionWithImageByIdQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionWithImageByIdQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionWithImageByIdQuery>(
+            CollectionWithImageByIdDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionWithImageByID',
+      )
+    },
+    CollectionsBySearchQuery(
+      variables?: CollectionsBySearchQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CollectionsBySearchQueryQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CollectionsBySearchQueryQuery>(
+            CollectionsBySearchQueryDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'CollectionsBySearchQuery',
+      )
+    },
+    ProductsBySearchQuery(
+      variables?: ProductsBySearchQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<ProductsBySearchQueryQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<ProductsBySearchQueryQuery>(
+            ProductsBySearchQueryDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'ProductsBySearchQuery',
+      )
+    },
+    ProductsShortInfoBySearchQuery(
+      variables?: ProductsShortInfoBySearchQueryQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<ProductsShortInfoBySearchQueryQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<ProductsShortInfoBySearchQueryQuery>(
+            ProductsShortInfoBySearchQueryDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'ProductsShortInfoBySearchQuery',
       )
     },
   }
 }
 export type Sdk = ReturnType<typeof getSdk>
-
-export const anApiVersion = (overrides?: Partial<ApiVersion>): ApiVersion => {
-  return {
-    displayName:
-      overrides && overrides.hasOwnProperty('displayName')
-        ? overrides.displayName!
-        : 'ipsam',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'vitae',
-    supported:
-      overrides && overrides.hasOwnProperty('supported')
-        ? overrides.supported!
-        : true,
-  }
-}
-
-export const anAppliedGiftCard = (
-  overrides?: Partial<AppliedGiftCard>,
-): AppliedGiftCard => {
-  return {
-    amountUsed:
-      overrides && overrides.hasOwnProperty('amountUsed')
-        ? overrides.amountUsed!
-        : 'voluptatibus',
-    amountUsedV2:
-      overrides && overrides.hasOwnProperty('amountUsedV2')
-        ? overrides.amountUsedV2!
-        : aMoneyV2(),
-    balance:
-      overrides && overrides.hasOwnProperty('balance')
-        ? overrides.balance!
-        : 'est',
-    balanceV2:
-      overrides && overrides.hasOwnProperty('balanceV2')
-        ? overrides.balanceV2!
-        : aMoneyV2(),
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '85fdf343-5faa-4bd9-b996-500e002ee563',
-    lastCharacters:
-      overrides && overrides.hasOwnProperty('lastCharacters')
-        ? overrides.lastCharacters!
-        : 'nulla',
-    presentmentAmountUsed:
-      overrides && overrides.hasOwnProperty('presentmentAmountUsed')
-        ? overrides.presentmentAmountUsed!
-        : aMoneyV2(),
-  }
-}
-
-export const anArticle = (overrides?: Partial<Article>): Article => {
-  return {
-    author:
-      overrides && overrides.hasOwnProperty('author')
-        ? overrides.author!
-        : anArticleAuthor(),
-    authorV2:
-      overrides && overrides.hasOwnProperty('authorV2')
-        ? overrides.authorV2!
-        : anArticleAuthor(),
-    blog:
-      overrides && overrides.hasOwnProperty('blog') ? overrides.blog! : aBlog(),
-    comments:
-      overrides && overrides.hasOwnProperty('comments')
-        ? overrides.comments!
-        : aCommentConnection(),
-    content:
-      overrides && overrides.hasOwnProperty('content')
-        ? overrides.content!
-        : 'pariatur',
-    contentHtml:
-      overrides && overrides.hasOwnProperty('contentHtml')
-        ? overrides.contentHtml!
-        : 'id',
-    excerpt:
-      overrides && overrides.hasOwnProperty('excerpt')
-        ? overrides.excerpt!
-        : 'nihil',
-    excerptHtml:
-      overrides && overrides.hasOwnProperty('excerptHtml')
-        ? overrides.excerptHtml!
-        : 'reprehenderit',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'perspiciatis',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'a349255d-ed73-4f00-99dc-0494a5a641bf',
-    image:
-      overrides && overrides.hasOwnProperty('image')
-        ? overrides.image!
-        : anImage(),
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'dicta',
-    publishedAt:
-      overrides && overrides.hasOwnProperty('publishedAt')
-        ? overrides.publishedAt!
-        : 'ducimus',
-    seo: overrides && overrides.hasOwnProperty('seo') ? overrides.seo! : aSeo(),
-    tags:
-      overrides && overrides.hasOwnProperty('tags')
-        ? overrides.tags!
-        : ['quod'],
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'aperiam',
-  }
-}
-
-export const anArticleAuthor = (
-  overrides?: Partial<ArticleAuthor>,
-): ArticleAuthor => {
-  return {
-    bio:
-      overrides && overrides.hasOwnProperty('bio') ? overrides.bio! : 'rerum',
-    email:
-      overrides && overrides.hasOwnProperty('email')
-        ? overrides.email!
-        : 'voluptatem',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'pariatur',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'expedita',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'aut',
-  }
-}
-
-export const anArticleConnection = (
-  overrides?: Partial<ArticleConnection>,
-): ArticleConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [anArticleEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const anArticleEdge = (
-  overrides?: Partial<ArticleEdge>,
-): ArticleEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'eum',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : anArticle(),
-  }
-}
-
-export const anAttribute = (overrides?: Partial<Attribute>): Attribute => {
-  return {
-    key:
-      overrides && overrides.hasOwnProperty('key')
-        ? overrides.key!
-        : 'asperiores',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'consequatur',
-  }
-}
-
-export const anAttributeInput = (
-  overrides?: Partial<AttributeInput>,
-): AttributeInput => {
-  return {
-    key: overrides && overrides.hasOwnProperty('key') ? overrides.key! : 'aut',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'pariatur',
-  }
-}
-
-export const anAutomaticDiscountApplication = (
-  overrides?: Partial<AutomaticDiscountApplication>,
-): AutomaticDiscountApplication => {
-  return {
-    allocationMethod:
-      overrides && overrides.hasOwnProperty('allocationMethod')
-        ? overrides.allocationMethod!
-        : DiscountApplicationAllocationMethod.Across,
-    targetSelection:
-      overrides && overrides.hasOwnProperty('targetSelection')
-        ? overrides.targetSelection!
-        : DiscountApplicationTargetSelection.All,
-    targetType:
-      overrides && overrides.hasOwnProperty('targetType')
-        ? overrides.targetType!
-        : DiscountApplicationTargetType.LineItem,
-    title:
-      overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'et',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : aMoneyV2(),
-  }
-}
-
-export const anAvailableShippingRates = (
-  overrides?: Partial<AvailableShippingRates>,
-): AvailableShippingRates => {
-  return {
-    ready:
-      overrides && overrides.hasOwnProperty('ready') ? overrides.ready! : true,
-    shippingRates:
-      overrides && overrides.hasOwnProperty('shippingRates')
-        ? overrides.shippingRates!
-        : [aShippingRate()],
-  }
-}
-
-export const aBlog = (overrides?: Partial<Blog>): Blog => {
-  return {
-    articleByHandle:
-      overrides && overrides.hasOwnProperty('articleByHandle')
-        ? overrides.articleByHandle!
-        : anArticle(),
-    articles:
-      overrides && overrides.hasOwnProperty('articles')
-        ? overrides.articles!
-        : anArticleConnection(),
-    authors:
-      overrides && overrides.hasOwnProperty('authors')
-        ? overrides.authors!
-        : [anArticleAuthor()],
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'ea',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '5421b369-fc17-4865-b270-b5ee49e2b5c7',
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'eaque',
-    seo: overrides && overrides.hasOwnProperty('seo') ? overrides.seo! : aSeo(),
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'officiis',
-  }
-}
-
-export const aBlogConnection = (
-  overrides?: Partial<BlogConnection>,
-): BlogConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aBlogEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aBlogEdge = (overrides?: Partial<BlogEdge>): BlogEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'in',
-    node:
-      overrides && overrides.hasOwnProperty('node') ? overrides.node! : aBlog(),
-  }
-}
-
-export const aCart = (overrides?: Partial<Cart>): Cart => {
-  return {
-    attributes:
-      overrides && overrides.hasOwnProperty('attributes')
-        ? overrides.attributes!
-        : [anAttribute()],
-    buyerIdentity:
-      overrides && overrides.hasOwnProperty('buyerIdentity')
-        ? overrides.buyerIdentity!
-        : aCartBuyerIdentity(),
-    checkoutUrl:
-      overrides && overrides.hasOwnProperty('checkoutUrl')
-        ? overrides.checkoutUrl!
-        : 'laudantium',
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'eligendi',
-    discountCodes:
-      overrides && overrides.hasOwnProperty('discountCodes')
-        ? overrides.discountCodes!
-        : [aCartDiscountCode()],
-    estimatedCost:
-      overrides && overrides.hasOwnProperty('estimatedCost')
-        ? overrides.estimatedCost!
-        : aCartEstimatedCost(),
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '92ecd5c5-8738-44c0-808e-4fd12b86c7c2',
-    lines:
-      overrides && overrides.hasOwnProperty('lines')
-        ? overrides.lines!
-        : aCartLineConnection(),
-    note:
-      overrides && overrides.hasOwnProperty('note') ? overrides.note! : 'porro',
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'qui',
-  }
-}
-
-export const aCartAttributesUpdatePayload = (
-  overrides?: Partial<CartAttributesUpdatePayload>,
-): CartAttributesUpdatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartAutomaticDiscountAllocation = (
-  overrides?: Partial<CartAutomaticDiscountAllocation>,
-): CartAutomaticDiscountAllocation => {
-  return {
-    discountedAmount:
-      overrides && overrides.hasOwnProperty('discountedAmount')
-        ? overrides.discountedAmount!
-        : aMoneyV2(),
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'voluptate',
-  }
-}
-
-export const aCartBuyerIdentity = (
-  overrides?: Partial<CartBuyerIdentity>,
-): CartBuyerIdentity => {
-  return {
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : CountryCode.Ac,
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    email:
-      overrides && overrides.hasOwnProperty('email')
-        ? overrides.email!
-        : 'necessitatibus',
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'quasi',
-  }
-}
-
-export const aCartBuyerIdentityInput = (
-  overrides?: Partial<CartBuyerIdentityInput>,
-): CartBuyerIdentityInput => {
-  return {
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : CountryCode.Ac,
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : 'itaque',
-    email:
-      overrides && overrides.hasOwnProperty('email')
-        ? overrides.email!
-        : 'quia',
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'doloremque',
-  }
-}
-
-export const aCartBuyerIdentityUpdatePayload = (
-  overrides?: Partial<CartBuyerIdentityUpdatePayload>,
-): CartBuyerIdentityUpdatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartCodeDiscountAllocation = (
-  overrides?: Partial<CartCodeDiscountAllocation>,
-): CartCodeDiscountAllocation => {
-  return {
-    code:
-      overrides && overrides.hasOwnProperty('code')
-        ? overrides.code!
-        : 'laudantium',
-    discountedAmount:
-      overrides && overrides.hasOwnProperty('discountedAmount')
-        ? overrides.discountedAmount!
-        : aMoneyV2(),
-  }
-}
-
-export const aCartCreatePayload = (
-  overrides?: Partial<CartCreatePayload>,
-): CartCreatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartDiscountAllocation = (
-  overrides?: Partial<CartDiscountAllocation>,
-): CartDiscountAllocation => {
-  return {
-    discountedAmount:
-      overrides && overrides.hasOwnProperty('discountedAmount')
-        ? overrides.discountedAmount!
-        : aMoneyV2(),
-  }
-}
-
-export const aCartDiscountCode = (
-  overrides?: Partial<CartDiscountCode>,
-): CartDiscountCode => {
-  return {
-    applicable:
-      overrides && overrides.hasOwnProperty('applicable')
-        ? overrides.applicable!
-        : false,
-    code:
-      overrides && overrides.hasOwnProperty('code') ? overrides.code! : 'minus',
-  }
-}
-
-export const aCartDiscountCodesUpdatePayload = (
-  overrides?: Partial<CartDiscountCodesUpdatePayload>,
-): CartDiscountCodesUpdatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartEstimatedCost = (
-  overrides?: Partial<CartEstimatedCost>,
-): CartEstimatedCost => {
-  return {
-    subtotalAmount:
-      overrides && overrides.hasOwnProperty('subtotalAmount')
-        ? overrides.subtotalAmount!
-        : aMoneyV2(),
-    totalAmount:
-      overrides && overrides.hasOwnProperty('totalAmount')
-        ? overrides.totalAmount!
-        : aMoneyV2(),
-    totalDutyAmount:
-      overrides && overrides.hasOwnProperty('totalDutyAmount')
-        ? overrides.totalDutyAmount!
-        : aMoneyV2(),
-    totalTaxAmount:
-      overrides && overrides.hasOwnProperty('totalTaxAmount')
-        ? overrides.totalTaxAmount!
-        : aMoneyV2(),
-  }
-}
-
-export const aCartInput = (overrides?: Partial<CartInput>): CartInput => {
-  return {
-    attributes:
-      overrides && overrides.hasOwnProperty('attributes')
-        ? overrides.attributes!
-        : [anAttributeInput()],
-    buyerIdentity:
-      overrides && overrides.hasOwnProperty('buyerIdentity')
-        ? overrides.buyerIdentity!
-        : aCartBuyerIdentityInput(),
-    discountCodes:
-      overrides && overrides.hasOwnProperty('discountCodes')
-        ? overrides.discountCodes!
-        : ['tenetur'],
-    lines:
-      overrides && overrides.hasOwnProperty('lines')
-        ? overrides.lines!
-        : [aCartLineInput()],
-    note:
-      overrides && overrides.hasOwnProperty('note') ? overrides.note! : 'eos',
-  }
-}
-
-export const aCartLine = (overrides?: Partial<CartLine>): CartLine => {
-  return {
-    attributes:
-      overrides && overrides.hasOwnProperty('attributes')
-        ? overrides.attributes!
-        : [anAttribute()],
-    discountAllocations:
-      overrides && overrides.hasOwnProperty('discountAllocations')
-        ? overrides.discountAllocations!
-        : [aCartDiscountAllocation()],
-    estimatedCost:
-      overrides && overrides.hasOwnProperty('estimatedCost')
-        ? overrides.estimatedCost!
-        : aCartLineEstimatedCost(),
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'bbe47f9b-3298-4c9f-a2a7-71feebeac60d',
-    merchandise:
-      overrides && overrides.hasOwnProperty('merchandise')
-        ? overrides.merchandise!
-        : aProductVariant(),
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 9769,
-    sellingPlanAllocation:
-      overrides && overrides.hasOwnProperty('sellingPlanAllocation')
-        ? overrides.sellingPlanAllocation!
-        : aSellingPlanAllocation(),
-  }
-}
-
-export const aCartLineConnection = (
-  overrides?: Partial<CartLineConnection>,
-): CartLineConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aCartLineEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aCartLineEdge = (
-  overrides?: Partial<CartLineEdge>,
-): CartLineEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'inventore',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aCartLine(),
-  }
-}
-
-export const aCartLineEstimatedCost = (
-  overrides?: Partial<CartLineEstimatedCost>,
-): CartLineEstimatedCost => {
-  return {
-    subtotalAmount:
-      overrides && overrides.hasOwnProperty('subtotalAmount')
-        ? overrides.subtotalAmount!
-        : aMoneyV2(),
-    totalAmount:
-      overrides && overrides.hasOwnProperty('totalAmount')
-        ? overrides.totalAmount!
-        : aMoneyV2(),
-  }
-}
-
-export const aCartLineInput = (
-  overrides?: Partial<CartLineInput>,
-): CartLineInput => {
-  return {
-    attributes:
-      overrides && overrides.hasOwnProperty('attributes')
-        ? overrides.attributes!
-        : [anAttributeInput()],
-    merchandiseId:
-      overrides && overrides.hasOwnProperty('merchandiseId')
-        ? overrides.merchandiseId!
-        : '7976f424-8e38-4b51-aefc-e9bd0b99a5da',
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 2158,
-    sellingPlanId:
-      overrides && overrides.hasOwnProperty('sellingPlanId')
-        ? overrides.sellingPlanId!
-        : '361fc497-7f61-419a-8f0c-f284e63b3230',
-  }
-}
-
-export const aCartLineUpdateInput = (
-  overrides?: Partial<CartLineUpdateInput>,
-): CartLineUpdateInput => {
-  return {
-    attributes:
-      overrides && overrides.hasOwnProperty('attributes')
-        ? overrides.attributes!
-        : [anAttributeInput()],
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'fac516c6-ca97-404a-90da-4cd7c411cacd',
-    merchandiseId:
-      overrides && overrides.hasOwnProperty('merchandiseId')
-        ? overrides.merchandiseId!
-        : '17d32334-9fa6-4cbb-ab4d-a8921a0a783a',
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 4069,
-    sellingPlanId:
-      overrides && overrides.hasOwnProperty('sellingPlanId')
-        ? overrides.sellingPlanId!
-        : '3ffa730c-0dc8-43cc-be21-6c4a052ac3b9',
-  }
-}
-
-export const aCartLinesAddPayload = (
-  overrides?: Partial<CartLinesAddPayload>,
-): CartLinesAddPayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartLinesRemovePayload = (
-  overrides?: Partial<CartLinesRemovePayload>,
-): CartLinesRemovePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartLinesUpdatePayload = (
-  overrides?: Partial<CartLinesUpdatePayload>,
-): CartLinesUpdatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartNoteUpdatePayload = (
-  overrides?: Partial<CartNoteUpdatePayload>,
-): CartNoteUpdatePayload => {
-  return {
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCartUserError()],
-  }
-}
-
-export const aCartUserError = (
-  overrides?: Partial<CartUserError>,
-): CartUserError => {
-  return {
-    code:
-      overrides && overrides.hasOwnProperty('code')
-        ? overrides.code!
-        : CartErrorCode.Invalid,
-    field:
-      overrides && overrides.hasOwnProperty('field')
-        ? overrides.field!
-        : ['et'],
-    message:
-      overrides && overrides.hasOwnProperty('message')
-        ? overrides.message!
-        : 'illo',
-  }
-}
-
-export const aCheckout = (overrides?: Partial<Checkout>): Checkout => {
-  return {
-    appliedGiftCards:
-      overrides && overrides.hasOwnProperty('appliedGiftCards')
-        ? overrides.appliedGiftCards!
-        : [anAppliedGiftCard()],
-    availableShippingRates:
-      overrides && overrides.hasOwnProperty('availableShippingRates')
-        ? overrides.availableShippingRates!
-        : anAvailableShippingRates(),
-    buyerIdentity:
-      overrides && overrides.hasOwnProperty('buyerIdentity')
-        ? overrides.buyerIdentity!
-        : aCheckoutBuyerIdentity(),
-    completedAt:
-      overrides && overrides.hasOwnProperty('completedAt')
-        ? overrides.completedAt!
-        : 'nobis',
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'autem',
-    currencyCode:
-      overrides && overrides.hasOwnProperty('currencyCode')
-        ? overrides.currencyCode!
-        : CurrencyCode.Aed,
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttribute()],
-    discountApplications:
-      overrides && overrides.hasOwnProperty('discountApplications')
-        ? overrides.discountApplications!
-        : aDiscountApplicationConnection(),
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'et',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '37bd7e1f-e8a8-43c0-8931-266425a067bc',
-    lineItems:
-      overrides && overrides.hasOwnProperty('lineItems')
-        ? overrides.lineItems!
-        : aCheckoutLineItemConnection(),
-    lineItemsSubtotalPrice:
-      overrides && overrides.hasOwnProperty('lineItemsSubtotalPrice')
-        ? overrides.lineItemsSubtotalPrice!
-        : aMoneyV2(),
-    note:
-      overrides && overrides.hasOwnProperty('note')
-        ? overrides.note!
-        : 'sapiente',
-    order:
-      overrides && overrides.hasOwnProperty('order')
-        ? overrides.order!
-        : anOrder(),
-    orderStatusUrl:
-      overrides && overrides.hasOwnProperty('orderStatusUrl')
-        ? overrides.orderStatusUrl!
-        : 'placeat',
-    paymentDue:
-      overrides && overrides.hasOwnProperty('paymentDue')
-        ? overrides.paymentDue!
-        : 'non',
-    paymentDueV2:
-      overrides && overrides.hasOwnProperty('paymentDueV2')
-        ? overrides.paymentDueV2!
-        : aMoneyV2(),
-    ready:
-      overrides && overrides.hasOwnProperty('ready') ? overrides.ready! : false,
-    requiresShipping:
-      overrides && overrides.hasOwnProperty('requiresShipping')
-        ? overrides.requiresShipping!
-        : true,
-    shippingAddress:
-      overrides && overrides.hasOwnProperty('shippingAddress')
-        ? overrides.shippingAddress!
-        : aMailingAddress(),
-    shippingDiscountAllocations:
-      overrides && overrides.hasOwnProperty('shippingDiscountAllocations')
-        ? overrides.shippingDiscountAllocations!
-        : [aDiscountAllocation()],
-    shippingLine:
-      overrides && overrides.hasOwnProperty('shippingLine')
-        ? overrides.shippingLine!
-        : aShippingRate(),
-    subtotalPrice:
-      overrides && overrides.hasOwnProperty('subtotalPrice')
-        ? overrides.subtotalPrice!
-        : 'non',
-    subtotalPriceV2:
-      overrides && overrides.hasOwnProperty('subtotalPriceV2')
-        ? overrides.subtotalPriceV2!
-        : aMoneyV2(),
-    taxExempt:
-      overrides && overrides.hasOwnProperty('taxExempt')
-        ? overrides.taxExempt!
-        : true,
-    taxesIncluded:
-      overrides && overrides.hasOwnProperty('taxesIncluded')
-        ? overrides.taxesIncluded!
-        : false,
-    totalDuties:
-      overrides && overrides.hasOwnProperty('totalDuties')
-        ? overrides.totalDuties!
-        : aMoneyV2(),
-    totalPrice:
-      overrides && overrides.hasOwnProperty('totalPrice')
-        ? overrides.totalPrice!
-        : 'id',
-    totalPriceV2:
-      overrides && overrides.hasOwnProperty('totalPriceV2')
-        ? overrides.totalPriceV2!
-        : aMoneyV2(),
-    totalTax:
-      overrides && overrides.hasOwnProperty('totalTax')
-        ? overrides.totalTax!
-        : 'porro',
-    totalTaxV2:
-      overrides && overrides.hasOwnProperty('totalTaxV2')
-        ? overrides.totalTaxV2!
-        : aMoneyV2(),
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'non',
-    webUrl:
-      overrides && overrides.hasOwnProperty('webUrl')
-        ? overrides.webUrl!
-        : 'repellendus',
-  }
-}
-
-export const aCheckoutAttributesUpdateInput = (
-  overrides?: Partial<CheckoutAttributesUpdateInput>,
-): CheckoutAttributesUpdateInput => {
-  return {
-    allowPartialAddresses:
-      overrides && overrides.hasOwnProperty('allowPartialAddresses')
-        ? overrides.allowPartialAddresses!
-        : false,
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttributeInput()],
-    note:
-      overrides && overrides.hasOwnProperty('note')
-        ? overrides.note!
-        : 'praesentium',
-  }
-}
-
-export const aCheckoutAttributesUpdatePayload = (
-  overrides?: Partial<CheckoutAttributesUpdatePayload>,
-): CheckoutAttributesUpdatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutAttributesUpdateV2Input = (
-  overrides?: Partial<CheckoutAttributesUpdateV2Input>,
-): CheckoutAttributesUpdateV2Input => {
-  return {
-    allowPartialAddresses:
-      overrides && overrides.hasOwnProperty('allowPartialAddresses')
-        ? overrides.allowPartialAddresses!
-        : true,
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttributeInput()],
-    note:
-      overrides && overrides.hasOwnProperty('note') ? overrides.note! : 'at',
-  }
-}
-
-export const aCheckoutAttributesUpdateV2Payload = (
-  overrides?: Partial<CheckoutAttributesUpdateV2Payload>,
-): CheckoutAttributesUpdateV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutBuyerIdentity = (
-  overrides?: Partial<CheckoutBuyerIdentity>,
-): CheckoutBuyerIdentity => {
-  return {
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : CountryCode.Ac,
-  }
-}
-
-export const aCheckoutBuyerIdentityInput = (
-  overrides?: Partial<CheckoutBuyerIdentityInput>,
-): CheckoutBuyerIdentityInput => {
-  return {
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : CountryCode.Ac,
-  }
-}
-
-export const aCheckoutCompleteFreePayload = (
-  overrides?: Partial<CheckoutCompleteFreePayload>,
-): CheckoutCompleteFreePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCompleteWithCreditCardPayload = (
-  overrides?: Partial<CheckoutCompleteWithCreditCardPayload>,
-): CheckoutCompleteWithCreditCardPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    payment:
-      overrides && overrides.hasOwnProperty('payment')
-        ? overrides.payment!
-        : aPayment(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCompleteWithCreditCardV2Payload = (
-  overrides?: Partial<CheckoutCompleteWithCreditCardV2Payload>,
-): CheckoutCompleteWithCreditCardV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    payment:
-      overrides && overrides.hasOwnProperty('payment')
-        ? overrides.payment!
-        : aPayment(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCompleteWithTokenizedPaymentPayload = (
-  overrides?: Partial<CheckoutCompleteWithTokenizedPaymentPayload>,
-): CheckoutCompleteWithTokenizedPaymentPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    payment:
-      overrides && overrides.hasOwnProperty('payment')
-        ? overrides.payment!
-        : aPayment(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCompleteWithTokenizedPaymentV2Payload = (
-  overrides?: Partial<CheckoutCompleteWithTokenizedPaymentV2Payload>,
-): CheckoutCompleteWithTokenizedPaymentV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    payment:
-      overrides && overrides.hasOwnProperty('payment')
-        ? overrides.payment!
-        : aPayment(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCompleteWithTokenizedPaymentV3Payload = (
-  overrides?: Partial<CheckoutCompleteWithTokenizedPaymentV3Payload>,
-): CheckoutCompleteWithTokenizedPaymentV3Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    payment:
-      overrides && overrides.hasOwnProperty('payment')
-        ? overrides.payment!
-        : aPayment(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCreateInput = (
-  overrides?: Partial<CheckoutCreateInput>,
-): CheckoutCreateInput => {
-  return {
-    allowPartialAddresses:
-      overrides && overrides.hasOwnProperty('allowPartialAddresses')
-        ? overrides.allowPartialAddresses!
-        : false,
-    buyerIdentity:
-      overrides && overrides.hasOwnProperty('buyerIdentity')
-        ? overrides.buyerIdentity!
-        : aCheckoutBuyerIdentityInput(),
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttributeInput()],
-    email:
-      overrides && overrides.hasOwnProperty('email')
-        ? overrides.email!
-        : 'voluptatum',
-    lineItems:
-      overrides && overrides.hasOwnProperty('lineItems')
-        ? overrides.lineItems!
-        : [aCheckoutLineItemInput()],
-    note:
-      overrides && overrides.hasOwnProperty('note') ? overrides.note! : 'et',
-    presentmentCurrencyCode:
-      overrides && overrides.hasOwnProperty('presentmentCurrencyCode')
-        ? overrides.presentmentCurrencyCode!
-        : CurrencyCode.Aed,
-    shippingAddress:
-      overrides && overrides.hasOwnProperty('shippingAddress')
-        ? overrides.shippingAddress!
-        : aMailingAddressInput(),
-  }
-}
-
-export const aCheckoutCreatePayload = (
-  overrides?: Partial<CheckoutCreatePayload>,
-): CheckoutCreatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    queueToken:
-      overrides && overrides.hasOwnProperty('queueToken')
-        ? overrides.queueToken!
-        : 'officia',
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCustomerAssociatePayload = (
-  overrides?: Partial<CheckoutCustomerAssociatePayload>,
-): CheckoutCustomerAssociatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCustomerAssociateV2Payload = (
-  overrides?: Partial<CheckoutCustomerAssociateV2Payload>,
-): CheckoutCustomerAssociateV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCustomerDisassociatePayload = (
-  overrides?: Partial<CheckoutCustomerDisassociatePayload>,
-): CheckoutCustomerDisassociatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutCustomerDisassociateV2Payload = (
-  overrides?: Partial<CheckoutCustomerDisassociateV2Payload>,
-): CheckoutCustomerDisassociateV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutDiscountCodeApplyPayload = (
-  overrides?: Partial<CheckoutDiscountCodeApplyPayload>,
-): CheckoutDiscountCodeApplyPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutDiscountCodeApplyV2Payload = (
-  overrides?: Partial<CheckoutDiscountCodeApplyV2Payload>,
-): CheckoutDiscountCodeApplyV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutDiscountCodeRemovePayload = (
-  overrides?: Partial<CheckoutDiscountCodeRemovePayload>,
-): CheckoutDiscountCodeRemovePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutEmailUpdatePayload = (
-  overrides?: Partial<CheckoutEmailUpdatePayload>,
-): CheckoutEmailUpdatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutEmailUpdateV2Payload = (
-  overrides?: Partial<CheckoutEmailUpdateV2Payload>,
-): CheckoutEmailUpdateV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutGiftCardApplyPayload = (
-  overrides?: Partial<CheckoutGiftCardApplyPayload>,
-): CheckoutGiftCardApplyPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutGiftCardRemovePayload = (
-  overrides?: Partial<CheckoutGiftCardRemovePayload>,
-): CheckoutGiftCardRemovePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutGiftCardRemoveV2Payload = (
-  overrides?: Partial<CheckoutGiftCardRemoveV2Payload>,
-): CheckoutGiftCardRemoveV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutGiftCardsAppendPayload = (
-  overrides?: Partial<CheckoutGiftCardsAppendPayload>,
-): CheckoutGiftCardsAppendPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutLineItem = (
-  overrides?: Partial<CheckoutLineItem>,
-): CheckoutLineItem => {
-  return {
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttribute()],
-    discountAllocations:
-      overrides && overrides.hasOwnProperty('discountAllocations')
-        ? overrides.discountAllocations!
-        : [aDiscountAllocation()],
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '31c14942-de1b-4a36-a396-0d6b45a62e8f',
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 9126,
-    title:
-      overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'eum',
-    unitPrice:
-      overrides && overrides.hasOwnProperty('unitPrice')
-        ? overrides.unitPrice!
-        : aMoneyV2(),
-    variant:
-      overrides && overrides.hasOwnProperty('variant')
-        ? overrides.variant!
-        : aProductVariant(),
-  }
-}
-
-export const aCheckoutLineItemConnection = (
-  overrides?: Partial<CheckoutLineItemConnection>,
-): CheckoutLineItemConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aCheckoutLineItemEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aCheckoutLineItemEdge = (
-  overrides?: Partial<CheckoutLineItemEdge>,
-): CheckoutLineItemEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'et',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aCheckoutLineItem(),
-  }
-}
-
-export const aCheckoutLineItemInput = (
-  overrides?: Partial<CheckoutLineItemInput>,
-): CheckoutLineItemInput => {
-  return {
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttributeInput()],
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 8330,
-    variantId:
-      overrides && overrides.hasOwnProperty('variantId')
-        ? overrides.variantId!
-        : 'e9d494c9-b505-4a35-8f07-60bfd23ee2b9',
-  }
-}
-
-export const aCheckoutLineItemUpdateInput = (
-  overrides?: Partial<CheckoutLineItemUpdateInput>,
-): CheckoutLineItemUpdateInput => {
-  return {
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttributeInput()],
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '9f8aa797-b2ab-4f95-8898-e41932fabd93',
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 9268,
-    variantId:
-      overrides && overrides.hasOwnProperty('variantId')
-        ? overrides.variantId!
-        : 'd97fa4a1-24d7-4323-b797-7a37991d2d3e',
-  }
-}
-
-export const aCheckoutLineItemsAddPayload = (
-  overrides?: Partial<CheckoutLineItemsAddPayload>,
-): CheckoutLineItemsAddPayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutLineItemsRemovePayload = (
-  overrides?: Partial<CheckoutLineItemsRemovePayload>,
-): CheckoutLineItemsRemovePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutLineItemsReplacePayload = (
-  overrides?: Partial<CheckoutLineItemsReplacePayload>,
-): CheckoutLineItemsReplacePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aCheckoutUserError()],
-  }
-}
-
-export const aCheckoutLineItemsUpdatePayload = (
-  overrides?: Partial<CheckoutLineItemsUpdatePayload>,
-): CheckoutLineItemsUpdatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutShippingAddressUpdatePayload = (
-  overrides?: Partial<CheckoutShippingAddressUpdatePayload>,
-): CheckoutShippingAddressUpdatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutShippingAddressUpdateV2Payload = (
-  overrides?: Partial<CheckoutShippingAddressUpdateV2Payload>,
-): CheckoutShippingAddressUpdateV2Payload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutShippingLineUpdatePayload = (
-  overrides?: Partial<CheckoutShippingLineUpdatePayload>,
-): CheckoutShippingLineUpdatePayload => {
-  return {
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    checkoutUserErrors:
-      overrides && overrides.hasOwnProperty('checkoutUserErrors')
-        ? overrides.checkoutUserErrors!
-        : [aCheckoutUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCheckoutUserError = (
-  overrides?: Partial<CheckoutUserError>,
-): CheckoutUserError => {
-  return {
-    code:
-      overrides && overrides.hasOwnProperty('code')
-        ? overrides.code!
-        : CheckoutErrorCode.AlreadyCompleted,
-    field:
-      overrides && overrides.hasOwnProperty('field')
-        ? overrides.field!
-        : ['omnis'],
-    message:
-      overrides && overrides.hasOwnProperty('message')
-        ? overrides.message!
-        : 'qui',
-  }
-}
-
-export const aCollection = (overrides?: Partial<Collection>): Collection => {
-  return {
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'suscipit',
-    descriptionHtml:
-      overrides && overrides.hasOwnProperty('descriptionHtml')
-        ? overrides.descriptionHtml!
-        : 'atque',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'repudiandae',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'df601c0f-3a8f-423d-af58-d8e8270ac85e',
-    image:
-      overrides && overrides.hasOwnProperty('image')
-        ? overrides.image!
-        : anImage(),
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'aut',
-    products:
-      overrides && overrides.hasOwnProperty('products')
-        ? overrides.products!
-        : aProductConnection(),
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'nesciunt',
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'provident',
-  }
-}
-
-export const aCollectionConnection = (
-  overrides?: Partial<CollectionConnection>,
-): CollectionConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aCollectionEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aCollectionEdge = (
-  overrides?: Partial<CollectionEdge>,
-): CollectionEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'et',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aCollection(),
-  }
-}
-
-export const aComment = (overrides?: Partial<Comment>): Comment => {
-  return {
-    author:
-      overrides && overrides.hasOwnProperty('author')
-        ? overrides.author!
-        : aCommentAuthor(),
-    content:
-      overrides && overrides.hasOwnProperty('content')
-        ? overrides.content!
-        : 'illum',
-    contentHtml:
-      overrides && overrides.hasOwnProperty('contentHtml')
-        ? overrides.contentHtml!
-        : 'modi',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '6046ffb2-6bf2-4352-8bd1-399138ba33c0',
-  }
-}
-
-export const aCommentAuthor = (
-  overrides?: Partial<CommentAuthor>,
-): CommentAuthor => {
-  return {
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'aut',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'non',
-  }
-}
-
-export const aCommentConnection = (
-  overrides?: Partial<CommentConnection>,
-): CommentConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aCommentEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aCommentEdge = (overrides?: Partial<CommentEdge>): CommentEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'magnam',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aComment(),
-  }
-}
-
-export const aCountry = (overrides?: Partial<Country>): Country => {
-  return {
-    currency:
-      overrides && overrides.hasOwnProperty('currency')
-        ? overrides.currency!
-        : aCurrency(),
-    isoCode:
-      overrides && overrides.hasOwnProperty('isoCode')
-        ? overrides.isoCode!
-        : CountryCode.Ac,
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'fugit',
-    unitSystem:
-      overrides && overrides.hasOwnProperty('unitSystem')
-        ? overrides.unitSystem!
-        : UnitSystem.ImperialSystem,
-  }
-}
-
-export const aCreditCard = (overrides?: Partial<CreditCard>): CreditCard => {
-  return {
-    brand:
-      overrides && overrides.hasOwnProperty('brand') ? overrides.brand! : 'et',
-    expiryMonth:
-      overrides && overrides.hasOwnProperty('expiryMonth')
-        ? overrides.expiryMonth!
-        : 3496,
-    expiryYear:
-      overrides && overrides.hasOwnProperty('expiryYear')
-        ? overrides.expiryYear!
-        : 6930,
-    firstDigits:
-      overrides && overrides.hasOwnProperty('firstDigits')
-        ? overrides.firstDigits!
-        : 'nihil',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'ea',
-    lastDigits:
-      overrides && overrides.hasOwnProperty('lastDigits')
-        ? overrides.lastDigits!
-        : 'repellat',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'est',
-    maskedNumber:
-      overrides && overrides.hasOwnProperty('maskedNumber')
-        ? overrides.maskedNumber!
-        : 'sit',
-  }
-}
-
-export const aCreditCardPaymentInput = (
-  overrides?: Partial<CreditCardPaymentInput>,
-): CreditCardPaymentInput => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'nihil',
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddressInput(),
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'doloribus',
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : true,
-    vaultId:
-      overrides && overrides.hasOwnProperty('vaultId')
-        ? overrides.vaultId!
-        : 'omnis',
-  }
-}
-
-export const aCreditCardPaymentInputV2 = (
-  overrides?: Partial<CreditCardPaymentInputV2>,
-): CreditCardPaymentInputV2 => {
-  return {
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddressInput(),
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'libero',
-    paymentAmount:
-      overrides && overrides.hasOwnProperty('paymentAmount')
-        ? overrides.paymentAmount!
-        : aMoneyInput(),
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : true,
-    vaultId:
-      overrides && overrides.hasOwnProperty('vaultId')
-        ? overrides.vaultId!
-        : 'debitis',
-  }
-}
-
-export const aCurrency = (overrides?: Partial<Currency>): Currency => {
-  return {
-    isoCode:
-      overrides && overrides.hasOwnProperty('isoCode')
-        ? overrides.isoCode!
-        : CurrencyCode.Aed,
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'sed',
-    symbol:
-      overrides && overrides.hasOwnProperty('symbol')
-        ? overrides.symbol!
-        : 'natus',
-  }
-}
-
-export const aCustomer = (overrides?: Partial<Customer>): Customer => {
-  return {
-    acceptsMarketing:
-      overrides && overrides.hasOwnProperty('acceptsMarketing')
-        ? overrides.acceptsMarketing!
-        : false,
-    addresses:
-      overrides && overrides.hasOwnProperty('addresses')
-        ? overrides.addresses!
-        : aMailingAddressConnection(),
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'quasi',
-    defaultAddress:
-      overrides && overrides.hasOwnProperty('defaultAddress')
-        ? overrides.defaultAddress!
-        : aMailingAddress(),
-    displayName:
-      overrides && overrides.hasOwnProperty('displayName')
-        ? overrides.displayName!
-        : 'qui',
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'sit',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'asperiores',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'c7b2f704-dc93-438d-b0a1-216e8083ef04',
-    lastIncompleteCheckout:
-      overrides && overrides.hasOwnProperty('lastIncompleteCheckout')
-        ? overrides.lastIncompleteCheckout!
-        : aCheckout(),
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'eos',
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    orders:
-      overrides && overrides.hasOwnProperty('orders')
-        ? overrides.orders!
-        : anOrderConnection(),
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'repudiandae',
-    tags:
-      overrides && overrides.hasOwnProperty('tags')
-        ? overrides.tags!
-        : ['nobis'],
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'deleniti',
-  }
-}
-
-export const aCustomerAccessToken = (
-  overrides?: Partial<CustomerAccessToken>,
-): CustomerAccessToken => {
-  return {
-    accessToken:
-      overrides && overrides.hasOwnProperty('accessToken')
-        ? overrides.accessToken!
-        : 'voluptatum',
-    expiresAt:
-      overrides && overrides.hasOwnProperty('expiresAt')
-        ? overrides.expiresAt!
-        : 'vero',
-  }
-}
-
-export const aCustomerAccessTokenCreateInput = (
-  overrides?: Partial<CustomerAccessTokenCreateInput>,
-): CustomerAccessTokenCreateInput => {
-  return {
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'ex',
-    password:
-      overrides && overrides.hasOwnProperty('password')
-        ? overrides.password!
-        : 'impedit',
-  }
-}
-
-export const aCustomerAccessTokenCreatePayload = (
-  overrides?: Partial<CustomerAccessTokenCreatePayload>,
-): CustomerAccessTokenCreatePayload => {
-  return {
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerAccessTokenCreateWithMultipassPayload = (
-  overrides?: Partial<CustomerAccessTokenCreateWithMultipassPayload>,
-): CustomerAccessTokenCreateWithMultipassPayload => {
-  return {
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-  }
-}
-
-export const aCustomerAccessTokenDeletePayload = (
-  overrides?: Partial<CustomerAccessTokenDeletePayload>,
-): CustomerAccessTokenDeletePayload => {
-  return {
-    deletedAccessToken:
-      overrides && overrides.hasOwnProperty('deletedAccessToken')
-        ? overrides.deletedAccessToken!
-        : 'officia',
-    deletedCustomerAccessTokenId:
-      overrides && overrides.hasOwnProperty('deletedCustomerAccessTokenId')
-        ? overrides.deletedCustomerAccessTokenId!
-        : 'maxime',
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerAccessTokenRenewPayload = (
-  overrides?: Partial<CustomerAccessTokenRenewPayload>,
-): CustomerAccessTokenRenewPayload => {
-  return {
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerActivateByUrlPayload = (
-  overrides?: Partial<CustomerActivateByUrlPayload>,
-): CustomerActivateByUrlPayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-  }
-}
-
-export const aCustomerActivateInput = (
-  overrides?: Partial<CustomerActivateInput>,
-): CustomerActivateInput => {
-  return {
-    activationToken:
-      overrides && overrides.hasOwnProperty('activationToken')
-        ? overrides.activationToken!
-        : 'sit',
-    password:
-      overrides && overrides.hasOwnProperty('password')
-        ? overrides.password!
-        : 'sit',
-  }
-}
-
-export const aCustomerActivatePayload = (
-  overrides?: Partial<CustomerActivatePayload>,
-): CustomerActivatePayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerAddressCreatePayload = (
-  overrides?: Partial<CustomerAddressCreatePayload>,
-): CustomerAddressCreatePayload => {
-  return {
-    customerAddress:
-      overrides && overrides.hasOwnProperty('customerAddress')
-        ? overrides.customerAddress!
-        : aMailingAddress(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerAddressDeletePayload = (
-  overrides?: Partial<CustomerAddressDeletePayload>,
-): CustomerAddressDeletePayload => {
-  return {
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    deletedCustomerAddressId:
-      overrides && overrides.hasOwnProperty('deletedCustomerAddressId')
-        ? overrides.deletedCustomerAddressId!
-        : 'in',
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerAddressUpdatePayload = (
-  overrides?: Partial<CustomerAddressUpdatePayload>,
-): CustomerAddressUpdatePayload => {
-  return {
-    customerAddress:
-      overrides && overrides.hasOwnProperty('customerAddress')
-        ? overrides.customerAddress!
-        : aMailingAddress(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerCreateInput = (
-  overrides?: Partial<CustomerCreateInput>,
-): CustomerCreateInput => {
-  return {
-    acceptsMarketing:
-      overrides && overrides.hasOwnProperty('acceptsMarketing')
-        ? overrides.acceptsMarketing!
-        : true,
-    email:
-      overrides && overrides.hasOwnProperty('email')
-        ? overrides.email!
-        : 'consequatur',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'iusto',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'recusandae',
-    password:
-      overrides && overrides.hasOwnProperty('password')
-        ? overrides.password!
-        : 'molestiae',
-    phone:
-      overrides && overrides.hasOwnProperty('phone') ? overrides.phone! : 'aut',
-  }
-}
-
-export const aCustomerCreatePayload = (
-  overrides?: Partial<CustomerCreatePayload>,
-): CustomerCreatePayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerDefaultAddressUpdatePayload = (
-  overrides?: Partial<CustomerDefaultAddressUpdatePayload>,
-): CustomerDefaultAddressUpdatePayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerRecoverPayload = (
-  overrides?: Partial<CustomerRecoverPayload>,
-): CustomerRecoverPayload => {
-  return {
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerResetByUrlPayload = (
-  overrides?: Partial<CustomerResetByUrlPayload>,
-): CustomerResetByUrlPayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerResetInput = (
-  overrides?: Partial<CustomerResetInput>,
-): CustomerResetInput => {
-  return {
-    password:
-      overrides && overrides.hasOwnProperty('password')
-        ? overrides.password!
-        : 'consequatur',
-    resetToken:
-      overrides && overrides.hasOwnProperty('resetToken')
-        ? overrides.resetToken!
-        : 'culpa',
-  }
-}
-
-export const aCustomerResetPayload = (
-  overrides?: Partial<CustomerResetPayload>,
-): CustomerResetPayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerUpdateInput = (
-  overrides?: Partial<CustomerUpdateInput>,
-): CustomerUpdateInput => {
-  return {
-    acceptsMarketing:
-      overrides && overrides.hasOwnProperty('acceptsMarketing')
-        ? overrides.acceptsMarketing!
-        : false,
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'aut',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'reiciendis',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'et',
-    password:
-      overrides && overrides.hasOwnProperty('password')
-        ? overrides.password!
-        : 'quas',
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'autem',
-  }
-}
-
-export const aCustomerUpdatePayload = (
-  overrides?: Partial<CustomerUpdatePayload>,
-): CustomerUpdatePayload => {
-  return {
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    customerAccessToken:
-      overrides && overrides.hasOwnProperty('customerAccessToken')
-        ? overrides.customerAccessToken!
-        : aCustomerAccessToken(),
-    customerUserErrors:
-      overrides && overrides.hasOwnProperty('customerUserErrors')
-        ? overrides.customerUserErrors!
-        : [aCustomerUserError()],
-    userErrors:
-      overrides && overrides.hasOwnProperty('userErrors')
-        ? overrides.userErrors!
-        : [aUserError()],
-  }
-}
-
-export const aCustomerUserError = (
-  overrides?: Partial<CustomerUserError>,
-): CustomerUserError => {
-  return {
-    code:
-      overrides && overrides.hasOwnProperty('code')
-        ? overrides.code!
-        : CustomerErrorCode.AlreadyEnabled,
-    field:
-      overrides && overrides.hasOwnProperty('field')
-        ? overrides.field!
-        : ['placeat'],
-    message:
-      overrides && overrides.hasOwnProperty('message')
-        ? overrides.message!
-        : 'impedit',
-  }
-}
-
-export const aDiscountAllocation = (
-  overrides?: Partial<DiscountAllocation>,
-): DiscountAllocation => {
-  return {
-    allocatedAmount:
-      overrides && overrides.hasOwnProperty('allocatedAmount')
-        ? overrides.allocatedAmount!
-        : aMoneyV2(),
-    discountApplication:
-      overrides && overrides.hasOwnProperty('discountApplication')
-        ? overrides.discountApplication!
-        : aDiscountApplication(),
-  }
-}
-
-export const aDiscountApplication = (
-  overrides?: Partial<DiscountApplication>,
-): DiscountApplication => {
-  return {
-    allocationMethod:
-      overrides && overrides.hasOwnProperty('allocationMethod')
-        ? overrides.allocationMethod!
-        : DiscountApplicationAllocationMethod.Across,
-    targetSelection:
-      overrides && overrides.hasOwnProperty('targetSelection')
-        ? overrides.targetSelection!
-        : DiscountApplicationTargetSelection.All,
-    targetType:
-      overrides && overrides.hasOwnProperty('targetType')
-        ? overrides.targetType!
-        : DiscountApplicationTargetType.LineItem,
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : aMoneyV2(),
-  }
-}
-
-export const aDiscountApplicationConnection = (
-  overrides?: Partial<DiscountApplicationConnection>,
-): DiscountApplicationConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aDiscountApplicationEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aDiscountApplicationEdge = (
-  overrides?: Partial<DiscountApplicationEdge>,
-): DiscountApplicationEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'est',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aDiscountApplication(),
-  }
-}
-
-export const aDiscountCodeApplication = (
-  overrides?: Partial<DiscountCodeApplication>,
-): DiscountCodeApplication => {
-  return {
-    allocationMethod:
-      overrides && overrides.hasOwnProperty('allocationMethod')
-        ? overrides.allocationMethod!
-        : DiscountApplicationAllocationMethod.Across,
-    applicable:
-      overrides && overrides.hasOwnProperty('applicable')
-        ? overrides.applicable!
-        : true,
-    code:
-      overrides && overrides.hasOwnProperty('code') ? overrides.code! : 'autem',
-    targetSelection:
-      overrides && overrides.hasOwnProperty('targetSelection')
-        ? overrides.targetSelection!
-        : DiscountApplicationTargetSelection.All,
-    targetType:
-      overrides && overrides.hasOwnProperty('targetType')
-        ? overrides.targetType!
-        : DiscountApplicationTargetType.LineItem,
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : aMoneyV2(),
-  }
-}
-
-export const aDisplayableError = (
-  overrides?: Partial<DisplayableError>,
-): DisplayableError => {
-  return {
-    field:
-      overrides && overrides.hasOwnProperty('field')
-        ? overrides.field!
-        : ['voluptatum'],
-    message:
-      overrides && overrides.hasOwnProperty('message')
-        ? overrides.message!
-        : 'neque',
-  }
-}
-
-export const aDomain = (overrides?: Partial<Domain>): Domain => {
-  return {
-    host:
-      overrides && overrides.hasOwnProperty('host')
-        ? overrides.host!
-        : 'repudiandae',
-    sslEnabled:
-      overrides && overrides.hasOwnProperty('sslEnabled')
-        ? overrides.sslEnabled!
-        : false,
-    url:
-      overrides && overrides.hasOwnProperty('url')
-        ? overrides.url!
-        : 'adipisci',
-  }
-}
-
-export const anExternalVideo = (
-  overrides?: Partial<ExternalVideo>,
-): ExternalVideo => {
-  return {
-    alt: overrides && overrides.hasOwnProperty('alt') ? overrides.alt! : 'aut',
-    embeddedUrl:
-      overrides && overrides.hasOwnProperty('embeddedUrl')
-        ? overrides.embeddedUrl!
-        : 'quasi',
-    host:
-      overrides && overrides.hasOwnProperty('host')
-        ? overrides.host!
-        : MediaHost.Vimeo,
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '685da414-ac6e-4073-9b95-8c4de517ad1f',
-    mediaContentType:
-      overrides && overrides.hasOwnProperty('mediaContentType')
-        ? overrides.mediaContentType!
-        : MediaContentType.ExternalVideo,
-    previewImage:
-      overrides && overrides.hasOwnProperty('previewImage')
-        ? overrides.previewImage!
-        : anImage(),
-  }
-}
-
-export const aFilter = (overrides?: Partial<Filter>): Filter => {
-  return {
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'praesentium',
-    label:
-      overrides && overrides.hasOwnProperty('label')
-        ? overrides.label!
-        : 'rerum',
-    type:
-      overrides && overrides.hasOwnProperty('type')
-        ? overrides.type!
-        : FilterType.List,
-    values:
-      overrides && overrides.hasOwnProperty('values')
-        ? overrides.values!
-        : [aFilterValue()],
-  }
-}
-
-export const aFilterValue = (overrides?: Partial<FilterValue>): FilterValue => {
-  return {
-    count:
-      overrides && overrides.hasOwnProperty('count') ? overrides.count! : 3939,
-    id: overrides && overrides.hasOwnProperty('id') ? overrides.id! : 'tempore',
-    input:
-      overrides && overrides.hasOwnProperty('input')
-        ? overrides.input!
-        : 'ratione',
-    label:
-      overrides && overrides.hasOwnProperty('label')
-        ? overrides.label!
-        : 'minus',
-  }
-}
-
-export const aFulfillment = (overrides?: Partial<Fulfillment>): Fulfillment => {
-  return {
-    fulfillmentLineItems:
-      overrides && overrides.hasOwnProperty('fulfillmentLineItems')
-        ? overrides.fulfillmentLineItems!
-        : aFulfillmentLineItemConnection(),
-    trackingCompany:
-      overrides && overrides.hasOwnProperty('trackingCompany')
-        ? overrides.trackingCompany!
-        : 'sed',
-    trackingInfo:
-      overrides && overrides.hasOwnProperty('trackingInfo')
-        ? overrides.trackingInfo!
-        : [aFulfillmentTrackingInfo()],
-  }
-}
-
-export const aFulfillmentLineItem = (
-  overrides?: Partial<FulfillmentLineItem>,
-): FulfillmentLineItem => {
-  return {
-    lineItem:
-      overrides && overrides.hasOwnProperty('lineItem')
-        ? overrides.lineItem!
-        : anOrderLineItem(),
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 7497,
-  }
-}
-
-export const aFulfillmentLineItemConnection = (
-  overrides?: Partial<FulfillmentLineItemConnection>,
-): FulfillmentLineItemConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aFulfillmentLineItemEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aFulfillmentLineItemEdge = (
-  overrides?: Partial<FulfillmentLineItemEdge>,
-): FulfillmentLineItemEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'consequatur',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aFulfillmentLineItem(),
-  }
-}
-
-export const aFulfillmentTrackingInfo = (
-  overrides?: Partial<FulfillmentTrackingInfo>,
-): FulfillmentTrackingInfo => {
-  return {
-    number:
-      overrides && overrides.hasOwnProperty('number')
-        ? overrides.number!
-        : 'quis',
-    url: overrides && overrides.hasOwnProperty('url') ? overrides.url! : 'enim',
-  }
-}
-
-export const aGeoCoordinateInput = (
-  overrides?: Partial<GeoCoordinateInput>,
-): GeoCoordinateInput => {
-  return {
-    latitude:
-      overrides && overrides.hasOwnProperty('latitude')
-        ? overrides.latitude!
-        : 9.45,
-    longitude:
-      overrides && overrides.hasOwnProperty('longitude')
-        ? overrides.longitude!
-        : 4.56,
-  }
-}
-
-export const aHasMetafields = (
-  overrides?: Partial<HasMetafields>,
-): HasMetafields => {
-  return {
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-  }
-}
-
-export const anImage = (overrides?: Partial<Image>): Image => {
-  return {
-    altText:
-      overrides && overrides.hasOwnProperty('altText')
-        ? overrides.altText!
-        : 'cupiditate',
-    height:
-      overrides && overrides.hasOwnProperty('height')
-        ? overrides.height!
-        : 2258,
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '8cd950ba-96bb-470a-aecf-4194f25bbbb9',
-    originalSrc:
-      overrides && overrides.hasOwnProperty('originalSrc')
-        ? overrides.originalSrc!
-        : 'excepturi',
-    src:
-      overrides && overrides.hasOwnProperty('src') ? overrides.src! : 'velit',
-    transformedSrc:
-      overrides && overrides.hasOwnProperty('transformedSrc')
-        ? overrides.transformedSrc!
-        : 'rerum',
-    url:
-      overrides && overrides.hasOwnProperty('url') ? overrides.url! : 'rerum',
-    width:
-      overrides && overrides.hasOwnProperty('width') ? overrides.width! : 7195,
-  }
-}
-
-export const anImageConnection = (
-  overrides?: Partial<ImageConnection>,
-): ImageConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [anImageEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const anImageEdge = (overrides?: Partial<ImageEdge>): ImageEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'nostrum',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : anImage(),
-  }
-}
-
-export const anImageTransformInput = (
-  overrides?: Partial<ImageTransformInput>,
-): ImageTransformInput => {
-  return {
-    crop:
-      overrides && overrides.hasOwnProperty('crop')
-        ? overrides.crop!
-        : CropRegion.Bottom,
-    maxHeight:
-      overrides && overrides.hasOwnProperty('maxHeight')
-        ? overrides.maxHeight!
-        : 1257,
-    maxWidth:
-      overrides && overrides.hasOwnProperty('maxWidth')
-        ? overrides.maxWidth!
-        : 6280,
-    preferredContentType:
-      overrides && overrides.hasOwnProperty('preferredContentType')
-        ? overrides.preferredContentType!
-        : ImageContentType.Jpg,
-    scale:
-      overrides && overrides.hasOwnProperty('scale') ? overrides.scale! : 4249,
-  }
-}
-
-export const aLocalization = (
-  overrides?: Partial<Localization>,
-): Localization => {
-  return {
-    availableCountries:
-      overrides && overrides.hasOwnProperty('availableCountries')
-        ? overrides.availableCountries!
-        : [aCountry()],
-    country:
-      overrides && overrides.hasOwnProperty('country')
-        ? overrides.country!
-        : aCountry(),
-  }
-}
-
-export const aLocation = (overrides?: Partial<Location>): Location => {
-  return {
-    address:
-      overrides && overrides.hasOwnProperty('address')
-        ? overrides.address!
-        : aLocationAddress(),
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'bfe52c08-bd42-41df-a3d4-364c80b41fe8',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'optio',
-  }
-}
-
-export const aLocationAddress = (
-  overrides?: Partial<LocationAddress>,
-): LocationAddress => {
-  return {
-    address1:
-      overrides && overrides.hasOwnProperty('address1')
-        ? overrides.address1!
-        : 'ratione',
-    address2:
-      overrides && overrides.hasOwnProperty('address2')
-        ? overrides.address2!
-        : 'sit',
-    city:
-      overrides && overrides.hasOwnProperty('city') ? overrides.city! : 'sit',
-    country:
-      overrides && overrides.hasOwnProperty('country')
-        ? overrides.country!
-        : 'in',
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : 'ut',
-    formatted:
-      overrides && overrides.hasOwnProperty('formatted')
-        ? overrides.formatted!
-        : ['consequatur'],
-    latitude:
-      overrides && overrides.hasOwnProperty('latitude')
-        ? overrides.latitude!
-        : 7.86,
-    longitude:
-      overrides && overrides.hasOwnProperty('longitude')
-        ? overrides.longitude!
-        : 9.64,
-    phone:
-      overrides && overrides.hasOwnProperty('phone') ? overrides.phone! : 'sed',
-    province:
-      overrides && overrides.hasOwnProperty('province')
-        ? overrides.province!
-        : 'eos',
-    provinceCode:
-      overrides && overrides.hasOwnProperty('provinceCode')
-        ? overrides.provinceCode!
-        : 'minima',
-    zip:
-      overrides && overrides.hasOwnProperty('zip')
-        ? overrides.zip!
-        : 'laboriosam',
-  }
-}
-
-export const aLocationConnection = (
-  overrides?: Partial<LocationConnection>,
-): LocationConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aLocationEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aLocationEdge = (
-  overrides?: Partial<LocationEdge>,
-): LocationEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'illum',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aLocation(),
-  }
-}
-
-export const aMailingAddress = (
-  overrides?: Partial<MailingAddress>,
-): MailingAddress => {
-  return {
-    address1:
-      overrides && overrides.hasOwnProperty('address1')
-        ? overrides.address1!
-        : 'in',
-    address2:
-      overrides && overrides.hasOwnProperty('address2')
-        ? overrides.address2!
-        : 'rerum',
-    city:
-      overrides && overrides.hasOwnProperty('city') ? overrides.city! : 'omnis',
-    company:
-      overrides && overrides.hasOwnProperty('company')
-        ? overrides.company!
-        : 'temporibus',
-    country:
-      overrides && overrides.hasOwnProperty('country')
-        ? overrides.country!
-        : 'quo',
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : 'ea',
-    countryCodeV2:
-      overrides && overrides.hasOwnProperty('countryCodeV2')
-        ? overrides.countryCodeV2!
-        : CountryCode.Ac,
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'sit',
-    formatted:
-      overrides && overrides.hasOwnProperty('formatted')
-        ? overrides.formatted!
-        : ['nostrum'],
-    formattedArea:
-      overrides && overrides.hasOwnProperty('formattedArea')
-        ? overrides.formattedArea!
-        : 'quidem',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'e1846e95-ce7f-47da-b20f-b6f88a1c7eea',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'maiores',
-    latitude:
-      overrides && overrides.hasOwnProperty('latitude')
-        ? overrides.latitude!
-        : 7.06,
-    longitude:
-      overrides && overrides.hasOwnProperty('longitude')
-        ? overrides.longitude!
-        : 7.02,
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'illum',
-    phone:
-      overrides && overrides.hasOwnProperty('phone') ? overrides.phone! : 'est',
-    province:
-      overrides && overrides.hasOwnProperty('province')
-        ? overrides.province!
-        : 'tempora',
-    provinceCode:
-      overrides && overrides.hasOwnProperty('provinceCode')
-        ? overrides.provinceCode!
-        : 'incidunt',
-    zip:
-      overrides && overrides.hasOwnProperty('zip') ? overrides.zip! : 'culpa',
-  }
-}
-
-export const aMailingAddressConnection = (
-  overrides?: Partial<MailingAddressConnection>,
-): MailingAddressConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aMailingAddressEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aMailingAddressEdge = (
-  overrides?: Partial<MailingAddressEdge>,
-): MailingAddressEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'consequuntur',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aMailingAddress(),
-  }
-}
-
-export const aMailingAddressInput = (
-  overrides?: Partial<MailingAddressInput>,
-): MailingAddressInput => {
-  return {
-    address1:
-      overrides && overrides.hasOwnProperty('address1')
-        ? overrides.address1!
-        : 'qui',
-    address2:
-      overrides && overrides.hasOwnProperty('address2')
-        ? overrides.address2!
-        : 'nihil',
-    city:
-      overrides && overrides.hasOwnProperty('city')
-        ? overrides.city!
-        : 'aliquam',
-    company:
-      overrides && overrides.hasOwnProperty('company')
-        ? overrides.company!
-        : 'quod',
-    country:
-      overrides && overrides.hasOwnProperty('country')
-        ? overrides.country!
-        : 'facere',
-    firstName:
-      overrides && overrides.hasOwnProperty('firstName')
-        ? overrides.firstName!
-        : 'quam',
-    lastName:
-      overrides && overrides.hasOwnProperty('lastName')
-        ? overrides.lastName!
-        : 'tenetur',
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'tenetur',
-    province:
-      overrides && overrides.hasOwnProperty('province')
-        ? overrides.province!
-        : 'velit',
-    zip:
-      overrides && overrides.hasOwnProperty('zip') ? overrides.zip! : 'commodi',
-  }
-}
-
-export const aManualDiscountApplication = (
-  overrides?: Partial<ManualDiscountApplication>,
-): ManualDiscountApplication => {
-  return {
-    allocationMethod:
-      overrides && overrides.hasOwnProperty('allocationMethod')
-        ? overrides.allocationMethod!
-        : DiscountApplicationAllocationMethod.Across,
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'vel',
-    targetSelection:
-      overrides && overrides.hasOwnProperty('targetSelection')
-        ? overrides.targetSelection!
-        : DiscountApplicationTargetSelection.All,
-    targetType:
-      overrides && overrides.hasOwnProperty('targetType')
-        ? overrides.targetType!
-        : DiscountApplicationTargetType.LineItem,
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'quia',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : aMoneyV2(),
-  }
-}
-
-export const aMedia = (overrides?: Partial<Media>): Media => {
-  return {
-    alt: overrides && overrides.hasOwnProperty('alt') ? overrides.alt! : 'unde',
-    mediaContentType:
-      overrides && overrides.hasOwnProperty('mediaContentType')
-        ? overrides.mediaContentType!
-        : MediaContentType.ExternalVideo,
-    previewImage:
-      overrides && overrides.hasOwnProperty('previewImage')
-        ? overrides.previewImage!
-        : anImage(),
-  }
-}
-
-export const aMediaConnection = (
-  overrides?: Partial<MediaConnection>,
-): MediaConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aMediaEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aMediaEdge = (overrides?: Partial<MediaEdge>): MediaEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'est',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aMedia(),
-  }
-}
-
-export const aMediaImage = (overrides?: Partial<MediaImage>): MediaImage => {
-  return {
-    alt:
-      overrides && overrides.hasOwnProperty('alt') ? overrides.alt! : 'minus',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '40c2653e-1d86-43e5-ab7d-da4b37381001',
-    image:
-      overrides && overrides.hasOwnProperty('image')
-        ? overrides.image!
-        : anImage(),
-    mediaContentType:
-      overrides && overrides.hasOwnProperty('mediaContentType')
-        ? overrides.mediaContentType!
-        : MediaContentType.ExternalVideo,
-    previewImage:
-      overrides && overrides.hasOwnProperty('previewImage')
-        ? overrides.previewImage!
-        : anImage(),
-  }
-}
-
-export const aMetafield = (overrides?: Partial<Metafield>): Metafield => {
-  return {
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'sed',
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'optio',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'c2328944-845b-4b20-874b-cc7e306e2e66',
-    key:
-      overrides && overrides.hasOwnProperty('key') ? overrides.key! : 'tenetur',
-    namespace:
-      overrides && overrides.hasOwnProperty('namespace')
-        ? overrides.namespace!
-        : 'molestiae',
-    parentResource:
-      overrides && overrides.hasOwnProperty('parentResource')
-        ? overrides.parentResource!
-        : anArticle(),
-    reference:
-      overrides && overrides.hasOwnProperty('reference')
-        ? overrides.reference!
-        : aMediaImage(),
-    type:
-      overrides && overrides.hasOwnProperty('type')
-        ? overrides.type!
-        : 'beatae',
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'ea',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'incidunt',
-  }
-}
-
-export const aMetafieldConnection = (
-  overrides?: Partial<MetafieldConnection>,
-): MetafieldConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aMetafieldEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aMetafieldEdge = (
-  overrides?: Partial<MetafieldEdge>,
-): MetafieldEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'perspiciatis',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aMetafield(),
-  }
-}
-
-export const aMetafieldFilter = (
-  overrides?: Partial<MetafieldFilter>,
-): MetafieldFilter => {
-  return {
-    key: overrides && overrides.hasOwnProperty('key') ? overrides.key! : 'quam',
-    namespace:
-      overrides && overrides.hasOwnProperty('namespace')
-        ? overrides.namespace!
-        : 'et',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'corporis',
-  }
-}
-
-export const aModel3d = (overrides?: Partial<Model3d>): Model3d => {
-  return {
-    alt: overrides && overrides.hasOwnProperty('alt') ? overrides.alt! : 'sunt',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'e92285e3-f4a0-4a21-b60a-ed17a0837390',
-    mediaContentType:
-      overrides && overrides.hasOwnProperty('mediaContentType')
-        ? overrides.mediaContentType!
-        : MediaContentType.ExternalVideo,
-    previewImage:
-      overrides && overrides.hasOwnProperty('previewImage')
-        ? overrides.previewImage!
-        : anImage(),
-    sources:
-      overrides && overrides.hasOwnProperty('sources')
-        ? overrides.sources!
-        : [aModel3dSource()],
-  }
-}
-
-export const aModel3dSource = (
-  overrides?: Partial<Model3dSource>,
-): Model3dSource => {
-  return {
-    filesize:
-      overrides && overrides.hasOwnProperty('filesize')
-        ? overrides.filesize!
-        : 1698,
-    format:
-      overrides && overrides.hasOwnProperty('format')
-        ? overrides.format!
-        : 'deleniti',
-    mimeType:
-      overrides && overrides.hasOwnProperty('mimeType')
-        ? overrides.mimeType!
-        : 'aspernatur',
-    url:
-      overrides && overrides.hasOwnProperty('url') ? overrides.url! : 'sequi',
-  }
-}
-
-export const aMoneyInput = (overrides?: Partial<MoneyInput>): MoneyInput => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'eaque',
-    currencyCode:
-      overrides && overrides.hasOwnProperty('currencyCode')
-        ? overrides.currencyCode!
-        : CurrencyCode.Aed,
-  }
-}
-
-export const aMoneyV2 = (overrides?: Partial<MoneyV2>): MoneyV2 => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'impedit',
-    currencyCode:
-      overrides && overrides.hasOwnProperty('currencyCode')
-        ? overrides.currencyCode!
-        : CurrencyCode.Aed,
-  }
-}
-
-export const aMutation = (overrides?: Partial<Mutation>): Mutation => {
-  return {
-    cartAttributesUpdate:
-      overrides && overrides.hasOwnProperty('cartAttributesUpdate')
-        ? overrides.cartAttributesUpdate!
-        : aCartAttributesUpdatePayload(),
-    cartBuyerIdentityUpdate:
-      overrides && overrides.hasOwnProperty('cartBuyerIdentityUpdate')
-        ? overrides.cartBuyerIdentityUpdate!
-        : aCartBuyerIdentityUpdatePayload(),
-    cartCreate:
-      overrides && overrides.hasOwnProperty('cartCreate')
-        ? overrides.cartCreate!
-        : aCartCreatePayload(),
-    cartDiscountCodesUpdate:
-      overrides && overrides.hasOwnProperty('cartDiscountCodesUpdate')
-        ? overrides.cartDiscountCodesUpdate!
-        : aCartDiscountCodesUpdatePayload(),
-    cartLinesAdd:
-      overrides && overrides.hasOwnProperty('cartLinesAdd')
-        ? overrides.cartLinesAdd!
-        : aCartLinesAddPayload(),
-    cartLinesRemove:
-      overrides && overrides.hasOwnProperty('cartLinesRemove')
-        ? overrides.cartLinesRemove!
-        : aCartLinesRemovePayload(),
-    cartLinesUpdate:
-      overrides && overrides.hasOwnProperty('cartLinesUpdate')
-        ? overrides.cartLinesUpdate!
-        : aCartLinesUpdatePayload(),
-    cartNoteUpdate:
-      overrides && overrides.hasOwnProperty('cartNoteUpdate')
-        ? overrides.cartNoteUpdate!
-        : aCartNoteUpdatePayload(),
-    checkoutAttributesUpdate:
-      overrides && overrides.hasOwnProperty('checkoutAttributesUpdate')
-        ? overrides.checkoutAttributesUpdate!
-        : aCheckoutAttributesUpdatePayload(),
-    checkoutAttributesUpdateV2:
-      overrides && overrides.hasOwnProperty('checkoutAttributesUpdateV2')
-        ? overrides.checkoutAttributesUpdateV2!
-        : aCheckoutAttributesUpdateV2Payload(),
-    checkoutCompleteFree:
-      overrides && overrides.hasOwnProperty('checkoutCompleteFree')
-        ? overrides.checkoutCompleteFree!
-        : aCheckoutCompleteFreePayload(),
-    checkoutCompleteWithCreditCard:
-      overrides && overrides.hasOwnProperty('checkoutCompleteWithCreditCard')
-        ? overrides.checkoutCompleteWithCreditCard!
-        : aCheckoutCompleteWithCreditCardPayload(),
-    checkoutCompleteWithCreditCardV2:
-      overrides && overrides.hasOwnProperty('checkoutCompleteWithCreditCardV2')
-        ? overrides.checkoutCompleteWithCreditCardV2!
-        : aCheckoutCompleteWithCreditCardV2Payload(),
-    checkoutCompleteWithTokenizedPayment:
-      overrides &&
-      overrides.hasOwnProperty('checkoutCompleteWithTokenizedPayment')
-        ? overrides.checkoutCompleteWithTokenizedPayment!
-        : aCheckoutCompleteWithTokenizedPaymentPayload(),
-    checkoutCompleteWithTokenizedPaymentV2:
-      overrides &&
-      overrides.hasOwnProperty('checkoutCompleteWithTokenizedPaymentV2')
-        ? overrides.checkoutCompleteWithTokenizedPaymentV2!
-        : aCheckoutCompleteWithTokenizedPaymentV2Payload(),
-    checkoutCompleteWithTokenizedPaymentV3:
-      overrides &&
-      overrides.hasOwnProperty('checkoutCompleteWithTokenizedPaymentV3')
-        ? overrides.checkoutCompleteWithTokenizedPaymentV3!
-        : aCheckoutCompleteWithTokenizedPaymentV3Payload(),
-    checkoutCreate:
-      overrides && overrides.hasOwnProperty('checkoutCreate')
-        ? overrides.checkoutCreate!
-        : aCheckoutCreatePayload(),
-    checkoutCustomerAssociate:
-      overrides && overrides.hasOwnProperty('checkoutCustomerAssociate')
-        ? overrides.checkoutCustomerAssociate!
-        : aCheckoutCustomerAssociatePayload(),
-    checkoutCustomerAssociateV2:
-      overrides && overrides.hasOwnProperty('checkoutCustomerAssociateV2')
-        ? overrides.checkoutCustomerAssociateV2!
-        : aCheckoutCustomerAssociateV2Payload(),
-    checkoutCustomerDisassociate:
-      overrides && overrides.hasOwnProperty('checkoutCustomerDisassociate')
-        ? overrides.checkoutCustomerDisassociate!
-        : aCheckoutCustomerDisassociatePayload(),
-    checkoutCustomerDisassociateV2:
-      overrides && overrides.hasOwnProperty('checkoutCustomerDisassociateV2')
-        ? overrides.checkoutCustomerDisassociateV2!
-        : aCheckoutCustomerDisassociateV2Payload(),
-    checkoutDiscountCodeApply:
-      overrides && overrides.hasOwnProperty('checkoutDiscountCodeApply')
-        ? overrides.checkoutDiscountCodeApply!
-        : aCheckoutDiscountCodeApplyPayload(),
-    checkoutDiscountCodeApplyV2:
-      overrides && overrides.hasOwnProperty('checkoutDiscountCodeApplyV2')
-        ? overrides.checkoutDiscountCodeApplyV2!
-        : aCheckoutDiscountCodeApplyV2Payload(),
-    checkoutDiscountCodeRemove:
-      overrides && overrides.hasOwnProperty('checkoutDiscountCodeRemove')
-        ? overrides.checkoutDiscountCodeRemove!
-        : aCheckoutDiscountCodeRemovePayload(),
-    checkoutEmailUpdate:
-      overrides && overrides.hasOwnProperty('checkoutEmailUpdate')
-        ? overrides.checkoutEmailUpdate!
-        : aCheckoutEmailUpdatePayload(),
-    checkoutEmailUpdateV2:
-      overrides && overrides.hasOwnProperty('checkoutEmailUpdateV2')
-        ? overrides.checkoutEmailUpdateV2!
-        : aCheckoutEmailUpdateV2Payload(),
-    checkoutGiftCardApply:
-      overrides && overrides.hasOwnProperty('checkoutGiftCardApply')
-        ? overrides.checkoutGiftCardApply!
-        : aCheckoutGiftCardApplyPayload(),
-    checkoutGiftCardRemove:
-      overrides && overrides.hasOwnProperty('checkoutGiftCardRemove')
-        ? overrides.checkoutGiftCardRemove!
-        : aCheckoutGiftCardRemovePayload(),
-    checkoutGiftCardRemoveV2:
-      overrides && overrides.hasOwnProperty('checkoutGiftCardRemoveV2')
-        ? overrides.checkoutGiftCardRemoveV2!
-        : aCheckoutGiftCardRemoveV2Payload(),
-    checkoutGiftCardsAppend:
-      overrides && overrides.hasOwnProperty('checkoutGiftCardsAppend')
-        ? overrides.checkoutGiftCardsAppend!
-        : aCheckoutGiftCardsAppendPayload(),
-    checkoutLineItemsAdd:
-      overrides && overrides.hasOwnProperty('checkoutLineItemsAdd')
-        ? overrides.checkoutLineItemsAdd!
-        : aCheckoutLineItemsAddPayload(),
-    checkoutLineItemsRemove:
-      overrides && overrides.hasOwnProperty('checkoutLineItemsRemove')
-        ? overrides.checkoutLineItemsRemove!
-        : aCheckoutLineItemsRemovePayload(),
-    checkoutLineItemsReplace:
-      overrides && overrides.hasOwnProperty('checkoutLineItemsReplace')
-        ? overrides.checkoutLineItemsReplace!
-        : aCheckoutLineItemsReplacePayload(),
-    checkoutLineItemsUpdate:
-      overrides && overrides.hasOwnProperty('checkoutLineItemsUpdate')
-        ? overrides.checkoutLineItemsUpdate!
-        : aCheckoutLineItemsUpdatePayload(),
-    checkoutShippingAddressUpdate:
-      overrides && overrides.hasOwnProperty('checkoutShippingAddressUpdate')
-        ? overrides.checkoutShippingAddressUpdate!
-        : aCheckoutShippingAddressUpdatePayload(),
-    checkoutShippingAddressUpdateV2:
-      overrides && overrides.hasOwnProperty('checkoutShippingAddressUpdateV2')
-        ? overrides.checkoutShippingAddressUpdateV2!
-        : aCheckoutShippingAddressUpdateV2Payload(),
-    checkoutShippingLineUpdate:
-      overrides && overrides.hasOwnProperty('checkoutShippingLineUpdate')
-        ? overrides.checkoutShippingLineUpdate!
-        : aCheckoutShippingLineUpdatePayload(),
-    customerAccessTokenCreate:
-      overrides && overrides.hasOwnProperty('customerAccessTokenCreate')
-        ? overrides.customerAccessTokenCreate!
-        : aCustomerAccessTokenCreatePayload(),
-    customerAccessTokenCreateWithMultipass:
-      overrides &&
-      overrides.hasOwnProperty('customerAccessTokenCreateWithMultipass')
-        ? overrides.customerAccessTokenCreateWithMultipass!
-        : aCustomerAccessTokenCreateWithMultipassPayload(),
-    customerAccessTokenDelete:
-      overrides && overrides.hasOwnProperty('customerAccessTokenDelete')
-        ? overrides.customerAccessTokenDelete!
-        : aCustomerAccessTokenDeletePayload(),
-    customerAccessTokenRenew:
-      overrides && overrides.hasOwnProperty('customerAccessTokenRenew')
-        ? overrides.customerAccessTokenRenew!
-        : aCustomerAccessTokenRenewPayload(),
-    customerActivate:
-      overrides && overrides.hasOwnProperty('customerActivate')
-        ? overrides.customerActivate!
-        : aCustomerActivatePayload(),
-    customerActivateByUrl:
-      overrides && overrides.hasOwnProperty('customerActivateByUrl')
-        ? overrides.customerActivateByUrl!
-        : aCustomerActivateByUrlPayload(),
-    customerAddressCreate:
-      overrides && overrides.hasOwnProperty('customerAddressCreate')
-        ? overrides.customerAddressCreate!
-        : aCustomerAddressCreatePayload(),
-    customerAddressDelete:
-      overrides && overrides.hasOwnProperty('customerAddressDelete')
-        ? overrides.customerAddressDelete!
-        : aCustomerAddressDeletePayload(),
-    customerAddressUpdate:
-      overrides && overrides.hasOwnProperty('customerAddressUpdate')
-        ? overrides.customerAddressUpdate!
-        : aCustomerAddressUpdatePayload(),
-    customerCreate:
-      overrides && overrides.hasOwnProperty('customerCreate')
-        ? overrides.customerCreate!
-        : aCustomerCreatePayload(),
-    customerDefaultAddressUpdate:
-      overrides && overrides.hasOwnProperty('customerDefaultAddressUpdate')
-        ? overrides.customerDefaultAddressUpdate!
-        : aCustomerDefaultAddressUpdatePayload(),
-    customerRecover:
-      overrides && overrides.hasOwnProperty('customerRecover')
-        ? overrides.customerRecover!
-        : aCustomerRecoverPayload(),
-    customerReset:
-      overrides && overrides.hasOwnProperty('customerReset')
-        ? overrides.customerReset!
-        : aCustomerResetPayload(),
-    customerResetByUrl:
-      overrides && overrides.hasOwnProperty('customerResetByUrl')
-        ? overrides.customerResetByUrl!
-        : aCustomerResetByUrlPayload(),
-    customerUpdate:
-      overrides && overrides.hasOwnProperty('customerUpdate')
-        ? overrides.customerUpdate!
-        : aCustomerUpdatePayload(),
-  }
-}
-
-export const aNode = (overrides?: Partial<Node>): Node => {
-  return {
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '95bb2f34-6c86-495f-bfdc-f25b025cdba5',
-  }
-}
-
-export const anOnlineStorePublishable = (
-  overrides?: Partial<OnlineStorePublishable>,
-): OnlineStorePublishable => {
-  return {
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'molestiae',
-  }
-}
-
-export const anOrder = (overrides?: Partial<Order>): Order => {
-  return {
-    cancelReason:
-      overrides && overrides.hasOwnProperty('cancelReason')
-        ? overrides.cancelReason!
-        : OrderCancelReason.Customer,
-    canceledAt:
-      overrides && overrides.hasOwnProperty('canceledAt')
-        ? overrides.canceledAt!
-        : 'optio',
-    currencyCode:
-      overrides && overrides.hasOwnProperty('currencyCode')
-        ? overrides.currencyCode!
-        : CurrencyCode.Aed,
-    currentSubtotalPrice:
-      overrides && overrides.hasOwnProperty('currentSubtotalPrice')
-        ? overrides.currentSubtotalPrice!
-        : aMoneyV2(),
-    currentTotalDuties:
-      overrides && overrides.hasOwnProperty('currentTotalDuties')
-        ? overrides.currentTotalDuties!
-        : aMoneyV2(),
-    currentTotalPrice:
-      overrides && overrides.hasOwnProperty('currentTotalPrice')
-        ? overrides.currentTotalPrice!
-        : aMoneyV2(),
-    currentTotalTax:
-      overrides && overrides.hasOwnProperty('currentTotalTax')
-        ? overrides.currentTotalTax!
-        : aMoneyV2(),
-    customerLocale:
-      overrides && overrides.hasOwnProperty('customerLocale')
-        ? overrides.customerLocale!
-        : 'ut',
-    customerUrl:
-      overrides && overrides.hasOwnProperty('customerUrl')
-        ? overrides.customerUrl!
-        : 'sed',
-    discountApplications:
-      overrides && overrides.hasOwnProperty('discountApplications')
-        ? overrides.discountApplications!
-        : aDiscountApplicationConnection(),
-    edited:
-      overrides && overrides.hasOwnProperty('edited')
-        ? overrides.edited!
-        : true,
-    email:
-      overrides && overrides.hasOwnProperty('email') ? overrides.email! : 'id',
-    financialStatus:
-      overrides && overrides.hasOwnProperty('financialStatus')
-        ? overrides.financialStatus!
-        : OrderFinancialStatus.Authorized,
-    fulfillmentStatus:
-      overrides && overrides.hasOwnProperty('fulfillmentStatus')
-        ? overrides.fulfillmentStatus!
-        : OrderFulfillmentStatus.Fulfilled,
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '9614fc2f-1dc8-4b20-94e9-ff966e8bfd93',
-    lineItems:
-      overrides && overrides.hasOwnProperty('lineItems')
-        ? overrides.lineItems!
-        : anOrderLineItemConnection(),
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    name:
-      overrides && overrides.hasOwnProperty('name')
-        ? overrides.name!
-        : 'repellat',
-    orderNumber:
-      overrides && overrides.hasOwnProperty('orderNumber')
-        ? overrides.orderNumber!
-        : 4799,
-    originalTotalDuties:
-      overrides && overrides.hasOwnProperty('originalTotalDuties')
-        ? overrides.originalTotalDuties!
-        : aMoneyV2(),
-    originalTotalPrice:
-      overrides && overrides.hasOwnProperty('originalTotalPrice')
-        ? overrides.originalTotalPrice!
-        : aMoneyV2(),
-    phone:
-      overrides && overrides.hasOwnProperty('phone')
-        ? overrides.phone!
-        : 'inventore',
-    processedAt:
-      overrides && overrides.hasOwnProperty('processedAt')
-        ? overrides.processedAt!
-        : 'perspiciatis',
-    shippingAddress:
-      overrides && overrides.hasOwnProperty('shippingAddress')
-        ? overrides.shippingAddress!
-        : aMailingAddress(),
-    shippingDiscountAllocations:
-      overrides && overrides.hasOwnProperty('shippingDiscountAllocations')
-        ? overrides.shippingDiscountAllocations!
-        : [aDiscountAllocation()],
-    statusUrl:
-      overrides && overrides.hasOwnProperty('statusUrl')
-        ? overrides.statusUrl!
-        : 'ipsa',
-    subtotalPrice:
-      overrides && overrides.hasOwnProperty('subtotalPrice')
-        ? overrides.subtotalPrice!
-        : 'a',
-    subtotalPriceV2:
-      overrides && overrides.hasOwnProperty('subtotalPriceV2')
-        ? overrides.subtotalPriceV2!
-        : aMoneyV2(),
-    successfulFulfillments:
-      overrides && overrides.hasOwnProperty('successfulFulfillments')
-        ? overrides.successfulFulfillments!
-        : [aFulfillment()],
-    totalPrice:
-      overrides && overrides.hasOwnProperty('totalPrice')
-        ? overrides.totalPrice!
-        : 'voluptatem',
-    totalPriceV2:
-      overrides && overrides.hasOwnProperty('totalPriceV2')
-        ? overrides.totalPriceV2!
-        : aMoneyV2(),
-    totalRefunded:
-      overrides && overrides.hasOwnProperty('totalRefunded')
-        ? overrides.totalRefunded!
-        : 'officiis',
-    totalRefundedV2:
-      overrides && overrides.hasOwnProperty('totalRefundedV2')
-        ? overrides.totalRefundedV2!
-        : aMoneyV2(),
-    totalShippingPrice:
-      overrides && overrides.hasOwnProperty('totalShippingPrice')
-        ? overrides.totalShippingPrice!
-        : 'quia',
-    totalShippingPriceV2:
-      overrides && overrides.hasOwnProperty('totalShippingPriceV2')
-        ? overrides.totalShippingPriceV2!
-        : aMoneyV2(),
-    totalTax:
-      overrides && overrides.hasOwnProperty('totalTax')
-        ? overrides.totalTax!
-        : 'corrupti',
-    totalTaxV2:
-      overrides && overrides.hasOwnProperty('totalTaxV2')
-        ? overrides.totalTaxV2!
-        : aMoneyV2(),
-  }
-}
-
-export const anOrderConnection = (
-  overrides?: Partial<OrderConnection>,
-): OrderConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [anOrderEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const anOrderEdge = (overrides?: Partial<OrderEdge>): OrderEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'dolore',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : anOrder(),
-  }
-}
-
-export const anOrderLineItem = (
-  overrides?: Partial<OrderLineItem>,
-): OrderLineItem => {
-  return {
-    currentQuantity:
-      overrides && overrides.hasOwnProperty('currentQuantity')
-        ? overrides.currentQuantity!
-        : 6668,
-    customAttributes:
-      overrides && overrides.hasOwnProperty('customAttributes')
-        ? overrides.customAttributes!
-        : [anAttribute()],
-    discountAllocations:
-      overrides && overrides.hasOwnProperty('discountAllocations')
-        ? overrides.discountAllocations!
-        : [aDiscountAllocation()],
-    discountedTotalPrice:
-      overrides && overrides.hasOwnProperty('discountedTotalPrice')
-        ? overrides.discountedTotalPrice!
-        : aMoneyV2(),
-    originalTotalPrice:
-      overrides && overrides.hasOwnProperty('originalTotalPrice')
-        ? overrides.originalTotalPrice!
-        : aMoneyV2(),
-    quantity:
-      overrides && overrides.hasOwnProperty('quantity')
-        ? overrides.quantity!
-        : 6047,
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'illo',
-    variant:
-      overrides && overrides.hasOwnProperty('variant')
-        ? overrides.variant!
-        : aProductVariant(),
-  }
-}
-
-export const anOrderLineItemConnection = (
-  overrides?: Partial<OrderLineItemConnection>,
-): OrderLineItemConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [anOrderLineItemEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const anOrderLineItemEdge = (
-  overrides?: Partial<OrderLineItemEdge>,
-): OrderLineItemEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'numquam',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : anOrderLineItem(),
-  }
-}
-
-export const aPage = (overrides?: Partial<Page>): Page => {
-  return {
-    body:
-      overrides && overrides.hasOwnProperty('body') ? overrides.body! : 'et',
-    bodySummary:
-      overrides && overrides.hasOwnProperty('bodySummary')
-        ? overrides.bodySummary!
-        : 'cum',
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'quae',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'ut',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'e5182741-96b2-4214-b510-cbc3bfc2a674',
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'eligendi',
-    seo: overrides && overrides.hasOwnProperty('seo') ? overrides.seo! : aSeo(),
-    title:
-      overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'vel',
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'optio',
-  }
-}
-
-export const aPageConnection = (
-  overrides?: Partial<PageConnection>,
-): PageConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aPageEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aPageEdge = (overrides?: Partial<PageEdge>): PageEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'in',
-    node:
-      overrides && overrides.hasOwnProperty('node') ? overrides.node! : aPage(),
-  }
-}
-
-export const aPageInfo = (overrides?: Partial<PageInfo>): PageInfo => {
-  return {
-    hasNextPage:
-      overrides && overrides.hasOwnProperty('hasNextPage')
-        ? overrides.hasNextPage!
-        : true,
-    hasPreviousPage:
-      overrides && overrides.hasOwnProperty('hasPreviousPage')
-        ? overrides.hasPreviousPage!
-        : false,
-  }
-}
-
-export const aPayment = (overrides?: Partial<Payment>): Payment => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'suscipit',
-    amountV2:
-      overrides && overrides.hasOwnProperty('amountV2')
-        ? overrides.amountV2!
-        : aMoneyV2(),
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddress(),
-    checkout:
-      overrides && overrides.hasOwnProperty('checkout')
-        ? overrides.checkout!
-        : aCheckout(),
-    creditCard:
-      overrides && overrides.hasOwnProperty('creditCard')
-        ? overrides.creditCard!
-        : aCreditCard(),
-    errorMessage:
-      overrides && overrides.hasOwnProperty('errorMessage')
-        ? overrides.errorMessage!
-        : 'dolor',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '3800b70b-eb5d-463e-9112-5456f44560c8',
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'cumque',
-    nextActionUrl:
-      overrides && overrides.hasOwnProperty('nextActionUrl')
-        ? overrides.nextActionUrl!
-        : 'rerum',
-    ready:
-      overrides && overrides.hasOwnProperty('ready') ? overrides.ready! : true,
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : true,
-    transaction:
-      overrides && overrides.hasOwnProperty('transaction')
-        ? overrides.transaction!
-        : aTransaction(),
-  }
-}
-
-export const aPaymentSettings = (
-  overrides?: Partial<PaymentSettings>,
-): PaymentSettings => {
-  return {
-    acceptedCardBrands:
-      overrides && overrides.hasOwnProperty('acceptedCardBrands')
-        ? overrides.acceptedCardBrands!
-        : [CardBrand.AmericanExpress],
-    cardVaultUrl:
-      overrides && overrides.hasOwnProperty('cardVaultUrl')
-        ? overrides.cardVaultUrl!
-        : 'facilis',
-    countryCode:
-      overrides && overrides.hasOwnProperty('countryCode')
-        ? overrides.countryCode!
-        : CountryCode.Ac,
-    currencyCode:
-      overrides && overrides.hasOwnProperty('currencyCode')
-        ? overrides.currencyCode!
-        : CurrencyCode.Aed,
-    enabledPresentmentCurrencies:
-      overrides && overrides.hasOwnProperty('enabledPresentmentCurrencies')
-        ? overrides.enabledPresentmentCurrencies!
-        : [CurrencyCode.Aed],
-    shopifyPaymentsAccountId:
-      overrides && overrides.hasOwnProperty('shopifyPaymentsAccountId')
-        ? overrides.shopifyPaymentsAccountId!
-        : 'doloremque',
-    supportedDigitalWallets:
-      overrides && overrides.hasOwnProperty('supportedDigitalWallets')
-        ? overrides.supportedDigitalWallets!
-        : [DigitalWallet.AndroidPay],
-  }
-}
-
-export const aPriceRangeFilter = (
-  overrides?: Partial<PriceRangeFilter>,
-): PriceRangeFilter => {
-  return {
-    max: overrides && overrides.hasOwnProperty('max') ? overrides.max! : 0.75,
-    min: overrides && overrides.hasOwnProperty('min') ? overrides.min! : 6.83,
-  }
-}
-
-export const aPricingPercentageValue = (
-  overrides?: Partial<PricingPercentageValue>,
-): PricingPercentageValue => {
-  return {
-    percentage:
-      overrides && overrides.hasOwnProperty('percentage')
-        ? overrides.percentage!
-        : 8.64,
-  }
-}
-
-export const aProduct = (overrides?: Partial<Product>): Product => {
-  return {
-    availableForSale:
-      overrides && overrides.hasOwnProperty('availableForSale')
-        ? overrides.availableForSale!
-        : false,
-    collections:
-      overrides && overrides.hasOwnProperty('collections')
-        ? overrides.collections!
-        : aCollectionConnection(),
-    compareAtPriceRange:
-      overrides && overrides.hasOwnProperty('compareAtPriceRange')
-        ? overrides.compareAtPriceRange!
-        : aProductPriceRange(),
-    createdAt:
-      overrides && overrides.hasOwnProperty('createdAt')
-        ? overrides.createdAt!
-        : 'itaque',
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'qui',
-    descriptionHtml:
-      overrides && overrides.hasOwnProperty('descriptionHtml')
-        ? overrides.descriptionHtml!
-        : 'magnam',
-    featuredImage:
-      overrides && overrides.hasOwnProperty('featuredImage')
-        ? overrides.featuredImage!
-        : anImage(),
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'quaerat',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '9983bd3e-4f2a-444b-8e81-349ed54ed801',
-    images:
-      overrides && overrides.hasOwnProperty('images')
-        ? overrides.images!
-        : anImageConnection(),
-    media:
-      overrides && overrides.hasOwnProperty('media')
-        ? overrides.media!
-        : aMediaConnection(),
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    onlineStoreUrl:
-      overrides && overrides.hasOwnProperty('onlineStoreUrl')
-        ? overrides.onlineStoreUrl!
-        : 'ex',
-    options:
-      overrides && overrides.hasOwnProperty('options')
-        ? overrides.options!
-        : [aProductOption()],
-    priceRange:
-      overrides && overrides.hasOwnProperty('priceRange')
-        ? overrides.priceRange!
-        : aProductPriceRange(),
-    productType:
-      overrides && overrides.hasOwnProperty('productType')
-        ? overrides.productType!
-        : 'nesciunt',
-    publishedAt:
-      overrides && overrides.hasOwnProperty('publishedAt')
-        ? overrides.publishedAt!
-        : 'et',
-    requiresSellingPlan:
-      overrides && overrides.hasOwnProperty('requiresSellingPlan')
-        ? overrides.requiresSellingPlan!
-        : true,
-    sellingPlanGroups:
-      overrides && overrides.hasOwnProperty('sellingPlanGroups')
-        ? overrides.sellingPlanGroups!
-        : aSellingPlanGroupConnection(),
-    seo: overrides && overrides.hasOwnProperty('seo') ? overrides.seo! : aSeo(),
-    tags:
-      overrides && overrides.hasOwnProperty('tags')
-        ? overrides.tags!
-        : ['odit'],
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'vero',
-    totalInventory:
-      overrides && overrides.hasOwnProperty('totalInventory')
-        ? overrides.totalInventory!
-        : 9021,
-    updatedAt:
-      overrides && overrides.hasOwnProperty('updatedAt')
-        ? overrides.updatedAt!
-        : 'ex',
-    variantBySelectedOptions:
-      overrides && overrides.hasOwnProperty('variantBySelectedOptions')
-        ? overrides.variantBySelectedOptions!
-        : aProductVariant(),
-    variants:
-      overrides && overrides.hasOwnProperty('variants')
-        ? overrides.variants!
-        : aProductVariantConnection(),
-    vendor:
-      overrides && overrides.hasOwnProperty('vendor')
-        ? overrides.vendor!
-        : 'numquam',
-  }
-}
-
-export const aProductConnection = (
-  overrides?: Partial<ProductConnection>,
-): ProductConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aProductEdge()],
-    filters:
-      overrides && overrides.hasOwnProperty('filters')
-        ? overrides.filters!
-        : [aFilter()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aProductEdge = (overrides?: Partial<ProductEdge>): ProductEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'et',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aProduct(),
-  }
-}
-
-export const aProductFilter = (
-  overrides?: Partial<ProductFilter>,
-): ProductFilter => {
-  return {
-    available:
-      overrides && overrides.hasOwnProperty('available')
-        ? overrides.available!
-        : false,
-    price:
-      overrides && overrides.hasOwnProperty('price')
-        ? overrides.price!
-        : aPriceRangeFilter(),
-    productMetafield:
-      overrides && overrides.hasOwnProperty('productMetafield')
-        ? overrides.productMetafield!
-        : aMetafieldFilter(),
-    productType:
-      overrides && overrides.hasOwnProperty('productType')
-        ? overrides.productType!
-        : 'optio',
-    productVendor:
-      overrides && overrides.hasOwnProperty('productVendor')
-        ? overrides.productVendor!
-        : 'qui',
-    variantMetafield:
-      overrides && overrides.hasOwnProperty('variantMetafield')
-        ? overrides.variantMetafield!
-        : aMetafieldFilter(),
-    variantOption:
-      overrides && overrides.hasOwnProperty('variantOption')
-        ? overrides.variantOption!
-        : aVariantOptionFilter(),
-  }
-}
-
-export const aProductOption = (
-  overrides?: Partial<ProductOption>,
-): ProductOption => {
-  return {
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'a2a93730-be14-4ca9-850c-362f740ad857',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'qui',
-    values:
-      overrides && overrides.hasOwnProperty('values')
-        ? overrides.values!
-        : ['doloremque'],
-  }
-}
-
-export const aProductPriceRange = (
-  overrides?: Partial<ProductPriceRange>,
-): ProductPriceRange => {
-  return {
-    maxVariantPrice:
-      overrides && overrides.hasOwnProperty('maxVariantPrice')
-        ? overrides.maxVariantPrice!
-        : aMoneyV2(),
-    minVariantPrice:
-      overrides && overrides.hasOwnProperty('minVariantPrice')
-        ? overrides.minVariantPrice!
-        : aMoneyV2(),
-  }
-}
-
-export const aProductVariant = (
-  overrides?: Partial<ProductVariant>,
-): ProductVariant => {
-  return {
-    availableForSale:
-      overrides && overrides.hasOwnProperty('availableForSale')
-        ? overrides.availableForSale!
-        : true,
-    barcode:
-      overrides && overrides.hasOwnProperty('barcode')
-        ? overrides.barcode!
-        : 'corrupti',
-    compareAtPrice:
-      overrides && overrides.hasOwnProperty('compareAtPrice')
-        ? overrides.compareAtPrice!
-        : 'ratione',
-    compareAtPriceV2:
-      overrides && overrides.hasOwnProperty('compareAtPriceV2')
-        ? overrides.compareAtPriceV2!
-        : aMoneyV2(),
-    currentlyNotInStock:
-      overrides && overrides.hasOwnProperty('currentlyNotInStock')
-        ? overrides.currentlyNotInStock!
-        : true,
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'dd49ff0e-9e0e-418a-8f2c-b8370e39dc01',
-    image:
-      overrides && overrides.hasOwnProperty('image')
-        ? overrides.image!
-        : anImage(),
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    price:
-      overrides && overrides.hasOwnProperty('price') ? overrides.price! : 'ab',
-    priceV2:
-      overrides && overrides.hasOwnProperty('priceV2')
-        ? overrides.priceV2!
-        : aMoneyV2(),
-    product:
-      overrides && overrides.hasOwnProperty('product')
-        ? overrides.product!
-        : aProduct(),
-    quantityAvailable:
-      overrides && overrides.hasOwnProperty('quantityAvailable')
-        ? overrides.quantityAvailable!
-        : 3629,
-    requiresShipping:
-      overrides && overrides.hasOwnProperty('requiresShipping')
-        ? overrides.requiresShipping!
-        : true,
-    selectedOptions:
-      overrides && overrides.hasOwnProperty('selectedOptions')
-        ? overrides.selectedOptions!
-        : [aSelectedOption()],
-    sellingPlanAllocations:
-      overrides && overrides.hasOwnProperty('sellingPlanAllocations')
-        ? overrides.sellingPlanAllocations!
-        : aSellingPlanAllocationConnection(),
-    sku: overrides && overrides.hasOwnProperty('sku') ? overrides.sku! : 'sunt',
-    storeAvailability:
-      overrides && overrides.hasOwnProperty('storeAvailability')
-        ? overrides.storeAvailability!
-        : aStoreAvailabilityConnection(),
-    title:
-      overrides && overrides.hasOwnProperty('title') ? overrides.title! : 'et',
-    unitPrice:
-      overrides && overrides.hasOwnProperty('unitPrice')
-        ? overrides.unitPrice!
-        : aMoneyV2(),
-    unitPriceMeasurement:
-      overrides && overrides.hasOwnProperty('unitPriceMeasurement')
-        ? overrides.unitPriceMeasurement!
-        : aUnitPriceMeasurement(),
-    weight:
-      overrides && overrides.hasOwnProperty('weight')
-        ? overrides.weight!
-        : 4.06,
-    weightUnit:
-      overrides && overrides.hasOwnProperty('weightUnit')
-        ? overrides.weightUnit!
-        : WeightUnit.Grams,
-  }
-}
-
-export const aProductVariantConnection = (
-  overrides?: Partial<ProductVariantConnection>,
-): ProductVariantConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aProductVariantEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aProductVariantEdge = (
-  overrides?: Partial<ProductVariantEdge>,
-): ProductVariantEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'sint',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aProductVariant(),
-  }
-}
-
-export const aQueryRoot = (overrides?: Partial<QueryRoot>): QueryRoot => {
-  return {
-    articles:
-      overrides && overrides.hasOwnProperty('articles')
-        ? overrides.articles!
-        : anArticleConnection(),
-    blog:
-      overrides && overrides.hasOwnProperty('blog') ? overrides.blog! : aBlog(),
-    blogByHandle:
-      overrides && overrides.hasOwnProperty('blogByHandle')
-        ? overrides.blogByHandle!
-        : aBlog(),
-    blogs:
-      overrides && overrides.hasOwnProperty('blogs')
-        ? overrides.blogs!
-        : aBlogConnection(),
-    cart:
-      overrides && overrides.hasOwnProperty('cart') ? overrides.cart! : aCart(),
-    collection:
-      overrides && overrides.hasOwnProperty('collection')
-        ? overrides.collection!
-        : aCollection(),
-    collectionByHandle:
-      overrides && overrides.hasOwnProperty('collectionByHandle')
-        ? overrides.collectionByHandle!
-        : aCollection(),
-    collections:
-      overrides && overrides.hasOwnProperty('collections')
-        ? overrides.collections!
-        : aCollectionConnection(),
-    customer:
-      overrides && overrides.hasOwnProperty('customer')
-        ? overrides.customer!
-        : aCustomer(),
-    localization:
-      overrides && overrides.hasOwnProperty('localization')
-        ? overrides.localization!
-        : aLocalization(),
-    locations:
-      overrides && overrides.hasOwnProperty('locations')
-        ? overrides.locations!
-        : aLocationConnection(),
-    node:
-      overrides && overrides.hasOwnProperty('node') ? overrides.node! : aNode(),
-    nodes:
-      overrides && overrides.hasOwnProperty('nodes')
-        ? overrides.nodes!
-        : [aNode()],
-    page:
-      overrides && overrides.hasOwnProperty('page') ? overrides.page! : aPage(),
-    pageByHandle:
-      overrides && overrides.hasOwnProperty('pageByHandle')
-        ? overrides.pageByHandle!
-        : aPage(),
-    pages:
-      overrides && overrides.hasOwnProperty('pages')
-        ? overrides.pages!
-        : aPageConnection(),
-    product:
-      overrides && overrides.hasOwnProperty('product')
-        ? overrides.product!
-        : aProduct(),
-    productByHandle:
-      overrides && overrides.hasOwnProperty('productByHandle')
-        ? overrides.productByHandle!
-        : aProduct(),
-    productRecommendations:
-      overrides && overrides.hasOwnProperty('productRecommendations')
-        ? overrides.productRecommendations!
-        : [aProduct()],
-    productTags:
-      overrides && overrides.hasOwnProperty('productTags')
-        ? overrides.productTags!
-        : aStringConnection(),
-    productTypes:
-      overrides && overrides.hasOwnProperty('productTypes')
-        ? overrides.productTypes!
-        : aStringConnection(),
-    products:
-      overrides && overrides.hasOwnProperty('products')
-        ? overrides.products!
-        : aProductConnection(),
-    publicApiVersions:
-      overrides && overrides.hasOwnProperty('publicApiVersions')
-        ? overrides.publicApiVersions!
-        : [anApiVersion()],
-    shop:
-      overrides && overrides.hasOwnProperty('shop') ? overrides.shop! : aShop(),
-  }
-}
-
-export const aSeo = (overrides?: Partial<Seo>): Seo => {
-  return {
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'sint',
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'architecto',
-  }
-}
-
-export const aScriptDiscountApplication = (
-  overrides?: Partial<ScriptDiscountApplication>,
-): ScriptDiscountApplication => {
-  return {
-    allocationMethod:
-      overrides && overrides.hasOwnProperty('allocationMethod')
-        ? overrides.allocationMethod!
-        : DiscountApplicationAllocationMethod.Across,
-    targetSelection:
-      overrides && overrides.hasOwnProperty('targetSelection')
-        ? overrides.targetSelection!
-        : DiscountApplicationTargetSelection.All,
-    targetType:
-      overrides && overrides.hasOwnProperty('targetType')
-        ? overrides.targetType!
-        : DiscountApplicationTargetType.LineItem,
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'sunt',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : aMoneyV2(),
-  }
-}
-
-export const aSelectedOption = (
-  overrides?: Partial<SelectedOption>,
-): SelectedOption => {
-  return {
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'sint',
-    value:
-      overrides && overrides.hasOwnProperty('value') ? overrides.value! : 'sit',
-  }
-}
-
-export const aSelectedOptionInput = (
-  overrides?: Partial<SelectedOptionInput>,
-): SelectedOptionInput => {
-  return {
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'est',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'rerum',
-  }
-}
-
-export const aSellingPlan = (overrides?: Partial<SellingPlan>): SellingPlan => {
-  return {
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'sed',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'a1cc2131-1915-47f8-a503-022b58859a64',
-    name:
-      overrides && overrides.hasOwnProperty('name')
-        ? overrides.name!
-        : 'reiciendis',
-    options:
-      overrides && overrides.hasOwnProperty('options')
-        ? overrides.options!
-        : [aSellingPlanOption()],
-    priceAdjustments:
-      overrides && overrides.hasOwnProperty('priceAdjustments')
-        ? overrides.priceAdjustments!
-        : [aSellingPlanPriceAdjustment()],
-    recurringDeliveries:
-      overrides && overrides.hasOwnProperty('recurringDeliveries')
-        ? overrides.recurringDeliveries!
-        : false,
-  }
-}
-
-export const aSellingPlanAllocation = (
-  overrides?: Partial<SellingPlanAllocation>,
-): SellingPlanAllocation => {
-  return {
-    priceAdjustments:
-      overrides && overrides.hasOwnProperty('priceAdjustments')
-        ? overrides.priceAdjustments!
-        : [aSellingPlanAllocationPriceAdjustment()],
-    sellingPlan:
-      overrides && overrides.hasOwnProperty('sellingPlan')
-        ? overrides.sellingPlan!
-        : aSellingPlan(),
-  }
-}
-
-export const aSellingPlanAllocationConnection = (
-  overrides?: Partial<SellingPlanAllocationConnection>,
-): SellingPlanAllocationConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aSellingPlanAllocationEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aSellingPlanAllocationEdge = (
-  overrides?: Partial<SellingPlanAllocationEdge>,
-): SellingPlanAllocationEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'ad',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aSellingPlanAllocation(),
-  }
-}
-
-export const aSellingPlanAllocationPriceAdjustment = (
-  overrides?: Partial<SellingPlanAllocationPriceAdjustment>,
-): SellingPlanAllocationPriceAdjustment => {
-  return {
-    compareAtPrice:
-      overrides && overrides.hasOwnProperty('compareAtPrice')
-        ? overrides.compareAtPrice!
-        : aMoneyV2(),
-    perDeliveryPrice:
-      overrides && overrides.hasOwnProperty('perDeliveryPrice')
-        ? overrides.perDeliveryPrice!
-        : aMoneyV2(),
-    price:
-      overrides && overrides.hasOwnProperty('price')
-        ? overrides.price!
-        : aMoneyV2(),
-    unitPrice:
-      overrides && overrides.hasOwnProperty('unitPrice')
-        ? overrides.unitPrice!
-        : aMoneyV2(),
-  }
-}
-
-export const aSellingPlanConnection = (
-  overrides?: Partial<SellingPlanConnection>,
-): SellingPlanConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aSellingPlanEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aSellingPlanEdge = (
-  overrides?: Partial<SellingPlanEdge>,
-): SellingPlanEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'exercitationem',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aSellingPlan(),
-  }
-}
-
-export const aSellingPlanFixedAmountPriceAdjustment = (
-  overrides?: Partial<SellingPlanFixedAmountPriceAdjustment>,
-): SellingPlanFixedAmountPriceAdjustment => {
-  return {
-    adjustmentAmount:
-      overrides && overrides.hasOwnProperty('adjustmentAmount')
-        ? overrides.adjustmentAmount!
-        : aMoneyV2(),
-  }
-}
-
-export const aSellingPlanFixedPriceAdjustment = (
-  overrides?: Partial<SellingPlanFixedPriceAdjustment>,
-): SellingPlanFixedPriceAdjustment => {
-  return {
-    price:
-      overrides && overrides.hasOwnProperty('price')
-        ? overrides.price!
-        : aMoneyV2(),
-  }
-}
-
-export const aSellingPlanGroup = (
-  overrides?: Partial<SellingPlanGroup>,
-): SellingPlanGroup => {
-  return {
-    appName:
-      overrides && overrides.hasOwnProperty('appName')
-        ? overrides.appName!
-        : 'eos',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'id',
-    options:
-      overrides && overrides.hasOwnProperty('options')
-        ? overrides.options!
-        : [aSellingPlanGroupOption()],
-    sellingPlans:
-      overrides && overrides.hasOwnProperty('sellingPlans')
-        ? overrides.sellingPlans!
-        : aSellingPlanConnection(),
-  }
-}
-
-export const aSellingPlanGroupConnection = (
-  overrides?: Partial<SellingPlanGroupConnection>,
-): SellingPlanGroupConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aSellingPlanGroupEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aSellingPlanGroupEdge = (
-  overrides?: Partial<SellingPlanGroupEdge>,
-): SellingPlanGroupEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'maxime',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aSellingPlanGroup(),
-  }
-}
-
-export const aSellingPlanGroupOption = (
-  overrides?: Partial<SellingPlanGroupOption>,
-): SellingPlanGroupOption => {
-  return {
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'iure',
-    values:
-      overrides && overrides.hasOwnProperty('values')
-        ? overrides.values!
-        : ['maxime'],
-  }
-}
-
-export const aSellingPlanOption = (
-  overrides?: Partial<SellingPlanOption>,
-): SellingPlanOption => {
-  return {
-    name:
-      overrides && overrides.hasOwnProperty('name')
-        ? overrides.name!
-        : 'maiores',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'deserunt',
-  }
-}
-
-export const aSellingPlanPercentagePriceAdjustment = (
-  overrides?: Partial<SellingPlanPercentagePriceAdjustment>,
-): SellingPlanPercentagePriceAdjustment => {
-  return {
-    adjustmentPercentage:
-      overrides && overrides.hasOwnProperty('adjustmentPercentage')
-        ? overrides.adjustmentPercentage!
-        : 4622,
-  }
-}
-
-export const aSellingPlanPriceAdjustment = (
-  overrides?: Partial<SellingPlanPriceAdjustment>,
-): SellingPlanPriceAdjustment => {
-  return {
-    adjustmentValue:
-      overrides && overrides.hasOwnProperty('adjustmentValue')
-        ? overrides.adjustmentValue!
-        : aSellingPlanFixedAmountPriceAdjustment(),
-    orderCount:
-      overrides && overrides.hasOwnProperty('orderCount')
-        ? overrides.orderCount!
-        : 5105,
-  }
-}
-
-export const aShippingRate = (
-  overrides?: Partial<ShippingRate>,
-): ShippingRate => {
-  return {
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'ut',
-    price:
-      overrides && overrides.hasOwnProperty('price')
-        ? overrides.price!
-        : 'rerum',
-    priceV2:
-      overrides && overrides.hasOwnProperty('priceV2')
-        ? overrides.priceV2!
-        : aMoneyV2(),
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'quis',
-  }
-}
-
-export const aShop = (overrides?: Partial<Shop>): Shop => {
-  return {
-    description:
-      overrides && overrides.hasOwnProperty('description')
-        ? overrides.description!
-        : 'culpa',
-    metafield:
-      overrides && overrides.hasOwnProperty('metafield')
-        ? overrides.metafield!
-        : aMetafield(),
-    metafields:
-      overrides && overrides.hasOwnProperty('metafields')
-        ? overrides.metafields!
-        : aMetafieldConnection(),
-    moneyFormat:
-      overrides && overrides.hasOwnProperty('moneyFormat')
-        ? overrides.moneyFormat!
-        : 'unde',
-    name:
-      overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'velit',
-    paymentSettings:
-      overrides && overrides.hasOwnProperty('paymentSettings')
-        ? overrides.paymentSettings!
-        : aPaymentSettings(),
-    primaryDomain:
-      overrides && overrides.hasOwnProperty('primaryDomain')
-        ? overrides.primaryDomain!
-        : aDomain(),
-    privacyPolicy:
-      overrides && overrides.hasOwnProperty('privacyPolicy')
-        ? overrides.privacyPolicy!
-        : aShopPolicy(),
-    refundPolicy:
-      overrides && overrides.hasOwnProperty('refundPolicy')
-        ? overrides.refundPolicy!
-        : aShopPolicy(),
-    shippingPolicy:
-      overrides && overrides.hasOwnProperty('shippingPolicy')
-        ? overrides.shippingPolicy!
-        : aShopPolicy(),
-    shipsToCountries:
-      overrides && overrides.hasOwnProperty('shipsToCountries')
-        ? overrides.shipsToCountries!
-        : [CountryCode.Ac],
-    subscriptionPolicy:
-      overrides && overrides.hasOwnProperty('subscriptionPolicy')
-        ? overrides.subscriptionPolicy!
-        : aShopPolicyWithDefault(),
-    termsOfService:
-      overrides && overrides.hasOwnProperty('termsOfService')
-        ? overrides.termsOfService!
-        : aShopPolicy(),
-  }
-}
-
-export const aShopPolicy = (overrides?: Partial<ShopPolicy>): ShopPolicy => {
-  return {
-    body:
-      overrides && overrides.hasOwnProperty('body') ? overrides.body! : 'et',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'quod',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : '28c9f4da-391a-4214-a645-eb860b936603',
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'vero',
-    url: overrides && overrides.hasOwnProperty('url') ? overrides.url! : 'in',
-  }
-}
-
-export const aShopPolicyWithDefault = (
-  overrides?: Partial<ShopPolicyWithDefault>,
-): ShopPolicyWithDefault => {
-  return {
-    body:
-      overrides && overrides.hasOwnProperty('body') ? overrides.body! : 'ut',
-    handle:
-      overrides && overrides.hasOwnProperty('handle')
-        ? overrides.handle!
-        : 'consequatur',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'e1d391be-cba0-4441-9648-c62575582dc4',
-    title:
-      overrides && overrides.hasOwnProperty('title')
-        ? overrides.title!
-        : 'numquam',
-    url:
-      overrides && overrides.hasOwnProperty('url')
-        ? overrides.url!
-        : 'recusandae',
-  }
-}
-
-export const aStoreAvailability = (
-  overrides?: Partial<StoreAvailability>,
-): StoreAvailability => {
-  return {
-    available:
-      overrides && overrides.hasOwnProperty('available')
-        ? overrides.available!
-        : false,
-    location:
-      overrides && overrides.hasOwnProperty('location')
-        ? overrides.location!
-        : aLocation(),
-    pickUpTime:
-      overrides && overrides.hasOwnProperty('pickUpTime')
-        ? overrides.pickUpTime!
-        : 'quia',
-  }
-}
-
-export const aStoreAvailabilityConnection = (
-  overrides?: Partial<StoreAvailabilityConnection>,
-): StoreAvailabilityConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aStoreAvailabilityEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aStoreAvailabilityEdge = (
-  overrides?: Partial<StoreAvailabilityEdge>,
-): StoreAvailabilityEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'qui',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : aStoreAvailability(),
-  }
-}
-
-export const aStringConnection = (
-  overrides?: Partial<StringConnection>,
-): StringConnection => {
-  return {
-    edges:
-      overrides && overrides.hasOwnProperty('edges')
-        ? overrides.edges!
-        : [aStringEdge()],
-    pageInfo:
-      overrides && overrides.hasOwnProperty('pageInfo')
-        ? overrides.pageInfo!
-        : aPageInfo(),
-  }
-}
-
-export const aStringEdge = (overrides?: Partial<StringEdge>): StringEdge => {
-  return {
-    cursor:
-      overrides && overrides.hasOwnProperty('cursor')
-        ? overrides.cursor!
-        : 'est',
-    node:
-      overrides && overrides.hasOwnProperty('node')
-        ? overrides.node!
-        : 'facere',
-  }
-}
-
-export const aTokenizedPaymentInput = (
-  overrides?: Partial<TokenizedPaymentInput>,
-): TokenizedPaymentInput => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'corrupti',
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddressInput(),
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'est',
-    identifier:
-      overrides && overrides.hasOwnProperty('identifier')
-        ? overrides.identifier!
-        : 'et',
-    paymentData:
-      overrides && overrides.hasOwnProperty('paymentData')
-        ? overrides.paymentData!
-        : 'unde',
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : true,
-    type:
-      overrides && overrides.hasOwnProperty('type') ? overrides.type! : 'et',
-  }
-}
-
-export const aTokenizedPaymentInputV2 = (
-  overrides?: Partial<TokenizedPaymentInputV2>,
-): TokenizedPaymentInputV2 => {
-  return {
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddressInput(),
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'iusto',
-    identifier:
-      overrides && overrides.hasOwnProperty('identifier')
-        ? overrides.identifier!
-        : 'maxime',
-    paymentAmount:
-      overrides && overrides.hasOwnProperty('paymentAmount')
-        ? overrides.paymentAmount!
-        : aMoneyInput(),
-    paymentData:
-      overrides && overrides.hasOwnProperty('paymentData')
-        ? overrides.paymentData!
-        : 'recusandae',
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : false,
-    type:
-      overrides && overrides.hasOwnProperty('type') ? overrides.type! : 'ea',
-  }
-}
-
-export const aTokenizedPaymentInputV3 = (
-  overrides?: Partial<TokenizedPaymentInputV3>,
-): TokenizedPaymentInputV3 => {
-  return {
-    billingAddress:
-      overrides && overrides.hasOwnProperty('billingAddress')
-        ? overrides.billingAddress!
-        : aMailingAddressInput(),
-    idempotencyKey:
-      overrides && overrides.hasOwnProperty('idempotencyKey')
-        ? overrides.idempotencyKey!
-        : 'possimus',
-    identifier:
-      overrides && overrides.hasOwnProperty('identifier')
-        ? overrides.identifier!
-        : 'qui',
-    paymentAmount:
-      overrides && overrides.hasOwnProperty('paymentAmount')
-        ? overrides.paymentAmount!
-        : aMoneyInput(),
-    paymentData:
-      overrides && overrides.hasOwnProperty('paymentData')
-        ? overrides.paymentData!
-        : 'aut',
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : false,
-    type:
-      overrides && overrides.hasOwnProperty('type')
-        ? overrides.type!
-        : PaymentTokenType.ApplePay,
-  }
-}
-
-export const aTransaction = (overrides?: Partial<Transaction>): Transaction => {
-  return {
-    amount:
-      overrides && overrides.hasOwnProperty('amount')
-        ? overrides.amount!
-        : 'et',
-    amountV2:
-      overrides && overrides.hasOwnProperty('amountV2')
-        ? overrides.amountV2!
-        : aMoneyV2(),
-    kind:
-      overrides && overrides.hasOwnProperty('kind')
-        ? overrides.kind!
-        : TransactionKind.Authorization,
-    status:
-      overrides && overrides.hasOwnProperty('status')
-        ? overrides.status!
-        : TransactionStatus.Error,
-    statusV2:
-      overrides && overrides.hasOwnProperty('statusV2')
-        ? overrides.statusV2!
-        : TransactionStatus.Error,
-    test:
-      overrides && overrides.hasOwnProperty('test') ? overrides.test! : false,
-  }
-}
-
-export const aUnitPriceMeasurement = (
-  overrides?: Partial<UnitPriceMeasurement>,
-): UnitPriceMeasurement => {
-  return {
-    measuredType:
-      overrides && overrides.hasOwnProperty('measuredType')
-        ? overrides.measuredType!
-        : UnitPriceMeasurementMeasuredType.Area,
-    quantityUnit:
-      overrides && overrides.hasOwnProperty('quantityUnit')
-        ? overrides.quantityUnit!
-        : UnitPriceMeasurementMeasuredUnit.Cl,
-    quantityValue:
-      overrides && overrides.hasOwnProperty('quantityValue')
-        ? overrides.quantityValue!
-        : 9.35,
-    referenceUnit:
-      overrides && overrides.hasOwnProperty('referenceUnit')
-        ? overrides.referenceUnit!
-        : UnitPriceMeasurementMeasuredUnit.Cl,
-    referenceValue:
-      overrides && overrides.hasOwnProperty('referenceValue')
-        ? overrides.referenceValue!
-        : 6918,
-  }
-}
-
-export const aUserError = (overrides?: Partial<UserError>): UserError => {
-  return {
-    field:
-      overrides && overrides.hasOwnProperty('field')
-        ? overrides.field!
-        : ['tenetur'],
-    message:
-      overrides && overrides.hasOwnProperty('message')
-        ? overrides.message!
-        : 'libero',
-  }
-}
-
-export const aVariantOptionFilter = (
-  overrides?: Partial<VariantOptionFilter>,
-): VariantOptionFilter => {
-  return {
-    name:
-      overrides && overrides.hasOwnProperty('name')
-        ? overrides.name!
-        : 'voluptates',
-    value:
-      overrides && overrides.hasOwnProperty('value')
-        ? overrides.value!
-        : 'vitae',
-  }
-}
-
-export const aVideo = (overrides?: Partial<Video>): Video => {
-  return {
-    alt:
-      overrides && overrides.hasOwnProperty('alt')
-        ? overrides.alt!
-        : 'cupiditate',
-    id:
-      overrides && overrides.hasOwnProperty('id')
-        ? overrides.id!
-        : 'db07d5c1-507d-4558-8702-cc05813b5bca',
-    mediaContentType:
-      overrides && overrides.hasOwnProperty('mediaContentType')
-        ? overrides.mediaContentType!
-        : MediaContentType.ExternalVideo,
-    previewImage:
-      overrides && overrides.hasOwnProperty('previewImage')
-        ? overrides.previewImage!
-        : anImage(),
-    sources:
-      overrides && overrides.hasOwnProperty('sources')
-        ? overrides.sources!
-        : [aVideoSource()],
-  }
-}
-
-export const aVideoSource = (overrides?: Partial<VideoSource>): VideoSource => {
-  return {
-    format:
-      overrides && overrides.hasOwnProperty('format')
-        ? overrides.format!
-        : 'qui',
-    height:
-      overrides && overrides.hasOwnProperty('height')
-        ? overrides.height!
-        : 3111,
-    mimeType:
-      overrides && overrides.hasOwnProperty('mimeType')
-        ? overrides.mimeType!
-        : 'nesciunt',
-    url: overrides && overrides.hasOwnProperty('url') ? overrides.url! : 'ab',
-    width:
-      overrides && overrides.hasOwnProperty('width') ? overrides.width! : 2268,
-  }
-}

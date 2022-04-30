@@ -3,24 +3,24 @@ import {API_RESPONSE_ERROR} from '@constants/errors.constants'
 import * as logger from '@helpers/logger'
 import type {
   Collection,
-  CollectionQuery,
-  CollectionShortInfoQuery,
-  CollectionQueryVariables,
+  CollectionProductsByHandleQuery,
+  CollectionProductsByHandleQueryVariables,
+  CollectionWithImageByIdQuery,
 } from '@generated/storefront.types'
 
-export async function fetchCollectionBySlug({
+export async function fetchCollectionWithProductsBySlug({
   handle,
   numberOfProducts,
-  numberOfImages,
   cursor,
-}: CollectionQueryVariables): Promise<Collection> {
+  filters,
+}: CollectionProductsByHandleQueryVariables): Promise<Collection> {
   try {
     const response = await client
-      .Collection({
+      .CollectionProductsByHandle({
         handle,
         numberOfProducts,
-        numberOfImages,
         cursor,
+        filters,
       })
       .then(getCollectionFromCollectionQuery)
     return response
@@ -30,12 +30,34 @@ export async function fetchCollectionBySlug({
   }
 }
 
-export async function fetchCollectionShortInfoByID(
+export async function fetchCollectionWithProductFiltersBySlug({
+  handle,
+  numberOfProducts,
+  cursor,
+  filters,
+}: CollectionProductsByHandleQueryVariables): Promise<Collection> {
+  try {
+    const response = await client
+      .CollectionProductsWithFiltersByHandle({
+        handle,
+        numberOfProducts,
+        cursor,
+        filters,
+      })
+      .then(getCollectionFromCollectionQuery)
+    return response
+  } catch (error) {
+    logger.error(error)
+    throw error
+  }
+}
+
+export async function fetchCollectionWithImageByID(
   id: string,
 ): Promise<Collection> {
   try {
     const response = await client
-      .CollectionShortInfo({id})
+      .CollectionWithImageByID({id})
       .then(getCollectionFromCollectionQuery)
     return response
   } catch (error) {
@@ -45,7 +67,9 @@ export async function fetchCollectionShortInfoByID(
 }
 
 function getCollectionFromCollectionQuery(
-  collectionQuery: CollectionQuery | CollectionShortInfoQuery,
+  collectionQuery:
+    | CollectionProductsByHandleQuery
+    | CollectionWithImageByIdQuery,
 ) {
   const collection = collectionQuery.collection
   if (collection) {

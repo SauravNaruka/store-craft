@@ -1,6 +1,6 @@
 import {build} from '@jackfranklin/test-data-bot'
 import faker from 'faker'
-import {buildCollectionShortInfo} from './Collection.mock'
+import {buildCollectionWithImageByID} from './Collection.mock'
 import {buildNavigationProduct} from './NavigationProduct.mock'
 import {isShopifyCollection} from '@helpers/collection.helper'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
@@ -103,7 +103,7 @@ export function buildNavigationAndCollectionIDs(): NavigationAndCollectionsByID 
   navigation?.items?.forEach((item: unknown) => {
     if (isInternalLink(item) && isShopifyCollection(item.reference)) {
       const id = item.reference.shopifyId as string
-      collectionsByID[id] = buildCollectionShortInfo({overrides: {id}})
+      collectionsByID[id] = buildCollectionWithImageByID({id})
     }
   })
 

@@ -1,16 +1,11 @@
 import * as React from 'react'
-import {getFirstNodeFromConnection} from '@helpers/connection.helper'
 import {isValidImageType} from '@helpers/image.helper'
 import {
   getMaxPriceFromProductPriceRange,
   getMinPriceFromProductPriceRange,
 } from '@helpers/price.helper'
-import type {
-  Image as ImageShopify,
-  Product,
-  CurrencyCode,
-} from '@generated/storefront.types'
-import type {Price, Maybe, ImageType} from '../types/interfaces'
+import type {Product, CurrencyCode} from '@generated/storefront.types'
+import type {Price, Maybe, ImageType} from '@LocalTypes/interfaces'
 
 type ProductsChildren = {
   title: string
@@ -33,11 +28,17 @@ export function Products({products, children: render}: PropType) {
     <>
       {products.map(
         (
-          {handle, title, description, images, compareAtPriceRange, priceRange},
+          {
+            handle,
+            title,
+            description,
+            featuredImage,
+            compareAtPriceRange,
+            priceRange,
+          },
           index,
         ) => {
-          const firstImage = getFirstNodeFromConnection<ImageShopify>(images)
-          const image = isValidImageType(firstImage) ? firstImage : null
+          const image = isValidImageType(featuredImage) ? featuredImage : null
           const {amount: originalAmount}: Price =
             getMaxPriceFromProductPriceRange(compareAtPriceRange)
           const {amount, currencyCode}: Price =

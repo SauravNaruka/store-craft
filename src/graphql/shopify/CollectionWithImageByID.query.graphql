@@ -1,0 +1,8 @@
+query CollectionWithImageByID($id: ID!) {
+  collection(id: $id) {
+    ...CollectionFields
+    image {
+      ...ImageFields
+    }
+  }
+}

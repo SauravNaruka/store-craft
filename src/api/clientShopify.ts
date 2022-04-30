@@ -1,10 +1,12 @@
 import {GraphQLClient} from 'graphql-request'
 import {getSdk} from '../../generated/storefront.types'
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const client = new GraphQLClient(process.env.SHOPIFY_STORE_DOMAIN!, {
   headers: {
     'Content-Type': 'application/json',
     'X-Shopify-Storefront-Access-Token':
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
   },
 })

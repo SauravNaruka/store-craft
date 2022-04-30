@@ -1,0 +1,6 @@
+fragment ProductShortInfoFields on Product {
+  __typename
+  id
+  title
+  handle
+}

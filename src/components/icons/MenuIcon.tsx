@@ -6,10 +6,10 @@ type PropType = IconPropType & {
   close?: boolean
 }
 
-export const MenuIcon = (props: PropType) => {
+export const MenuIcon = ({close, ...props}: PropType) => {
   const className = `h-6 w-6 ${iconStyles.iconPrimaryColor} ${
     iconStyles.menuIcon
-  } ${props.close ? iconStyles.menuIconClose : ''} `
+  } ${close ? iconStyles.menuIconClose : ''} `
   return (
     <svg
       {...props}

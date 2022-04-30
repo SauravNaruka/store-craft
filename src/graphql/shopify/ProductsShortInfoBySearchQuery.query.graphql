@@ -1,0 +1,13 @@
+query ProductsShortInfoBySearchQuery($query: String) {
+  products(query: $query, first: 3) {
+    __typename
+    edges {
+      node {
+        ...ProductShortInfoFields
+        featuredImage {
+          ...ImageSmallFields
+        }
+      }
+    }
+  }
+}

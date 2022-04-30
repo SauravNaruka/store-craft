@@ -52,7 +52,7 @@ describe('fetch navigation by id', () => {
 
   test('fetchNavigationAndRelatedCollectionBySlug error in api response', async () => {
     server.use(
-      graphql.query('CollectionShortInfo', (req, res, ctx) => {
+      graphql.query('CollectionWithImageByID', (req, res, ctx) => {
         return res.once(
           ctx.status(500),
           ctx.errors([{message: 'Server Error'}]),

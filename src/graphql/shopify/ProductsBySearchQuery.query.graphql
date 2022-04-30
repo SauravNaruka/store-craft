@@ -1,0 +1,20 @@
+query ProductsBySearchQuery(
+  $query: String
+  $numberOfProducts: Int
+  $cursor: String
+) {
+  products(query: $query, first: $numberOfProducts, after: $cursor) {
+    __typename
+    edges {
+      cursor
+      node {
+        ...ProductShortInfoFields
+        ...ProductPriceFields
+        description
+        featuredImage {
+          ...ImageFields
+        }
+      }
+    }
+  }
+}
