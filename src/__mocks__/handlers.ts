@@ -9,7 +9,11 @@ import {
   getCollectionWithImageByIDHandler,
 } from './Collection.handlers'
 import {getProductShortInfoBySearchQueryHandler} from './Product.handlers'
-import {quickSearchHandler} from './serverless.handlers'
+import {
+  quickSearchHandler,
+  searchCollectionHandler,
+  searchProductsHandler,
+} from './serverless.handlers'
 
 const handlers = [
   // Sanity handlers
@@ -27,6 +31,8 @@ const handlers = [
 
   //ServerLess rest handler
   quickSearchHandler,
+  searchCollectionHandler,
+  searchProductsHandler,
 ]
 
 export {handlers}

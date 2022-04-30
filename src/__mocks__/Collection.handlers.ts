@@ -1,7 +1,7 @@
 import {Collection, CollectionConnection} from '@generated/storefront.types'
 import {graphql} from 'msw'
 import {
-  buildCollectionProductsByHandle,
+  buildCollectionWithProductsBySlug,
   buildCollectionsBySearchQuery,
   buildCollectionWithImageByID,
 } from './Collection.mock'
@@ -9,14 +9,14 @@ import {
 export const getCollectionProductsByHandleHandler = graphql.query(
   'CollectionProductsByHandle',
   (_req, res, ctx) => {
-    return res(ctx.data({collection: buildCollectionProductsByHandle()}))
+    return res(ctx.data({collection: buildCollectionWithProductsBySlug()}))
   },
 )
 
 export const getCollectionProductsWithFiltersByHandleHandler = graphql.query(
   'CollectionProductsWithFiltersByHandle',
   (_req, res, ctx) => {
-    return res(ctx.data({collection: buildCollectionProductsByHandle()}))
+    return res(ctx.data({collection: buildCollectionWithProductsBySlug()}))
   },
 )
 

@@ -10,7 +10,7 @@ import {buildProductConnection} from './Product.mock'
 import {buildImageSmall} from './Image.mock'
 
 export const NUMBER_OF_COLLECTION = 3
-export function buildCollectionProductsByHandle(): Partial<Collection> {
+export function buildCollectionWithProductsBySlug(): Partial<Collection> {
   return {
     ...buildCollectionFields(),
     products: buildProductConnection() as ProductConnection,

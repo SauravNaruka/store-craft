@@ -38,7 +38,7 @@ const style = {
 export default function Search({header, footer}: PropType) {
   const [products, setProducts] = React.useState<Maybe<Product[]>>()
   const router = useRouter()
-  const searchedQuery = router.query.q
+  const searchedQuery = router?.query?.q
 
   React.useEffect(() => {
     async function handleSearch() {
@@ -61,7 +61,7 @@ export default function Search({header, footer}: PropType) {
       </Head>
       <Header header={header} />
       <main className={commonStyles.main}>
-        {router.query.q}
+        {searchedQuery}
         {products && (
           <ProductsMap products={products}>
             {({
