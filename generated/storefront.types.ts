@@ -6514,6 +6514,130 @@ export type ImageSmallFieldsFragment = {
   w256: any
 }
 
+export type ProductByHandleQueryVariables = Exact<{
+  handle: Scalars['String']
+  numberOfImages?: InputMaybe<Scalars['Int']>
+  numberOfVariants?: InputMaybe<Scalars['Int']>
+}>
+
+export type ProductByHandleQuery = {
+  __typename?: 'QueryRoot'
+  product?:
+    | {
+        __typename: 'Product'
+        descriptionHtml: any
+        productType: string
+        id: string
+        title: string
+        handle: string
+        images: {
+          __typename?: 'ImageConnection'
+          edges: Array<{
+            __typename?: 'ImageEdge'
+            node: {
+              __typename: 'Image'
+              altText?: string | null | undefined
+              url: any
+              w96: any
+              w128: any
+              w256: any
+              w384: any
+              w640: any
+              w750: any
+              w828: any
+              w1080: any
+              w1200: any
+              w1920: any
+              w2048: any
+              w3840: any
+            }
+          }>
+        }
+        options: Array<{
+          __typename: 'ProductOption'
+          id: string
+          name: string
+          values: Array<string>
+        }>
+        variants: {
+          __typename?: 'ProductVariantConnection'
+          edges: Array<{
+            __typename?: 'ProductVariantEdge'
+            node: {
+              __typename: 'ProductVariant'
+              id: string
+              title: string
+              selectedOptions: Array<{
+                __typename?: 'SelectedOption'
+                name: string
+                value: string
+              }>
+              image?:
+                | {
+                    __typename: 'Image'
+                    altText?: string | null | undefined
+                    url: any
+                    w96: any
+                    w128: any
+                    w256: any
+                    w384: any
+                    w640: any
+                    w750: any
+                    w828: any
+                    w1080: any
+                    w1200: any
+                    w1920: any
+                    w2048: any
+                    w3840: any
+                  }
+                | null
+                | undefined
+              compareAtPriceV2?:
+                | {__typename?: 'MoneyV2'; amount: any}
+                | null
+                | undefined
+              priceV2: {__typename?: 'MoneyV2'; amount: any}
+            }
+          }>
+        }
+      }
+    | null
+    | undefined
+}
+
+export type ProductVariantsFieldsFragment = {
+  __typename: 'ProductVariant'
+  id: string
+  title: string
+  selectedOptions: Array<{
+    __typename?: 'SelectedOption'
+    name: string
+    value: string
+  }>
+  image?:
+    | {
+        __typename: 'Image'
+        altText?: string | null | undefined
+        url: any
+        w96: any
+        w128: any
+        w256: any
+        w384: any
+        w640: any
+        w750: any
+        w828: any
+        w1080: any
+        w1200: any
+        w1920: any
+        w2048: any
+        w3840: any
+      }
+    | null
+    | undefined
+  compareAtPriceV2?: {__typename?: 'MoneyV2'; amount: any} | null | undefined
+  priceV2: {__typename?: 'MoneyV2'; amount: any}
+}
+
 export type ProductsBySearchQueryQueryVariables = Exact<{
   query?: InputMaybe<Scalars['String']>
   numberOfProducts?: InputMaybe<Scalars['Int']>
@@ -6615,6 +6739,13 @@ export type ProductsShortInfoBySearchQueryQuery = {
   }
 }
 
+export type ProductOptionsFieldsFragment = {
+  __typename: 'ProductOption'
+  id: string
+  name: string
+  values: Array<string>
+}
+
 export type ProductPriceFieldsFragment = {
   __typename?: 'Product'
   compareAtPriceRange: {
@@ -6674,6 +6805,22 @@ export const FilterFieldsFragmentDoc = gql`
     }
   }
 `
+export const ImageSmallFieldsFragmentDoc = gql`
+  fragment ImageSmallFields on Image {
+    __typename
+    altText
+    url
+    w96: url(
+      transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
+    )
+    w128: url(
+      transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
+    )
+    w256: url(
+      transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
+    )
+  }
+`
 export const ImageFieldsFragmentDoc = gql`
   fragment ImageFields on Image {
     __typename
@@ -6717,20 +6864,33 @@ export const ImageFieldsFragmentDoc = gql`
     )
   }
 `
-export const ImageSmallFieldsFragmentDoc = gql`
-  fragment ImageSmallFields on Image {
+export const ProductVariantsFieldsFragmentDoc = gql`
+  fragment ProductVariantsFields on ProductVariant {
     __typename
-    altText
-    url
-    w96: url(
-      transform: {maxWidth: 96, maxHeight: 72, preferredContentType: WEBP}
-    )
-    w128: url(
-      transform: {maxWidth: 128, maxHeight: 96, preferredContentType: WEBP}
-    )
-    w256: url(
-      transform: {maxWidth: 256, maxHeight: 192, preferredContentType: WEBP}
-    )
+    id
+    title
+    selectedOptions {
+      name
+      value
+    }
+    image {
+      ...ImageFields
+    }
+    compareAtPriceV2 {
+      amount
+    }
+    priceV2 {
+      amount
+    }
+  }
+  ${ImageFieldsFragmentDoc}
+`
+export const ProductOptionsFieldsFragmentDoc = gql`
+  fragment ProductOptionsFields on ProductOption {
+    __typename
+    id
+    name
+    values
   }
 `
 export const ProductPriceFieldsFragmentDoc = gql`
@@ -6854,6 +7014,40 @@ export const CollectionsBySearchQueryDocument = gql`
   }
   ${CollectionFieldsFragmentDoc}
 `
+export const ProductByHandleDocument = gql`
+  query ProductByHandle(
+    $handle: String!
+    $numberOfImages: Int
+    $numberOfVariants: Int
+  ) {
+    product(handle: $handle) {
+      ...ProductShortInfoFields
+      descriptionHtml
+      productType
+      images(first: $numberOfImages) {
+        edges {
+          node {
+            ...ImageFields
+          }
+        }
+      }
+      options {
+        ...ProductOptionsFields
+      }
+      variants(first: $numberOfVariants) {
+        edges {
+          node {
+            ...ProductVariantsFields
+          }
+        }
+      }
+    }
+  }
+  ${ProductShortInfoFieldsFragmentDoc}
+  ${ImageFieldsFragmentDoc}
+  ${ProductOptionsFieldsFragmentDoc}
+  ${ProductVariantsFieldsFragmentDoc}
+`
 export const ProductsBySearchQueryDocument = gql`
   query ProductsBySearchQuery(
     $query: String
@@ -6963,6 +7157,20 @@ export function getSdk(
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
         'CollectionsBySearchQuery',
+      )
+    },
+    ProductByHandle(
+      variables: ProductByHandleQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<ProductByHandleQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<ProductByHandleQuery>(
+            ProductByHandleDocument,
+            variables,
+            {...requestHeaders, ...wrappedRequestHeaders},
+          ),
+        'ProductByHandle',
       )
     },
     ProductsBySearchQuery(

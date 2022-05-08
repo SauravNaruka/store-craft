@@ -1,0 +1,28 @@
+query ProductByHandle(
+  $handle: String!
+  $numberOfImages: Int
+  $numberOfVariants: Int
+) {
+  product(handle: $handle) {
+    ...ProductShortInfoFields
+    descriptionHtml
+    productType
+    images(first: $numberOfImages) {
+      edges {
+        node {
+          ...ImageFields
+        }
+      }
+    }
+    options {
+      ...ProductOptionsFields
+    }
+    variants(first: $numberOfVariants) {
+      edges {
+        node {
+          ...ProductVariantsFields
+        }
+      }
+    }
+  }
+}

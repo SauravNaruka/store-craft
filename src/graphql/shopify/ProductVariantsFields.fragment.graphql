@@ -1,0 +1,18 @@
+fragment ProductVariantsFields on ProductVariant {
+  __typename
+  id
+  title
+  selectedOptions {
+    name
+    value
+  }
+  image {
+    ...ImageFields
+  }
+  compareAtPriceV2 {
+    amount
+  }
+  priceV2 {
+    amount
+  }
+}

@@ -1,0 +1,6 @@
+fragment ProductOptionsFields on ProductOption {
+  __typename
+  id
+  name
+  values
+}

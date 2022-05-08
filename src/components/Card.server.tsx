@@ -18,15 +18,16 @@ type PropType = ImageComponentProps & {
 }
 
 export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
+  const pageLink = `/products/${link}`
   return (
     <div className={style.rootClass} {...(role ? {role} : {})}>
-      <Link href={link}>
+      <Link href={pageLink}>
         <a aria-hidden="true" tabIndex={-1} className={cardStyles.hiddenLink} />
       </Link>
       <div className={style.imageClass}>
         <Image alt="crafty Wing product image" {...rest} />
       </div>
-      <Link href={link}>
+      <Link href={pageLink}>
         <a className={style.linkTextClass}>
           <span>{title}</span>
           {subtitle && <span>{subtitle}</span>}

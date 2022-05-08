@@ -1,6 +1,7 @@
 import faker from 'faker'
 import {
   CurrencyCode,
+  ImageConnection,
   Product,
   ProductConnection,
   ProductEdge,
@@ -31,6 +32,16 @@ export function buildProductNodeWithImageSmallConnection() {
     description: faker.random.words(),
     images: buildImagesSmallConnection(),
     featuredImage: buildImage(),
+  }
+}
+
+export function buildProductByHandle(): Partial<Product> {
+  return {
+    __typename: 'Product',
+    ...buildProductShortInfoFields(),
+    descriptionHtml: faker.random.words(),
+    productType: faker.random.words(),
+    images: buildImagesSmallConnection() as ImageConnection,
   }
 }
 
