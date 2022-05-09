@@ -2,8 +2,10 @@ import * as React from 'react'
 import Head from 'next/head'
 import {Footer} from '@components/footer/Footer.server'
 import {Header} from '@components/header/Header'
-import Image from '@components/Image'
+import {ProductCarousel} from '@components/carousel/ProductCarousel'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
+import {fetchAllProducts} from '@api/fetchProducts'
+import {fetchProductBySlug} from '@api/fetchProduct'
 import {getNodesFromConnection} from '@helpers/connection.helper'
 import {formatAmount} from '@helpers/price.helper'
 import * as logger from '@helpers/logger'
@@ -15,13 +17,6 @@ import type {
   Header as HeaderType,
 } from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
-import {fetchAllProducts} from '@api/fetchProducts'
-import {fetchProductBySlug} from '@api/fetchProduct'
-import Carousel, {
-  CarouselAspectRatio,
-  CarouselSliderType,
-} from '@components/carousel/Carousel'
-import {isValidImageType} from '@helpers/image.helper'
 
 export type PropType = {
   header: HeaderType
@@ -42,38 +37,7 @@ export default function CollectionPage({header, footer, product}: PropType) {
       <Header header={header} />
       <main className={commonStyles.main}>
         <h1>{product.title}</h1>
-        <Carousel
-          id="productCarousel_child"
-          autoplay={false}
-          sliderType={CarouselSliderType.RESPONSIVE}
-          aspectRatio={CarouselAspectRatio.IMAGE}
-          className={'md:mr-auto w-full md:w-1/2'}
-          ariaLabel="Slides for more product images"
-        >
-          {product.images.edges
-            .map((imageNode, index) => {
-              const image = isValidImageType(imageNode.node)
-                ? imageNode.node
-                : null
-              if (image) {
-                return (
-                  <Image
-                    key={imageNode.node.id ?? index}
-                    layout="fill"
-                    objectFit="contain"
-                    objectPosition="50% 50%"
-                    sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
-                    unoptimized={false}
-                    priority={index === 0 ? true : false}
-                    alt={image.altText}
-                    image={image}
-                    aspectRatio={{width: 4, height: 3}}
-                  />
-                )
-              }
-            })
-            .filter(Boolean)}
-        </Carousel>
+        <ProductCarousel product={product} />
       </main>
       <Footer data={footer} />
     </div>

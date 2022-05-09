@@ -1,18 +1,13 @@
 import * as React from 'react'
 import cn from 'classnames'
 import {useKeenSlider} from 'keen-slider/react'
+import CarouselWrapper from './CarouselWrapper'
 import {CarouselSliderWrapper} from './CarouselSliderWrapper'
 import {CarouselImageSliderButton} from './CarouselImageSliderButton'
 import {CarouselDotSliderButton} from './CarouselDotSliderButton'
 import {If} from '@components/util/If'
 import {useInterval} from '@hooks/useInterval'
-import {
-  CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION,
-  CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY,
-} from '@constants/carousel.constants'
 import 'keen-slider/keen-slider.min.css'
-import styles from '@styles/Carousel.module.css'
-import {AspectRatio} from '@LocalTypes/interfaces'
 
 export enum CarouselSliderType {
   DOT = 'DOT',
@@ -101,17 +96,13 @@ export function Carousel({
 
   const totalImages = React.Children.count(children)
   return (
-    <section
-      ref={sliderContainerRef}
-      className={`relative select-none w-full h-full bg-transparent overflow-hidden ${
-        className ?? ''
-      }`}
-      role="region"
-      aria-label={`${ariaLabel}: ${getAccessibilityMessage(
-        autoplay,
-        autoPlayDelay,
-        sliderType != CarouselSliderType.NONE,
-      )}`}
+    <CarouselWrapper
+      ariaLabel={ariaLabel}
+      className={className}
+      autoplay={autoplay}
+      autoPlayDelay={autoPlayDelay}
+      sliderType={sliderType}
+      sliderContainerRef={sliderContainerRef}
     >
       <div
         ref={ref}
@@ -193,36 +184,8 @@ export function Carousel({
           )
         })}
       </CarouselSliderWrapper>
-    </section>
+    </CarouselWrapper>
   )
-}
-
-function getAccessibilityMessage(
-  autoPlay: boolean,
-  duration: number,
-  hasPaginationControl: boolean,
-) {
-  return `${getAutoPlayMessage(autoPlay, duration)} ${getNavigationMessage(
-    hasPaginationControl,
-  )}`
-}
-
-function getAutoPlayMessage(autoPlay: boolean, duration: number) {
-  if (autoPlay) {
-    return `${CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY} ${
-      duration / 1000
-    } seconds`
-  } else {
-    return ''
-  }
-}
-
-function getNavigationMessage(hasPaginationControl: boolean) {
-  if (hasPaginationControl) {
-    return CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION
-  } else {
-    return ''
-  }
 }
 
 function isImageSliderEnabled(sliderType: CarouselSliderType) {
