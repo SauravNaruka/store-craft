@@ -3,6 +3,7 @@ import Head from 'next/head'
 import {Footer} from '@components/footer/Footer.server'
 import {Header} from '@components/header/Header'
 import {ProductCarousel} from '@components/carousel/ProductCarousel'
+import {ProductOptions} from '@components/ProductOptions'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import {fetchAllProducts} from '@api/fetchProducts'
 import {fetchProductBySlug} from '@api/fetchProduct'
@@ -11,7 +12,13 @@ import {formatAmount} from '@helpers/price.helper'
 import * as logger from '@helpers/logger'
 import {parseFilters} from '@helpers/scalars.helper'
 import type {GetStaticPaths} from 'next'
-import type {Product} from '@generated/storefront.types'
+import type {
+  Product,
+  ProductOption,
+  ProductVariant,
+  ProductVariantEdge,
+  SelectedOption,
+} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
@@ -24,7 +31,7 @@ export type PropType = {
   product: Product
 }
 
-export default function CollectionPage({header, footer, product}: PropType) {
+export default function ProductPage({header, footer, product}: PropType) {
   return (
     <div className={commonStyles.container}>
       <Head>
@@ -38,6 +45,9 @@ export default function CollectionPage({header, footer, product}: PropType) {
       <main className={commonStyles.main}>
         <h1>{product.title}</h1>
         <ProductCarousel product={product} />
+        <span>{product.productType}</span>
+        <span>{product.descriptionHtml}</span>
+        <ProductOptions options={product.options} variants={product.variants} />
       </main>
       <Footer data={footer} />
     </div>
@@ -62,7 +72,7 @@ export const getStaticProps = async ({params}: StaticProps) => {
     fetchCommonNavigation(),
     fetchProductBySlug({
       handle: params.product,
-      numberOfImages: 7,
+      numberOfImages: 100,
       numberOfVariants: 25,
     }),
   ])

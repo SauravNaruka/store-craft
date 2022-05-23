@@ -1,0 +1,5 @@
+fragment MoneyFields on MoneyV2 {
+  __typename
+  amount
+  currencyCode
+}

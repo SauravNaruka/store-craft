@@ -8,6 +8,8 @@ import {
 } from '@generated/storefront.types'
 import {buildImage, buildImagesSmallConnection} from './Image.mock'
 import {buildFilters} from './Filter.mock'
+import {buildProductOption, buildProductOptions} from './ProductOptions.mock'
+import {buildMoneyV2} from './moneyv2.mock'
 
 export const NUMBER_OF_PRODUCTS = 3
 export function buildProductConnection(): Partial<ProductConnection> {
@@ -42,6 +44,7 @@ export function buildProductByHandle(): Partial<Product> {
     descriptionHtml: faker.random.words(),
     productType: faker.random.words(),
     images: buildImagesSmallConnection() as ImageConnection,
+    options: buildProductOptions(),
   }
 }
 
@@ -57,24 +60,12 @@ export function buildProductShortInfoFields(): Partial<Product> {
 export function buildProductPriceFields(): Partial<Product> {
   return {
     compareAtPriceRange: {
-      maxVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
-      minVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
+      maxVariantPrice: buildMoneyV2(),
+      minVariantPrice: buildMoneyV2(),
     },
     priceRange: {
-      maxVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
-      minVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
+      maxVariantPrice: buildMoneyV2(),
+      minVariantPrice: buildMoneyV2(),
     },
   }
 }

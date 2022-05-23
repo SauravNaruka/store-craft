@@ -1685,7 +1685,7 @@ export type Country = {
 }
 
 /**
- * The code designating a country, which generally follows ISO 3166-1 alpha-2 guidelines.
+ * The code designating a country/region, which generally follows ISO 3166-1 alpha-2 guidelines.
  * If a territory doesn't have a country code value in the `CountryCode` enum, it might be considered a subdivision
  * of another country. For example, the territories associated with Spain are represented by the country code `ES`,
  * and the territories associated with the United States of America are represented by the country code `US`.
@@ -6514,6 +6514,12 @@ export type ImageSmallFieldsFragment = {
   w256: any
 }
 
+export type MoneyFieldsFragment = {
+  __typename: 'MoneyV2'
+  amount: any
+  currencyCode: CurrencyCode
+}
+
 export type ProductByHandleQueryVariables = Exact<{
   handle: Scalars['String']
   numberOfImages?: InputMaybe<Scalars['Int']>
@@ -6567,8 +6573,10 @@ export type ProductByHandleQuery = {
               __typename: 'ProductVariant'
               id: string
               title: string
+              availableForSale: boolean
+              sku?: string | null | undefined
               selectedOptions: Array<{
-                __typename?: 'SelectedOption'
+                __typename: 'SelectedOption'
                 name: string
                 value: string
               }>
@@ -6593,10 +6601,18 @@ export type ProductByHandleQuery = {
                 | null
                 | undefined
               compareAtPriceV2?:
-                | {__typename?: 'MoneyV2'; amount: any}
+                | {
+                    __typename: 'MoneyV2'
+                    amount: any
+                    currencyCode: CurrencyCode
+                  }
                 | null
                 | undefined
-              priceV2: {__typename?: 'MoneyV2'; amount: any}
+              priceV2: {
+                __typename: 'MoneyV2'
+                amount: any
+                currencyCode: CurrencyCode
+              }
             }
           }>
         }
@@ -6609,8 +6625,10 @@ export type ProductVariantsFieldsFragment = {
   __typename: 'ProductVariant'
   id: string
   title: string
+  availableForSale: boolean
+  sku?: string | null | undefined
   selectedOptions: Array<{
-    __typename?: 'SelectedOption'
+    __typename: 'SelectedOption'
     name: string
     value: string
   }>
@@ -6634,8 +6652,11 @@ export type ProductVariantsFieldsFragment = {
       }
     | null
     | undefined
-  compareAtPriceV2?: {__typename?: 'MoneyV2'; amount: any} | null | undefined
-  priceV2: {__typename?: 'MoneyV2'; amount: any}
+  compareAtPriceV2?:
+    | {__typename: 'MoneyV2'; amount: any; currencyCode: CurrencyCode}
+    | null
+    | undefined
+  priceV2: {__typename: 'MoneyV2'; amount: any; currencyCode: CurrencyCode}
 }
 
 export type ProductsBySearchQueryQueryVariables = Exact<{
@@ -6864,12 +6885,22 @@ export const ImageFieldsFragmentDoc = gql`
     )
   }
 `
+export const MoneyFieldsFragmentDoc = gql`
+  fragment MoneyFields on MoneyV2 {
+    __typename
+    amount
+    currencyCode
+  }
+`
 export const ProductVariantsFieldsFragmentDoc = gql`
   fragment ProductVariantsFields on ProductVariant {
     __typename
     id
     title
+    availableForSale
+    sku
     selectedOptions {
+      __typename
       name
       value
     }
@@ -6877,13 +6908,14 @@ export const ProductVariantsFieldsFragmentDoc = gql`
       ...ImageFields
     }
     compareAtPriceV2 {
-      amount
+      ...MoneyFields
     }
     priceV2 {
-      amount
+      ...MoneyFields
     }
   }
   ${ImageFieldsFragmentDoc}
+  ${MoneyFieldsFragmentDoc}
 `
 export const ProductOptionsFieldsFragmentDoc = gql`
   fragment ProductOptionsFields on ProductOption {

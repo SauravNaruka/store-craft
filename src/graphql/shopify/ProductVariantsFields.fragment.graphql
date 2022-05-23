@@ -2,7 +2,10 @@ fragment ProductVariantsFields on ProductVariant {
   __typename
   id
   title
+  availableForSale
+  sku
   selectedOptions {
+    __typename
     name
     value
   }
@@ -10,9 +13,9 @@ fragment ProductVariantsFields on ProductVariant {
     ...ImageFields
   }
   compareAtPriceV2 {
-    amount
+    ...MoneyFields
   }
   priceV2 {
-    amount
+    ...MoneyFields
   }
 }
