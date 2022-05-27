@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import Image, {ImageComponentProps} from '@components/Image'
+import Image, {ImageComponentProps} from '@components/microUI/Image'
 import cardStyles from '@styles/card.module.css'
 
 type CardStyle = {

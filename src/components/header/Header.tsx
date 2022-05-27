@@ -1,7 +1,7 @@
 import * as React from 'react'
 import cx from 'classnames'
 import CartIcon from '@components/icons/CartIcon'
-import {SearchBar} from '@components/SearchBar'
+import {SearchBar} from '@components/search/SearchBar'
 import {HeaderNavigation} from '@components/header/HeaderNavigation'
 import type {Header as HeaderType} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'

@@ -1,7 +1,7 @@
 import {isValidImageType} from '@helpers/image.helper'
 import * as React from 'react'
 import Carousel, {CarouselAspectRatio, CarouselSliderType} from './Carousel'
-import Image from '@components/Image'
+import Image from '@components/microUI/Image'
 import {Product} from '@generated/storefront.types'
 
 export type PropType = {

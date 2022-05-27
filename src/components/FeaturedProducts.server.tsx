@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {HStack} from './HStack.server'
+import {HStack} from './microUI/HStack.server'
 import Products from './Products'
 import {Card} from './Card.server'
 import {getNodesFromConnection} from '@helpers/connection.helper'

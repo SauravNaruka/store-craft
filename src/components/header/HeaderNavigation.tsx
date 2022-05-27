@@ -1,7 +1,7 @@
 import * as React from 'react'
 import NavigationDrawer from '@components/header/NavigationDrawer'
 import MenuIcon from '@components/icons/MenuIcon'
-import IconButton from '@components/IconButton'
+import IconButton from '@components/microUI/IconButton'
 import type {Header} from '@generated/cms.types'
 
 type PropType = {

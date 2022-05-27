@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Filter, FilterValue} from '@generated/storefront.types'
-import Checkbox from '@components/Checkbox'
+import Checkbox from '@components/microUI/Checkbox'
 
 type PropType = {
   title: string

@@ -3,7 +3,7 @@ import FacebookIcon from '@components/icons/FacebookIcon'
 import InstagramIcon from '@components/icons/InstagramIcon'
 import PinterestIcon from '@components/icons/PinterestIcon'
 import TwitterIcon from '@components/icons/TwitterIcon'
-import IconLink from '@components/IconLink'
+import IconLink from '@components/microUI/IconLink'
 import type {SocialLinks as SocialLinksType} from '@generated/cms.types'
 import footerStyles from '@styles/footer.module.css'
 

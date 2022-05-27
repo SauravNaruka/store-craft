@@ -11,7 +11,7 @@ import cardStyles from '@styles/card.module.css'
 import headerStyles from '@styles/header.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 import {Maybe} from '@LocalTypes/interfaces'
-import SearchIcon from './icons/SearchIcon'
+import SearchIcon from '../icons/SearchIcon'
 
 const style = {
   rootClass: cardStyles.quickSearchCard,

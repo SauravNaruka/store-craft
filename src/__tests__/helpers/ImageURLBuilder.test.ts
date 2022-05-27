@@ -1,6 +1,6 @@
 import faker from 'faker'
 import {makeImageUrl, ImageURLBuilder} from '@helpers/ImageURLBuilder'
-import {sanityImageLoader} from '@components/Image'
+import {sanityImageLoader} from '@components/microUI/Image'
 import type {AspectRatio} from '../../types/interfaces'
 
 describe('Tests for image url builder', () => {

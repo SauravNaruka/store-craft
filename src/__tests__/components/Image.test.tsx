@@ -1,5 +1,5 @@
 import {ImageLoaderProps as NextImageLoaderProps} from 'next/image'
-import {imageLoader, ImageLoaderProps} from '@components/Image'
+import {imageLoader, ImageLoaderProps} from '@components/microUI/Image'
 import {ImageType} from '@LocalTypes/interfaces'
 import {buildImage} from 'src/__mocks__/Image.mock'
 
