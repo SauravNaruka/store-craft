@@ -1,7 +1,9 @@
 import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import faker from 'faker'
-import {ProductOptions, getSelectedOptions} from '@components/ProductOptions'
+import {
+  ProductOptions,
+  getUnSelectedVariants,
+} from '@components/product/ProductOptions'
 import {
   buildProductOptions,
   NUMBER_OF_PRODUCT_OPTION,
@@ -24,63 +26,116 @@ describe('ProductOptions', () => {
         options={propductOptionsMockData}
         variants={productVariantConnectionMockData}
         selectedVariant={selectedVariant}
+        slug={'/product'}
       />,
     )
     const allOptionsHeading = screen.getAllByRole('heading')
     expect(allOptionsHeading).toHaveLength(propductOptionsMockData.length)
 
-    const allOptions = screen.getAllByRole('radio')
+    const allOptions = screen.getAllByRole('link')
     expect(allOptions).toHaveLength(optionValues.length)
 
     const randomValue = faker.random.arrayElement(optionValues)
-    const randomLabel = screen.getByLabelText(randomValue)
-    expect(randomLabel).toBeInTheDocument()
+    const randomLink = screen.getByRole('link', {name: new RegExp(randomValue)})
+    expect(randomLink).toBeInTheDocument()
   })
-  test('product option select the default option', () => {
-    const selectedVariant = faker.random.arrayElement(
-      productVariantConnectionMockData.edges,
-    ).node
-    const optionValues = getAllOptionValues(propductOptionsMockData)
+
+  test('product option render the correct url, title & currency', () => {
+    const selectedVariant = productVariantConnectionMockData.edges[0].node
+    const handle = '/product/bed'
 
     render(
       <ProductOptions
         options={propductOptionsMockData}
         variants={productVariantConnectionMockData}
         selectedVariant={selectedVariant}
+        slug={handle}
       />,
     )
-    // const defaultSelectedOption = screen.getByRole('radio', {
-    //   name: selectedVariant.selectedOptions[0].value,
-    // })
-    // expect(defaultSelectedOption).toBeChecked()
 
-    const randomValue = faker.random.arrayElement(optionValues)
-    const randomOption = screen.getByRole('radio', {
-      name: randomValue,
+    const firstCurrentVariantLink = screen.getByRole('link', {
+      name: new RegExp(selectedVariant.selectedOptions[0].value),
     })
-    userEvent.click(randomOption)
+    expect(firstCurrentVariantLink).toHaveAttribute('href', `/#`)
 
-    expect(randomOption).toBeChecked()
+    const firstOtherVariantLink = screen.getByRole('link', {name: /Queen/i})
+    expect(firstOtherVariantLink).toHaveAttribute(
+      'href',
+      `${handle}?Size=Queen&Storage=With%20Storage&Finish=Honey`,
+    )
+
+    expect(
+      screen.getByRole('link', {name: /Walnut ₹43,680/i}),
+    ).toBeInTheDocument()
   })
-  test.skip('getSelectedOptions returns option', () => {
-    const options = buildProductOptions()
 
-    expect(getSelectedOptions(options, {})).toMatchObject({
-      [options[0].name]: options[0].values[0],
-      [options[options.length - 1].name]: options[options.length - 1].values[0],
+  test('product option select the option by selected variant', () => {
+    const selectedVariant = productVariantConnectionMockData.edges[0].node
+
+    render(
+      <ProductOptions
+        options={propductOptionsMockData}
+        variants={productVariantConnectionMockData}
+        selectedVariant={selectedVariant}
+        slug={'/product'}
+      />,
+    )
+
+    const selectedOption1 = screen.getByRole('link', {
+      name: /King/i,
+      current: 'page',
+    })
+    const selectedOption2 = screen.getByRole('link', {
+      name: /With Storage/i,
+      current: 'page',
+    })
+    const selectedOption3 = screen.getByRole('link', {
+      name: /Honey/i,
+      current: 'page',
     })
 
-    expect(Object.keys(getSelectedOptions([], {})).length).toBe(0)
+    expect(selectedOption1).toBeInTheDocument()
+    expect(selectedOption2).toBeInTheDocument()
+    expect(selectedOption3).toBeInTheDocument()
+  })
 
-    const selectedOption = getSelectedOptions(options, {
-      [options[0].name.toLowerCase()]: options[0].values[0].toUpperCase(),
-      [options[1].name.toUpperCase()]: options[1].values[1].toLowerCase(),
-      unKnownKey: 'thisKeyShouldNotBeInFinalResilt',
-    })
-    expect(Object.keys(selectedOption).length).toBe(NUMBER_OF_PRODUCT_OPTION)
-    expect(selectedOption).toHaveProperty(options[0].name, options[0].values[0])
-    expect(selectedOption).toHaveProperty(options[1].name, options[1].values[1])
-    expect(selectedOption).not.toHaveProperty('unKnownKey')
+  // test.skip('getSelectedOptions returns option', () => {
+  //   const options = buildProductOptions()
+
+  //   expect(getSelectedOptions(options, {})).toMatchObject({
+  //     [options[0].name]: options[0].values[0],
+  //     [options[options.length - 1].name]: options[options.length - 1].values[0],
+  //   })
+
+  //   expect(Object.keys(getSelectedOptions([], {})).length).toBe(0)
+
+  //   const selectedOption = getSelectedOptions(options, {
+  //     [options[0].name.toLowerCase()]: options[0].values[0].toUpperCase(),
+  //     [options[1].name.toUpperCase()]: options[1].values[1].toLowerCase(),
+  //     unKnownKey: 'thisKeyShouldNotBeInFinalResilt',
+  //   })
+  //   expect(Object.keys(selectedOption).length).toBe(NUMBER_OF_PRODUCT_OPTION)
+  //   expect(selectedOption).toHaveProperty(options[0].name, options[0].values[0])
+  //   expect(selectedOption).toHaveProperty(options[1].name, options[1].values[1])
+  //   expect(selectedOption).not.toHaveProperty('unKnownKey')
+  // })
+
+  test('varaint selection option and related options', () => {
+    const selectedVariant = faker.random.arrayElement(
+      productVariantConnectionMockData.edges,
+    ).node
+    const allOptionValues = getAllOptionValues(propductOptionsMockData)
+
+    const unselectedOptionCount =
+      allOptionValues.length - propductOptionsMockData.length
+
+    const unSelectedVariant = getUnSelectedVariants(
+      selectedVariant,
+      productVariantConnectionMockData,
+      propductOptionsMockData,
+    )
+
+    expect(unSelectedVariant).toHaveLength(unselectedOptionCount)
   })
 })
 

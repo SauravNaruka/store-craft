@@ -2,23 +2,12 @@ import * as React from 'react'
 import Head from 'next/head'
 import {Footer} from '@components/footer/Footer.server'
 import {Header} from '@components/header/Header'
-import {ProductCarousel} from '@components/carousel/ProductCarousel'
-import {ProductOptions} from '@components/ProductOptions'
+import {ProductPageDetails} from '@components/product/ProductPageDetails'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import {fetchAllProducts} from '@api/fetchProducts'
 import {fetchProductBySlug} from '@api/fetchProduct'
-import {getNodesFromConnection} from '@helpers/connection.helper'
-import {formatAmount} from '@helpers/price.helper'
-import * as logger from '@helpers/logger'
-import {parseFilters} from '@helpers/scalars.helper'
 import type {GetStaticPaths} from 'next'
-import type {
-  Product,
-  ProductOption,
-  ProductVariant,
-  ProductVariantEdge,
-  SelectedOption,
-} from '@generated/storefront.types'
+import type {Product} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
@@ -29,9 +18,10 @@ export type PropType = {
   header: HeaderType
   footer: FooterType
   product: Product
+  slug: string
 }
 
-export default function ProductPage({header, footer, product}: PropType) {
+export default function ProductPage({header, footer, product, slug}: PropType) {
   return (
     <div className={commonStyles.container}>
       <Head>
@@ -43,11 +33,7 @@ export default function ProductPage({header, footer, product}: PropType) {
       </Head>
       <Header header={header} />
       <main className={commonStyles.main}>
-        <h1>{product.title}</h1>
-        <ProductCarousel product={product} />
-        <span>{product.productType}</span>
-        <span>{product.descriptionHtml}</span>
-        <ProductOptions options={product.options} variants={product.variants} />
+        <ProductPageDetails product={product} slug={slug} />
       </main>
       <Footer data={footer} />
     </div>
@@ -82,6 +68,7 @@ export const getStaticProps = async ({params}: StaticProps) => {
       header,
       footer,
       product,
+      slug: params.product,
     },
   }
 }

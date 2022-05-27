@@ -16,7 +16,7 @@ type PropType = ImageComponentProps & {
   style: CardStyle
   role?: string | null
 }
-
+// TODO: Replace link with Internal Link
 export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
   const pageLink = `/products/${link}`
   return (
