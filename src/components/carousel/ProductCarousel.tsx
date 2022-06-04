@@ -2,13 +2,25 @@ import {isValidImageType} from '@helpers/image.helper'
 import * as React from 'react'
 import Carousel, {CarouselAspectRatio, CarouselSliderType} from './Carousel'
 import Image from '@components/microUI/Image'
-import {Product} from '@generated/storefront.types'
+import {
+  Product,
+  Image as StorefrontImage,
+  ImageConnection,
+  ImageEdge,
+} from '@generated/storefront.types'
+import {Maybe} from '@LocalTypes/interfaces'
 
 export type PropType = {
   product: Product
+  variantImage: Maybe<StorefrontImage>
 }
 
-export function ProductCarousel({product}: PropType) {
+export function ProductCarousel({product, variantImage}: PropType) {
+  const images = React.useMemo(
+    () => filterImageByAltText(product.images, variantImage?.altText),
+    [product, variantImage],
+  )
+
   return (
     <Carousel
       id="productCarousel_child"
@@ -18,7 +30,7 @@ export function ProductCarousel({product}: PropType) {
       className={'md:mr-auto w-full md:w-1/2'}
       ariaLabel="Slides for more product images"
     >
-      {product.images.edges
+      {images
         .map((imageNode, index) => {
           const image = isValidImageType(imageNode.node) ? imageNode.node : null
           if (image) {
@@ -41,4 +53,15 @@ export function ProductCarousel({product}: PropType) {
         .filter(Boolean)}
     </Carousel>
   )
+}
+
+function filterImageByAltText(
+  images: ImageConnection,
+  altText: string | undefined | null,
+): ImageEdge[] {
+  if (!altText) {
+    return images.edges
+  }
+
+  return images.edges.filter(({node}) => node.altText === altText)
 }

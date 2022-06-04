@@ -95,27 +95,6 @@ describe('ProductOptions', () => {
     expect(selectedOption3).toBeInTheDocument()
   })
 
-  // test.skip('getSelectedOptions returns option', () => {
-  //   const options = buildProductOptions()
-
-  //   expect(getSelectedOptions(options, {})).toMatchObject({
-  //     [options[0].name]: options[0].values[0],
-  //     [options[options.length - 1].name]: options[options.length - 1].values[0],
-  //   })
-
-  //   expect(Object.keys(getSelectedOptions([], {})).length).toBe(0)
-
-  //   const selectedOption = getSelectedOptions(options, {
-  //     [options[0].name.toLowerCase()]: options[0].values[0].toUpperCase(),
-  //     [options[1].name.toUpperCase()]: options[1].values[1].toLowerCase(),
-  //     unKnownKey: 'thisKeyShouldNotBeInFinalResilt',
-  //   })
-  //   expect(Object.keys(selectedOption).length).toBe(NUMBER_OF_PRODUCT_OPTION)
-  //   expect(selectedOption).toHaveProperty(options[0].name, options[0].values[0])
-  //   expect(selectedOption).toHaveProperty(options[1].name, options[1].values[1])
-  //   expect(selectedOption).not.toHaveProperty('unKnownKey')
-  // })
-
   test('varaint selection option and related options', () => {
     const selectedVariant = faker.random.arrayElement(
       productVariantConnectionMockData.edges,
