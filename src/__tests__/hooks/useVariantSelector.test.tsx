@@ -17,30 +17,6 @@ describe('useVariantSelector working', () => {
     expect(variant).toHaveProperty('__typename', 'ProductVariant')
   })
 
-  test.skip('useVariantSelector return variant based on query parameter', async () => {
-    // TODO: Skipping the test as not able to define a way to set url in consistent way
-    const productSlug = faker.random.word()
-    const variantEdge = faker.random.arrayElement(
-      productVariantConnectionMockData.edges,
-    )
-    const variantQuery = getProductVariantURL(variantEdge.node, productSlug)
-    const location = {
-      ...window.location,
-      search: '?scope=3&elementId=25924',
-    }
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: location,
-    })
-
-    const {result} = renderHook(() =>
-      useVariantSelector(productVariantConnectionMockData),
-    )
-    const [variant, setVariant] = result.current
-
-    expect(variant).toHaveProperty('title', variantEdge.node.title)
-  })
-
   test('getVariantByQueryParameter function returns correct variant', () => {
     const baseUrl = faker.internet.url()
     const variantEdge = faker.random.arrayElement(
