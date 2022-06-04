@@ -29,6 +29,8 @@ export type PropType = {
   unSelectedVariants: ProductVariant[]
 }
 
+const CURRENT_VARIANT_SLUG = '#'
+
 export function ProductOptionComponent({
   slug,
   option,
@@ -82,7 +84,7 @@ function getProductVariantOptionDetails({
   unSelectedVariants,
   productSlug,
 }: GetOptionURLAndMatchingProductVariantProps): GetOptionURLAndMatchingProductVariantReturnType {
-  let variantSlug = '#'
+  let variantSlug = CURRENT_VARIANT_SLUG
   let variant = selectedVariant
   const isCurrentOptionSelected = isProductVariantHasOption(
     currentOption,
@@ -139,7 +141,7 @@ function isProductVariantHasOption(
 function isSelectedOptionsEqual(
   selectedOption: SelectedOption,
   option: SelectedOption,
-): unknown {
+): boolean {
   return (
     selectedOption.name === option.name && selectedOption.value === option.value
   )

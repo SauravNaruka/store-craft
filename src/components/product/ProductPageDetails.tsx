@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {ProductCarousel} from '@components/carousel/ProductCarousel'
 import {ProductOptions} from '@components/product/ProductOptions'
+import {useVariantSelector} from '@hooks/useVariantSelector'
 import type {
   Product,
   ProductOption,
@@ -13,11 +14,14 @@ export type PropType = {
 }
 
 export function ProductPageDetails({product, slug}: PropType) {
-  const selectedVariant = product.variants.edges[0].node
+  const variant = useVariantSelector(product.variants)
 
   return (
     <>
-      <h1>{product.title}</h1>
+      <h1>
+        {product.title}
+        {variant.title}
+      </h1>
       <ProductCarousel product={product} />
       <span>{product.productType}</span>
       <span>{product.descriptionHtml}</span>
@@ -25,7 +29,7 @@ export function ProductPageDetails({product, slug}: PropType) {
         options={product.options}
         variants={product.variants}
         slug={slug}
-        selectedVariant={selectedVariant}
+        selectedVariant={variant}
       />
     </>
   )

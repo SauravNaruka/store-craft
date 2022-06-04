@@ -5,10 +5,6 @@ import {
   getUnSelectedVariants,
 } from '@components/product/ProductOptions'
 import {
-  buildProductOptions,
-  NUMBER_OF_PRODUCT_OPTION,
-} from 'src/__mocks__/ProductOptions.mock'
-import {
   propductOptionsMockData,
   productVariantConnectionMockData,
 } from 'src/__mocks__/ProductVariant.mock'
