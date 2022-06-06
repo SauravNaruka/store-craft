@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Link from 'next/link'
 import Image, {ImageComponentProps} from '@components/microUI/Image'
+import {InternalLink} from '@components/microUI/InternalLink'
 import cardStyles from '@styles/card.module.css'
 
 type CardStyle = {
@@ -16,23 +16,26 @@ type PropType = ImageComponentProps & {
   style: CardStyle
   role?: string | null
 }
-// TODO: Replace link with Internal Link
+
 export function Card({title, subtitle, link, style, role, ...rest}: PropType) {
   const pageLink = `/products/${link}`
   return (
     <div className={style.rootClass} {...(role ? {role} : {})}>
-      <Link href={pageLink}>
-        <a aria-hidden="true" tabIndex={-1} className={cardStyles.hiddenLink} />
-      </Link>
+      <InternalLink
+        href={pageLink}
+        aria-hidden="true"
+        tabIndex={-1}
+        className={cardStyles.hiddenLink}
+      />
+
       <div className={style.imageClass}>
         <Image alt="crafty Wing product image" {...rest} />
       </div>
-      <Link href={pageLink}>
-        <a className={style.linkTextClass}>
-          <span>{title}</span>
-          {subtitle && <span>{subtitle}</span>}
-        </a>
-      </Link>
+
+      <InternalLink href={pageLink} className={style.linkTextClass}>
+        <span>{title}</span>
+        {subtitle && <span>{subtitle}</span>}
+      </InternalLink>
     </div>
   )
 }

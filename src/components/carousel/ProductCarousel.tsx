@@ -23,6 +23,7 @@ export function ProductCarousel({product, variantImage}: PropType) {
 
   return (
     <Carousel
+      key={variantImage?.altText ?? ''}
       id="productCarousel_child"
       autoplay={false}
       sliderType={CarouselSliderType.RESPONSIVE}

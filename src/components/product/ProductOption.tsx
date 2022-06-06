@@ -1,13 +1,14 @@
 import * as React from 'react'
-import {InternalLink} from '../microUI/InternalLink'
-import {formatAmount} from '@helpers/price.helper'
+import {ProductOptionValue} from './ProductOptionValue'
 import {getProductVariantURL} from '@helpers/product.helper'
 import * as logger from '@helpers/logger'
 import type {
-  ProductOption,
+  ProductOption as ProductOptionType,
   ProductVariant,
   SelectedOption,
 } from '@generated/storefront.types'
+import {ProductOptionColorValue} from './ProductOptionColorValue'
+import {OPTIONS_WITH_COLOR_PALLETS} from '@constants/products.constants'
 
 type GetOptionURLAndMatchingProductVariantProps = {
   currentOption: SelectedOption
@@ -24,14 +25,14 @@ type GetOptionURLAndMatchingProductVariantReturnType = {
 
 export type PropType = {
   slug: string
-  option: ProductOption
+  option: ProductOptionType
   selectedVariant: ProductVariant
   unSelectedVariants: ProductVariant[]
 }
 
 const CURRENT_VARIANT_SLUG = '#'
 
-export function ProductOptionComponent({
+export function ProductOption({
   slug,
   option,
   selectedVariant,
@@ -56,21 +57,29 @@ export function ProductOptionComponent({
               productSlug: slug,
             })
 
-            return (
-              <InternalLink
-                key={valueId}
-                href={variantSlug}
-                {...(isCurrentOptionSelected ? {'aria-current': 'page'} : {})}
-              >
-                <span key={value} className="mx-2">
-                  {value}{' '}
-                  {formatAmount(
-                    productVariant.priceV2.amount,
-                    productVariant.priceV2.currencyCode,
-                  )}
-                </span>
-              </InternalLink>
-            )
+            if (OPTIONS_WITH_COLOR_PALLETS.includes(option.name)) {
+              return (
+                <ProductOptionColorValue
+                  key={valueId}
+                  slug={variantSlug}
+                  value={value}
+                  isSelected={isCurrentOptionSelected}
+                  price={productVariant.priceV2}
+                  image={productVariant.image}
+                />
+              )
+            } else {
+              return (
+                <ProductOptionValue
+                  key={valueId}
+                  slug={variantSlug}
+                  value={value}
+                  isSelected={isCurrentOptionSelected}
+                  price={productVariant.priceV2}
+                  image={productVariant.image}
+                />
+              )
+            }
           })}
         </li>
       </ul>

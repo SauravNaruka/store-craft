@@ -1,16 +1,16 @@
 import * as React from 'react'
 import intersectionWith from 'lodash/intersectionWith'
 import isEqual from 'lodash/isEqual'
-import {ProductOptionComponent} from './ProductOptionComponent'
+import {ProductOption} from './ProductOption'
 import type {
-  ProductOption,
+  ProductOption as ProductOptionType,
   ProductVariant,
   ProductVariantConnection,
 } from '@generated/storefront.types'
 
 export type PropType = {
   slug: string
-  options: Array<ProductOption>
+  options: Array<ProductOptionType>
   variants: ProductVariantConnection
   selectedVariant: ProductVariant
 }
@@ -29,9 +29,9 @@ export function ProductOptions({
   return (
     <>
       <span>
-        {options.map((option: ProductOption) => {
+        {options.map((option: ProductOptionType) => {
           return (
-            <ProductOptionComponent
+            <ProductOption
               key={option.id}
               slug={slug}
               option={option}
@@ -48,7 +48,7 @@ export function ProductOptions({
 export function getUnSelectedVariants(
   selectedVariant: ProductVariant,
   variantConnection: ProductVariantConnection,
-  options: ProductOption[],
+  options: ProductOptionType[],
 ): ProductVariant[] {
   const unSelectedVariant = variantConnection.edges.filter(({node}) => {
     const matchedOptions = intersectionWith(

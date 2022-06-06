@@ -7,7 +7,7 @@ type HrefProp = React.DetailedHTMLProps<
 >
 
 type PropType = HrefProp & {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export function InternalLink({href, children, ...rest}: PropType) {
