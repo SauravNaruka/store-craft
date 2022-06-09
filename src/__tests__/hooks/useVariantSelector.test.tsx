@@ -36,13 +36,11 @@ describe('useVariantSelector working', () => {
 })
 
 function queryParamsToObject(query: string) {
-  return JSON.parse(
-    '{"' +
-      decodeURI(query)
-        .replace(/\?/g, '')
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"') +
-      '"}',
-  )
+  const urlParams = new URLSearchParams(query)
+  const result: Record<string, string> = {}
+  urlParams.forEach((value, key) => {
+    result[key] = value
+  })
+
+  return result
 }

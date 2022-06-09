@@ -1,10 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-
-type HrefProp = React.DetailedHTMLProps<
-  React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  HTMLAnchorElement
->
+import type {HrefProp} from '@LocalTypes/interfaces'
 
 type PropType = HrefProp & {
   children?: React.ReactNode

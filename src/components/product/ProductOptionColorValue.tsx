@@ -44,7 +44,7 @@ export function ProductOptionColorValue({
         image={image}
         aspectRatio={{width: 4, height: 3}}
         style={style}
-        {...(isSelected ? {'aria-current': 'page'} : {})}
+        linkProps={isSelected ? {'aria-current': 'page'} : {}}
       />
     )
   } else {

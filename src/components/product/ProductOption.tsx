@@ -41,47 +41,48 @@ export function ProductOption({
   return (
     <>
       <h4>{option.name}</h4>
-      <ul key={option.id} className={'my-3'}>
-        <li>
-          {option.values.map((value: string) => {
-            const valueId = `${option.id}_${value}`
-            const currentOption = {name: option.name, value}
-            const {
-              variantSlug,
-              variant: productVariant,
-              isCurrentOptionSelected,
-            } = getProductVariantOptionDetails({
-              currentOption,
-              selectedVariant,
-              unSelectedVariants,
-              productSlug: slug,
-            })
+      <ul key={option.id} className={'my-3 flex'}>
+        {option.values.map((value: string) => {
+          const valueId = `${option.id}_${value}`
+          const currentOption = {name: option.name, value}
+          const {
+            variantSlug,
+            variant: productVariant,
+            isCurrentOptionSelected,
+          } = getProductVariantOptionDetails({
+            currentOption,
+            selectedVariant,
+            unSelectedVariants,
+            productSlug: slug,
+          })
 
-            if (OPTIONS_WITH_COLOR_PALLETS.includes(option.name)) {
-              return (
+          console.log('Variant slug: ' + variantSlug)
+          if (OPTIONS_WITH_COLOR_PALLETS.includes(option.name)) {
+            return (
+              <li key={valueId}>
                 <ProductOptionColorValue
-                  key={valueId}
                   slug={variantSlug}
                   value={value}
                   isSelected={isCurrentOptionSelected}
                   price={productVariant.priceV2}
                   image={productVariant.image}
                 />
-              )
-            } else {
-              return (
+              </li>
+            )
+          } else {
+            return (
+              <li key={valueId}>
                 <ProductOptionValue
-                  key={valueId}
                   slug={variantSlug}
                   value={value}
                   isSelected={isCurrentOptionSelected}
                   price={productVariant.priceV2}
                   image={productVariant.image}
                 />
-              )
-            }
-          })}
-        </li>
+              </li>
+            )
+          }
+        })}
       </ul>
     </>
   )

@@ -57,7 +57,7 @@ describe('ProductOptions', () => {
     const firstOtherVariantLink = screen.getByRole('link', {name: /Queen/i})
     expect(firstOtherVariantLink).toHaveAttribute(
       'href',
-      `${handle}?Size=Queen&Storage=With%20Storage&Finish=Honey`,
+      `${handle}?Size=Queen&Storage=With+Storage&Finish=Honey`,
     )
 
     expect(
@@ -65,7 +65,7 @@ describe('ProductOptions', () => {
     ).toBeInTheDocument()
   })
 
-  test('product option select the option by selected variant', () => {
+  test('relevent options are displayed for the product', () => {
     const selectedVariant = productVariantConnectionMockData.edges[0].node
 
     render(

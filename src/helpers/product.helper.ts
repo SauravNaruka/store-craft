@@ -19,24 +19,24 @@ export function getProductVariantURL(
   variant: ProductVariant,
   productSlug: string,
 ): string {
-  const variantURLQueryString = variant.selectedOptions.reduce(
-    (urlBase, selectedOption, index) => {
-      return (
-        urlBase +
-        getURLQuerySeparator(index === 0) +
-        getProductVariantOptionURLQuery(selectedOption)
-      )
-    },
-    productSlug,
+  const selectedOptionMap = getProductVariantSelectedOptionsAsMap(
+    variant.selectedOptions,
   )
 
-  return variantURLQueryString
+  const queryParams = new URLSearchParams(selectedOptionMap)
+  const variantSlug = `${productSlug}?${queryParams.toString()}`
+
+  return variantSlug
 }
 
-function getURLQuerySeparator(isFirstParam: boolean) {
-  return isFirstParam ? '?' : '&'
-}
-
-function getProductVariantOptionURLQuery(selectedOption: SelectedOption) {
-  return `${selectedOption.name}=${selectedOption.value}`
+export function getProductVariantSelectedOptionsAsMap(
+  selectedOptions: SelectedOption[],
+): Record<string, string> {
+  return selectedOptions.reduce(
+    (obj, {name, value}) => ({
+      ...obj,
+      [name]: value,
+    }),
+    {},
+  )
 }
