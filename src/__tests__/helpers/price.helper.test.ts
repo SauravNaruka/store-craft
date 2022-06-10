@@ -3,7 +3,7 @@ import {
   getMinPriceFromProductPriceRange,
 } from '@helpers/price.helper'
 import {buildProductPriceFields} from 'src/__mocks__/Product.mock'
-import {ProductPriceRange} from '@generated/storefront.types'
+import {CurrencyCode, ProductPriceRange} from '@generated/storefront.types'
 
 describe('Price helper methods', () => {
   test('getMaxPriceFromProductPriceRange to return correct value', () => {
@@ -12,6 +12,18 @@ describe('Price helper methods', () => {
     expect(getMaxPriceFromProductPriceRange(priceRange)).toMatchObject({
       amount: priceRange.maxVariantPrice.amount,
       currencyCode: priceRange.maxVariantPrice.currencyCode,
+    })
+  })
+
+  test('getMaxPriceFromProductPriceRange & getMinPriceFromProductPriceRange to return hanlde null value', () => {
+    expect(getMaxPriceFromProductPriceRange(null)).toMatchObject({
+      amount: null,
+      currencyCode: CurrencyCode.Inr,
+    })
+
+    expect(getMinPriceFromProductPriceRange(null)).toMatchObject({
+      amount: null,
+      currencyCode: CurrencyCode.Inr,
     })
   })
 

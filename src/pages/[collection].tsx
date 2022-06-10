@@ -4,7 +4,7 @@ import {Card} from '@components/Card.server'
 import {Footer} from '@components/footer/Footer.server'
 import Filters from '@components/filters/Filters'
 import {Header} from '@components/header/Header'
-import ProductsMap from '@components/Products'
+import ProductsMap from '@components/ProductsMap'
 import {restClient} from '@api/clientRest'
 import {fetchAllCollections} from '@api/fetchCollections'
 import {fetchCollectionWithProductFiltersBySlug} from '@api/fetchCollection'
@@ -75,7 +75,6 @@ export default function CollectionPage({
         <ProductsMap products={products}>
           {({
             title,
-            // subtitle,
             slug: productSlug,
             currencyCode,
             amount,
@@ -83,7 +82,9 @@ export default function CollectionPage({
             image,
             index,
           }) =>
-            image && (
+            image &&
+            amount &&
+            originalAmount && (
               <Card
                 key={title + index}
                 title={title}

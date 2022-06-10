@@ -56,7 +56,6 @@ export function ProductOption({
             productSlug: slug,
           })
 
-          console.log('Variant slug: ' + variantSlug)
           if (OPTIONS_WITH_COLOR_PALLETS.includes(option.name)) {
             return (
               <li key={valueId}>

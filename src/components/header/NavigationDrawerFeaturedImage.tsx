@@ -10,6 +10,7 @@ import type {Maybe} from '@LocalTypes/interfaces'
 import cardStyles from '@styles/card.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 import menuStyles from '@styles/menu.module.css'
+import {getRelativeProductURL} from '@helpers/url.helpers'
 
 type PropType = {
   navigation: Maybe<Navigation>
@@ -38,12 +39,15 @@ export function NavigationDrawerFeaturedImage({navigation}: PropType) {
               const image = getImageFromSanityImageBlock(
                 navigationProduct.image,
               )
+              const slug = getRelativeProductURL(
+                navigationProduct.product?.handle ?? '#',
+              )
               if (image) {
                 return (
                   <li key={index}>
                     <Card
                       title={navigationProduct.title ?? ''}
-                      link={navigationProduct.product?.handle ?? '#'}
+                      link={slug}
                       layout="fill"
                       objectFit="contain"
                       objectPosition="50% 50%"

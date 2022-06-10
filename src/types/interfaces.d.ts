@@ -55,7 +55,7 @@ export type Edge<Node> = {
 }
 
 export type Price = {
-  amount: number
+  amount: Maybe<number>
   currencyCode: CurrencyCode
 }
 

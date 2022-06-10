@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {HStack} from './microUI/HStack.server'
-import Products from './Products'
+import ProductsMap from './ProductsMap'
 import {Card} from './Card.server'
 import {getNodesFromConnection} from '@helpers/connection.helper'
 import {formatAmount} from '@helpers/price.helper'
@@ -24,10 +24,9 @@ export function FeaturedProducts({collection}: PropType) {
     <section className={commonStyles.pageSection}>
       <h2 className={commonStyles.leftHeader}>{collection.title}</h2>
       <HStack>
-        <Products products={products}>
+        <ProductsMap products={products}>
           {({
             title,
-            // subtitle,
             slug,
             currencyCode,
             amount,
@@ -35,7 +34,9 @@ export function FeaturedProducts({collection}: PropType) {
             image,
             index,
           }) =>
-            image && (
+            image &&
+            amount &&
+            originalAmount && (
               <Card
                 key={title + index}
                 title={title}
@@ -57,7 +58,7 @@ export function FeaturedProducts({collection}: PropType) {
               />
             )
           }
-        </Products>
+        </ProductsMap>
       </HStack>
     </section>
   )

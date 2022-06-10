@@ -19,7 +19,10 @@ type PropType = {
   collectionsByID: CollectionsByID
 }
 
-export function ProductNavigation({navigation, collectionsByID}: PropType) {
+export function ItemCollectionsNavigation({
+  navigation,
+  collectionsByID,
+}: PropType) {
   return (
     <section className={commonStyles.pageSection}>
       <HStack>

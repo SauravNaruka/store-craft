@@ -9,12 +9,13 @@ import type {Price, Maybe, ImageType} from '@LocalTypes/interfaces'
 import {getRelativeProductURL} from '@helpers/url.helpers'
 
 type ProductsChildren = {
+  id: string
   title: string
   subtitle?: string | null
   slug: string
   currencyCode: CurrencyCode
-  amount: number
-  originalAmount?: number
+  amount: Maybe<number>
+  originalAmount: Maybe<number>
   image?: Maybe<ImageType>
   index: number
 }
@@ -24,12 +25,13 @@ type PropType = {
   children: (props: ProductsChildren) => React.ReactNode
 }
 
-export function Products({products, children: render}: PropType) {
+export function ProductsMap({products, children: render}: PropType) {
   return (
     <>
       {products.map(
         (
           {
+            id,
             handle,
             title,
             description,
@@ -47,8 +49,9 @@ export function Products({products, children: render}: PropType) {
 
           const slug = getRelativeProductURL(handle)
 
-          if (title && slug && description && amount && currencyCode) {
+          if (title && slug) {
             return render({
+              id,
               title,
               subtitle: description,
               slug,
@@ -67,4 +70,4 @@ export function Products({products, children: render}: PropType) {
   )
 }
 
-export default Products
+export default ProductsMap
