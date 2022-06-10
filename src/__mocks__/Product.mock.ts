@@ -53,7 +53,7 @@ export function buildProductShortInfoFields(): Partial<Product> {
     __typename: 'Product',
     id: faker.datatype.uuid(),
     title: faker.random.words(),
-    handle: faker.internet.url(),
+    handle: faker.random.word(),
   }
 }
 

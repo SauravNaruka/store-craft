@@ -6,6 +6,7 @@ import {
 } from '@helpers/price.helper'
 import type {Product, CurrencyCode} from '@generated/storefront.types'
 import type {Price, Maybe, ImageType} from '@LocalTypes/interfaces'
+import {getRelativeProductURL} from '@helpers/url.helpers'
 
 type ProductsChildren = {
   title: string
@@ -44,11 +45,13 @@ export function Products({products, children: render}: PropType) {
           const {amount, currencyCode}: Price =
             getMinPriceFromProductPriceRange(priceRange)
 
-          if (title && handle && description && amount && currencyCode) {
+          const slug = getRelativeProductURL(handle)
+
+          if (title && slug && description && amount && currencyCode) {
             return render({
               title,
               subtitle: description,
-              slug: handle,
+              slug,
               currencyCode,
               amount,
               originalAmount,

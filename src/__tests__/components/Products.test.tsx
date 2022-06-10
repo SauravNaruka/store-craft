@@ -24,7 +24,7 @@ describe('Products', () => {
     expect(productCallback).nthCalledWith(1, {
       title: firstProduct.title,
       subtitle: firstProduct.description,
-      slug: firstProduct.handle,
+      slug: `/products/${firstProduct.handle}`,
       currencyCode: firstProduct.priceRange.minVariantPrice.currencyCode,
       amount: firstProduct.priceRange.minVariantPrice.amount,
       originalAmount: firstProduct.compareAtPriceRange.maxVariantPrice.amount,

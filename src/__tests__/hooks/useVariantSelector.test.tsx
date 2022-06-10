@@ -18,12 +18,13 @@ describe('useVariantSelector working', () => {
   })
 
   test('getVariantByQueryParameter function returns correct variant', () => {
-    const baseUrl = faker.internet.url()
+    const baseUrl = faker.random.word()
     const variantEdge = faker.random.arrayElement(
       productVariantConnectionMockData.edges,
     )
-    const url = new URL(getProductVariantURL(variantEdge.node, baseUrl))
-    const variantQuery = url.search
+    const url = getProductVariantURL(variantEdge.node, baseUrl)
+
+    const variantQuery = url.substring(url.indexOf('?') + 1)
     console.log('variantQuery: ' + variantQuery)
 
     expect(

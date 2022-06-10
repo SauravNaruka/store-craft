@@ -38,7 +38,7 @@ describe('ProductOptions', () => {
 
   test('product option render the correct url, title & currency', () => {
     const selectedVariant = productVariantConnectionMockData.edges[0].node
-    const handle = '/product/bed'
+    const handle = 'bed'
 
     render(
       <ProductOptions
@@ -57,7 +57,7 @@ describe('ProductOptions', () => {
     const firstOtherVariantLink = screen.getByRole('link', {name: /Queen/i})
     expect(firstOtherVariantLink).toHaveAttribute(
       'href',
-      `${handle}?Size=Queen&Storage=With+Storage&Finish=Honey`,
+      `/products/${handle}?Size=Queen&Storage=With+Storage&Finish=Honey`,
     )
 
     expect(

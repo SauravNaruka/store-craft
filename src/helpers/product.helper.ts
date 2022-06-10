@@ -4,6 +4,7 @@ import type {
   ProductVariant,
   SelectedOption,
 } from '@generated/storefront.types'
+import {getRelativeProductURL} from './url.helpers'
 
 export function isShopifyProduct(object?: unknown): object is ShopifyProduct {
   return (object as ShopifyProduct)?.__typename === 'ShopifyProduct'
@@ -24,7 +25,9 @@ export function getProductVariantURL(
   )
 
   const queryParams = new URLSearchParams(selectedOptionMap)
-  const variantSlug = `${productSlug}?${queryParams.toString()}`
+  const variantSlug = getRelativeProductURL(
+    `${productSlug}?${queryParams.toString()}`,
+  )
 
   return variantSlug
 }

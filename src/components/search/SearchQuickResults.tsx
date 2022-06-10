@@ -12,6 +12,7 @@ import headerStyles from '@styles/header.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 import {Maybe} from '@LocalTypes/interfaces'
 import SearchIcon from '../icons/SearchIcon'
+import {getRelativeProductURL} from '@helpers/url.helpers'
 
 const style = {
   rootClass: cardStyles.quickSearchCard,
@@ -39,12 +40,13 @@ export function SearchQuickResults({
     >
       {productConnections?.edges.map(product => {
         if (isValidImageType(product.node.featuredImage)) {
+          const slug = getRelativeProductURL(product.node.handle)
           return (
             <li key={product.node.id}>
               {
                 <Card
                   title={product.node.title}
-                  link={product.node.handle}
+                  link={slug}
                   layout="fill"
                   objectFit="contain"
                   objectPosition="50% 50%"
