@@ -1,0 +1,21 @@
+fragment ProductVariantsFields on ProductVariant {
+  __typename
+  id
+  title
+  availableForSale
+  sku
+  selectedOptions {
+    __typename
+    name
+    value
+  }
+  image {
+    ...ImageFields
+  }
+  compareAtPriceV2 {
+    ...MoneyFields
+  }
+  priceV2 {
+    ...MoneyFields
+  }
+}

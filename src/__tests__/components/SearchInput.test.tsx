@@ -1,6 +1,6 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {SearchBar} from '@components/SearchBar'
+import {SearchBar} from '@components/search/SearchBar'
 
 describe('Search Bar', () => {
   test('render of the Search Input tag ', () => {

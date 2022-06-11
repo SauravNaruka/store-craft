@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Card} from './Card.server'
 import NavigationalItems from './NavigationalItems'
-import {HStack} from './HStack.server'
+import {HStack} from './microUI/HStack.server'
 import type {CollectionsByID} from '@LocalTypes/interfaces'
 import type {Navigation} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
@@ -19,7 +19,10 @@ type PropType = {
   collectionsByID: CollectionsByID
 }
 
-export function ProductNavigation({navigation, collectionsByID}: PropType) {
+export function ItemCollectionsNavigation({
+  navigation,
+  collectionsByID,
+}: PropType) {
   return (
     <section className={commonStyles.pageSection}>
       <HStack>

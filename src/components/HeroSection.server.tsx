@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Image from '@components/Image'
+import Image from '@components/microUI/Image'
 import NavigationalItems from './NavigationalItems'
 import type {CollectionsByID} from '@LocalTypes/interfaces'
 import type {Navigation} from '@generated/cms.types'

@@ -1,30 +1,31 @@
 import {render} from '@testing-library/react'
-import Products from '@components/Products'
+import ProductsMap from '@components/ProductsMap'
 import {buildProductNodeWithImageSmallConnection} from 'src/__mocks__/Product.mock'
 import {buildImagesSmallConnection} from 'src/__mocks__/Image.mock'
 import type {Product} from '@generated/storefront.types'
 
-describe('Products', () => {
-  test('Products call child function zero times when emty array', () => {
+describe('ProductsMap', () => {
+  test('ProductsMap call child function zero times when emty array', () => {
     const productCallback = jest.fn()
-    render(<Products products={[]}>{productCallback}</Products>)
+    render(<ProductsMap products={[]}>{productCallback}</ProductsMap>)
 
     expect(productCallback).toBeCalledTimes(0)
   })
 
-  test('Products call child function', () => {
+  test('ProductsMap call child function', () => {
     const productCallback = jest.fn()
     const firstProduct = buildProductNodeWithImageSmallConnection() as Product
     const secondProduct = buildProductNodeWithImageSmallConnection()
     const products = [firstProduct, secondProduct] as Product[]
 
-    render(<Products products={products}>{productCallback}</Products>)
+    render(<ProductsMap products={products}>{productCallback}</ProductsMap>)
 
     expect(productCallback).toBeCalledTimes(2)
     expect(productCallback).nthCalledWith(1, {
+      id: firstProduct.id,
       title: firstProduct.title,
       subtitle: firstProduct.description,
-      slug: firstProduct.handle,
+      slug: `/products/${firstProduct.handle}`,
       currencyCode: firstProduct.priceRange.minVariantPrice.currencyCode,
       amount: firstProduct.priceRange.minVariantPrice.amount,
       originalAmount: firstProduct.compareAtPriceRange.maxVariantPrice.amount,
@@ -41,7 +42,9 @@ describe('Products', () => {
       images: buildImagesSmallConnection({edges: []}),
     } as Product
     render(
-      <Products products={[inCompleteProduct]}>{productCallback}</Products>,
+      <ProductsMap products={[inCompleteProduct]}>
+        {productCallback}
+      </ProductsMap>,
     )
 
     expect(productCallback).toBeCalledTimes(0)

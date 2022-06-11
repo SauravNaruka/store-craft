@@ -1,12 +1,15 @@
 import faker from 'faker'
 import {
   CurrencyCode,
+  ImageConnection,
   Product,
   ProductConnection,
   ProductEdge,
 } from '@generated/storefront.types'
 import {buildImage, buildImagesSmallConnection} from './Image.mock'
 import {buildFilters} from './Filter.mock'
+import {buildProductOption, buildProductOptions} from './ProductOptions.mock'
+import {buildMoneyV2} from './moneyv2.mock'
 
 export const NUMBER_OF_PRODUCTS = 3
 export function buildProductConnection(): Partial<ProductConnection> {
@@ -34,36 +37,35 @@ export function buildProductNodeWithImageSmallConnection() {
   }
 }
 
+export function buildProductByHandle(): Partial<Product> {
+  return {
+    __typename: 'Product',
+    ...buildProductShortInfoFields(),
+    descriptionHtml: faker.random.words(),
+    productType: faker.random.words(),
+    images: buildImagesSmallConnection() as ImageConnection,
+    options: buildProductOptions(),
+  }
+}
+
 export function buildProductShortInfoFields(): Partial<Product> {
   return {
     __typename: 'Product',
     id: faker.datatype.uuid(),
     title: faker.random.words(),
-    handle: faker.internet.url(),
+    handle: faker.random.word(),
   }
 }
 
 export function buildProductPriceFields(): Partial<Product> {
   return {
     compareAtPriceRange: {
-      maxVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
-      minVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
+      maxVariantPrice: buildMoneyV2(),
+      minVariantPrice: buildMoneyV2(),
     },
     priceRange: {
-      maxVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
-      minVariantPrice: {
-        amount: faker.commerce.price(),
-        currencyCode: faker.finance.currencyCode() as CurrencyCode,
-      },
+      maxVariantPrice: buildMoneyV2(),
+      minVariantPrice: buildMoneyV2(),
     },
   }
 }

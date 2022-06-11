@@ -1,13 +1,14 @@
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import Carousel from '@components/carousel/Carousel'
-import {CarouselDotButtons} from '@components/carousel/CarouselDotButtons'
+import Carousel, {CarouselSliderType} from '@components/carousel/Carousel'
+import {CarouselSliderWrapper} from '@components/carousel/CarouselSliderWrapper'
+import {CarouselDotSliderButton} from '@components/carousel/CarouselDotSliderButton'
 import {
   CAROUSEL_ACCESSIBILITY_MESSAGE_NAVIGATION,
   CAROUSEL_ACCESSIBILITY_MESSAGE_AUTOPLAY,
 } from '@constants/carousel.constants'
 
-describe('the working of carosel', () => {
+describe('Carousel', () => {
   afterEach(() => {
     jest.clearAllTimers()
     jest.useRealTimers()
@@ -20,7 +21,11 @@ describe('the working of carosel', () => {
 
   test('to check if child element is present in the DOM', () => {
     render(
-      <Carousel id="testid" ariaLabel="test">
+      <Carousel
+        id="testid"
+        ariaLabel="test"
+        sliderType={CarouselSliderType.DOT}
+      >
         <span aria-label="child" />
         <span aria-label="second element" />
       </Carousel>,
@@ -72,7 +77,7 @@ describe('the working of carosel', () => {
         id="testid"
         ariaLabel="test"
         autoplay={false}
-        dotsNavigation={false}
+        sliderType={CarouselSliderType.DOT}
       >
         <span aria-label="First child" />
       </Carousel>,
@@ -93,7 +98,11 @@ describe('the working of carosel', () => {
 
   test('removing of dots navigation', () => {
     render(
-      <Carousel id="testid" ariaLabel="test" dotsNavigation={false}>
+      <Carousel
+        id="testid"
+        ariaLabel="test"
+        sliderType={CarouselSliderType.NONE}
+      >
         <span aria-label="First child" />
       </Carousel>,
     )
@@ -103,26 +112,27 @@ describe('the working of carosel', () => {
 
   test('dots buttons click action', () => {
     const slidesCount = 5
-    const activeSlide = 2
+    const slideIndex = 2
     const clickHandler = jest.fn()
     render(
-      <CarouselDotButtons
-        id="testid"
-        numberOfslides={slidesCount}
-        activeSlideIndex={activeSlide}
-        onClick={clickHandler}
-      />,
+      <CarouselSliderWrapper>
+        <CarouselDotSliderButton
+          id="testid"
+          isActive={true}
+          totalSlides={slidesCount}
+          slideIndex={slideIndex}
+          onClick={clickHandler}
+        />
+      </CarouselSliderWrapper>,
     )
-    expect(screen.getAllByRole('tab').length).toBe(slidesCount)
+    expect(screen.getAllByRole('tab').length).toBe(1)
 
-    const slideNumber = 2
     // We are using slideNumber + 1 becuse slides are zero indexed but user will see slide starting from 1
     const buttonTochangeSlide = screen.getByRole('tab', {
-      name: new RegExp(`${slideNumber + 1}`),
+      name: new RegExp(`${slideIndex + 1}`),
     })
     userEvent.click(buttonTochangeSlide)
 
     expect(clickHandler).toBeCalledTimes(1)
-    expect(clickHandler).toBeCalledWith(slideNumber)
   })
 })

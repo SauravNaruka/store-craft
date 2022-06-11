@@ -1,35 +1,24 @@
-.root {
-  @apply relative select-none w-full h-full bg-transparent;
-  overflow: hidden;
-}
-
-.slider {
-  @apply relative transition-opacity duration-150 w-full;
-  height: calc((100vw) * 9 / 16);
-  opacity: 0;
-}
-
-.showSlider {
-  opacity: 1;
-}
-
-.dotWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.sliderWrapper {
   padding-top: 5px;
 }
 
+.sliderImageButton {
+  border: 2px solid var(--color-neutral-8);
+  width: 96px;
+}
+
+.sliderImageButtonActive {
+  border: 2px solid var(--color-secondary-7);
+}
+
 .carouselDot {
-  position: relative;
-  border: 2px solid transparent;
-  outline: 0;
   width: 20px;
   height: 18px;
   padding: 2px 3px;
-  display: inline-block;
-  background-color: transparent;
   margin: 0px 4px;
+  outline: 0;
+  border: 2px solid transparent;
+  background-color: transparent;
 }
 
 .carouselDot::before {

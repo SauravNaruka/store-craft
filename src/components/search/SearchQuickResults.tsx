@@ -5,13 +5,17 @@ import {Card} from '@components/Card.server'
 import {isValidImageType} from '@helpers/image.helper'
 import {
   CollectionConnection,
+  Product,
   ProductConnection,
 } from '@generated/storefront.types'
 import cardStyles from '@styles/card.module.css'
 import headerStyles from '@styles/header.module.css'
 import navigationStyles from '@styles/navigation.module.css'
 import {Maybe} from '@LocalTypes/interfaces'
-import SearchIcon from './icons/SearchIcon'
+import SearchIcon from '../icons/SearchIcon'
+import {getRelativeProductURL} from '@helpers/url.helpers'
+import {getNodesFromConnection} from '@helpers/connection.helper'
+import ProductsMap from '@components/ProductsMap'
 
 const style = {
   rootClass: cardStyles.quickSearchCard,
@@ -30,6 +34,9 @@ export function SearchQuickResults({
   productConnections,
   collectionConnections,
 }: PropType) {
+  const products = productConnections
+    ? getNodesFromConnection<Product>(productConnections)
+    : []
   return (
     <ul
       className={cx({
@@ -37,27 +44,29 @@ export function SearchQuickResults({
         hidden: !isActive,
       })}
     >
-      {productConnections?.edges.map(product => {
-        if (isValidImageType(product.node.featuredImage)) {
+      <ProductsMap products={products}>
+        {({id, title, slug, image}) => {
           return (
-            <li key={product.node.id}>
-              {
-                <Card
-                  title={product.node.title}
-                  link={product.node.handle}
-                  layout="fill"
-                  objectFit="contain"
-                  objectPosition="50% 50%"
-                  sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
-                  image={product.node.featuredImage}
-                  aspectRatio={{width: 4, height: 3}}
-                  style={style}
-                />
-              }
-            </li>
+            image && (
+              <li key={id}>
+                {
+                  <Card
+                    title={title}
+                    link={slug}
+                    layout="fill"
+                    objectFit="contain"
+                    objectPosition="50% 50%"
+                    sizes="(max-width: 640px) 40vw, (max-width: 768px) 30vw, 20vw"
+                    image={image}
+                    aspectRatio={{width: 4, height: 3}}
+                    style={style}
+                  />
+                }
+              </li>
+            )
           )
-        }
-      })}
+        }}
+      </ProductsMap>
       {collectionConnections?.edges?.map((collection, index) => {
         return (
           <li key={collection?.node?.id ?? index}>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import cx from 'classnames'
 import SearchIcon from '@components/icons/SearchIcon'
-import {TextInput} from '@components/TextInput'
+import {TextInput} from '@components/microUI/TextInput'
 import commonStyles from '@styles/common.module.css'
 import headerStyles from '@styles/header.module.css'
 import inputStyles from '@styles/input.module.css'

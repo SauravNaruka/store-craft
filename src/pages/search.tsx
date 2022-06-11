@@ -5,7 +5,7 @@ import isArray from 'lodash/isArray'
 import {Card} from '@components/Card.server'
 import {getNodesFromConnection} from '@helpers/connection.helper'
 import {Header} from '@components/header/Header'
-import ProductsMap from '@components/Products'
+import ProductsMap from '@components/ProductsMap'
 import {Footer} from '@components/footer/Footer.server'
 import {restClient} from '@api/clientRest'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
@@ -66,7 +66,6 @@ export default function Search({header, footer}: PropType) {
           <ProductsMap products={products}>
             {({
               title,
-              // subtitle,
               slug: productSlug,
               currencyCode,
               amount,
@@ -74,7 +73,9 @@ export default function Search({header, footer}: PropType) {
               image,
               index,
             }) =>
-              image && (
+              image &&
+              amount &&
+              originalAmount && (
                 <Card
                   key={title + index}
                   title={title}

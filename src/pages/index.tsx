@@ -5,7 +5,7 @@ import {Footer} from '@components/footer/Footer.server'
 import HeroSection from '@components/HeroSection.server'
 import FeaturedProducts from '@components/FeaturedProducts.server'
 import {RoomNavigation} from '@components/RoomNavigation'
-import {ProductNavigation} from '@components/ProductNavigation.server'
+import {ItemCollectionsNavigation} from '@components/ItemCollectionsNavigation.server'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import {fetchNavigationAndRelatedCollectionBySlug} from '@api/fetchNavigations'
 import {fetchCollectionWithProductsBySlug} from '@api/fetchCollection'
@@ -54,7 +54,7 @@ export default function Home({
       </Head>
       <Header header={header} />
       <main className={styles.main}>
-        <ProductNavigation
+        <ItemCollectionsNavigation
           navigation={productNavigationAndCollectionsByID.navigation}
           collectionsByID={productNavigationAndCollectionsByID.collectionsByID}
         />

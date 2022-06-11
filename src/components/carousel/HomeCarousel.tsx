@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import * as React from 'react'
 import Carousel from '@components/carousel/Carousel'
-import Image from '@components/Image'
+import Image from '@components/microUI/Image'
 import {getInternalLinkNavigationData} from '@helpers/LinkInternal.helper'
 import type {CollectionsByID} from '@LocalTypes/interfaces'
 import type {Navigation} from '@generated/cms.types'

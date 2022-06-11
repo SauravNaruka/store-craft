@@ -1,6 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import faker from 'faker'
-import {ProductNavigation} from '../../components/ProductNavigation.server'
+import {ItemCollectionsNavigation} from '../../components/ItemCollectionsNavigation.server'
 import {isInternalLink} from '@helpers/LinkInternal.helper'
 import {isShopifyCollection} from '@helpers/collection.helper'
 import {getFirstShopifyCollection} from '@helpers/navigation.helper'
@@ -11,7 +11,7 @@ describe('product navigations tests', () => {
     const {navigation, collectionsByID} = buildNavigationAndCollectionIDs()
 
     render(
-      <ProductNavigation
+      <ItemCollectionsNavigation
         navigation={navigation}
         collectionsByID={collectionsByID}
       />,
@@ -34,7 +34,12 @@ describe('product navigations tests', () => {
         },
       ],
     }
-    render(<ProductNavigation navigation={navigation} collectionsByID={{}} />)
+    render(
+      <ItemCollectionsNavigation
+        navigation={navigation}
+        collectionsByID={{}}
+      />,
+    )
 
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
@@ -55,7 +60,7 @@ describe('product navigations tests', () => {
     }
 
     render(
-      <ProductNavigation
+      <ItemCollectionsNavigation
         navigation={updatedNavigation}
         collectionsByID={collectionsByID}
       />,

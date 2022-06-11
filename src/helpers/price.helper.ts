@@ -1,20 +1,30 @@
-import type {
+import {
   ProductPriceRange,
   MoneyV2,
   CurrencyCode,
 } from 'generated/storefront.types'
-import type {Price} from '../types/interfaces'
+import type {Maybe, Price} from '../types/interfaces'
+
+const EMPTY_PRICE = {amount: null, currencyCode: CurrencyCode.Inr}
 
 export function getMaxPriceFromProductPriceRange(
-  priceRange: ProductPriceRange,
+  priceRange: Maybe<ProductPriceRange>,
 ): Price {
-  return getVariantPriceFromProductPriceRange(priceRange.maxVariantPrice)
+  if (priceRange) {
+    return getVariantPriceFromProductPriceRange(priceRange.maxVariantPrice)
+  } else {
+    return EMPTY_PRICE
+  }
 }
 
 export function getMinPriceFromProductPriceRange(
-  priceRange: ProductPriceRange,
+  priceRange: Maybe<ProductPriceRange>,
 ): Price {
-  return getVariantPriceFromProductPriceRange(priceRange.minVariantPrice)
+  if (priceRange) {
+    return getVariantPriceFromProductPriceRange(priceRange.minVariantPrice)
+  } else {
+    return EMPTY_PRICE
+  }
 }
 
 export function getVariantPriceFromProductPriceRange(money: MoneyV2): Price {

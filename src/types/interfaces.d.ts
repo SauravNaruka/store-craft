@@ -10,6 +10,11 @@ export type NullablePartial<T> = {
   [P in keyof T]?: T[P] | null
 }
 
+export type HrefProp = React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+>
+
 export interface ImageSource {
   w96: string
   w100: string
@@ -50,7 +55,7 @@ export type Edge<Node> = {
 }
 
 export type Price = {
-  amount: number
+  amount: Maybe<number>
   currencyCode: CurrencyCode
 }
 
