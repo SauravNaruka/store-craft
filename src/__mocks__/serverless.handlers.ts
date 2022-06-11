@@ -6,7 +6,7 @@ import {
 import {buildProductConnection} from './Product.mock'
 
 export const quickSearchHandler = rest.get(
-  '/.netlify/functions/quickSearch',
+  '/api/quickSearch',
   (_req, res, ctx) => {
     const products = buildProductConnection()
     const collections = buildCollectionsBySearchQuery()
@@ -15,7 +15,7 @@ export const quickSearchHandler = rest.get(
 )
 
 export const searchCollectionHandler = rest.get(
-  '/.netlify/functions/searchCollection',
+  '/api/searchCollection',
   (_req, res, ctx) => {
     const collection = buildCollectionWithProductsBySlug()
     return res(ctx.json({collection}))
@@ -23,7 +23,7 @@ export const searchCollectionHandler = rest.get(
 )
 
 export const searchProductsHandler = rest.get(
-  '/.netlify/functions/searchProducts',
+  '/api/searchProducts',
   (_req, res, ctx) => {
     const products = buildProductConnection()
     return res(ctx.json({products}))

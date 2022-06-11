@@ -156,7 +156,7 @@ async function searchCollection(
 ): Promise<Maybe<Product[]>> {
   try {
     const {collection} = await restClient(
-      `/.netlify/functions/searchCollection?collection=${encodeURIComponent(
+      `/api/searchCollection?collection=${encodeURIComponent(
         slug,
       )}&filter=${encodeURIComponent(filterString)}`,
     )
