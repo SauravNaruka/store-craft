@@ -96,7 +96,7 @@ async function search(query: string): Promise<{
 }> {
   try {
     const {collections, products} = await restClient(
-      `/.netlify/functions/quickSearch?query=${encodeURIComponent(query)}`,
+      `/api/quickSearch?query=${encodeURIComponent(query)}`,
     )
 
     if (isProductConnection(products) && isCollectionConnection(collections)) {

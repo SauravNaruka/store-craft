@@ -3,6 +3,7 @@ import {ProductCarousel} from '@components/carousel/ProductCarousel'
 import {ProductOptions} from '@components/product/ProductOptions'
 import {useVariantSelector} from '@hooks/useVariantSelector'
 import type {Product} from '@generated/storefront.types'
+import {addToCart} from '@helpers/cart.helper'
 
 export type PropType = {
   product: Product
@@ -27,6 +28,7 @@ export function ProductPageDetails({product, slug}: PropType) {
         slug={slug}
         selectedVariant={variant}
       />
+      <button onClick={() => addToCart(variant.id)}>Add to Cart</button>
     </>
   )
 }

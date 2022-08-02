@@ -10,14 +10,13 @@ import {Footer} from '@components/footer/Footer.server'
 import {restClient} from '@api/clientRest'
 import {fetchCommonNavigation} from '@api/fetchGlobalConfig'
 import * as logger from '@helpers/logger'
-
-import {Maybe} from '@LocalTypes/interfaces'
-import {Product} from '@generated/storefront.types'
+import {isProductConnection} from '@helpers/product.helper'
+import type {Maybe} from '@LocalTypes/interfaces'
+import type {Product} from '@generated/storefront.types'
 import type {
   Footer as FooterType,
   Header as HeaderType,
 } from '@generated/cms.types'
-import {isProductConnection} from '@helpers/product.helper'
 
 import cardStyles from '@styles/card.module.css'
 import commonStyles from '@styles/common.module.css'
@@ -120,9 +119,7 @@ async function search(query: string | string[]): Promise<Maybe<Product[]>> {
   try {
     const searchedQuery = isArray(query) ? query.join(' ') : query
     const {products: productsConnection} = await restClient(
-      `/.netlify/functions/searchProducts?query=${encodeURIComponent(
-        searchedQuery,
-      )}`,
+      `/api/searchProducts?query=${encodeURIComponent(searchedQuery)}`,
     )
     if (isProductConnection(productsConnection)) {
       const products = getNodesFromConnection<Product>(productsConnection)

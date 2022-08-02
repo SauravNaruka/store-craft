@@ -146,7 +146,7 @@ export type Article = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -329,7 +329,7 @@ export type Blog = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -445,7 +445,10 @@ export type Cart = Node & {
    *
    */
   discountCodes: Array<CartDiscountCode>
-  /** The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart). */
+  /**
+   * The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+   * @deprecated Use `cost` instead
+   */
   estimatedCost: CartEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -622,7 +625,10 @@ export type CartLine = Node & {
   attributes: Array<Attribute>
   /** The discounts that have been applied to the cart line. */
   discountAllocations: Array<CartDiscountAllocation>
-  /** The estimated cost of the merchandise that the buyer will pay for at checkout. The estimated costs are subject to change and changes will be reflected at checkout. */
+  /**
+   * The estimated cost of the merchandise that the buyer will pay for at checkout. The estimated costs are subject to change and changes will be reflected at checkout.
+   * @deprecated Use `cost` instead
+   */
   estimatedCost: CartLineEstimatedCost
   /** A globally-unique identifier. */
   id: Scalars['ID']
@@ -1534,7 +1540,7 @@ export type Collection = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -2619,7 +2625,7 @@ export type Customer = HasMetafields & {
   metafield?: Maybe<Metafield>
   /**
    * A paginated list of metafields associated with the resource.
-   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
    *
    */
   metafields: MetafieldConnection
@@ -3289,7 +3295,7 @@ export type HasMetafields = {
   metafield?: Maybe<Metafield>
   /**
    * A paginated list of metafields associated with the resource.
-   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
    *
    */
   metafields: MetafieldConnection
@@ -4437,7 +4443,7 @@ export type Order = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -4707,7 +4713,7 @@ export type Page = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -4921,7 +4927,7 @@ export type Product = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -5258,7 +5264,7 @@ export type ProductVariant = HasMetafields &
     metafield?: Maybe<Metafield>
     /**
      * A paginated list of metafields associated with the resource.
-     * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+     * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
      *
      */
     metafields: MetafieldConnection
@@ -5856,7 +5862,7 @@ export type Shop = HasMetafields & {
   metafield?: Maybe<Metafield>
   /**
    * A paginated list of metafields associated with the resource.
-   * @deprecated The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.
+   * @deprecated As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.
    *
    */
   metafields: MetafieldConnection
@@ -6237,6 +6243,64 @@ export enum WeightUnit {
   Ounces = 'OUNCES',
   /** 1 pound equals 16 ounces. */
   Pounds = 'POUNDS',
+}
+
+export type CartCreateMutationVariables = Exact<{[key: string]: never}>
+
+export type CartCreateMutation = {
+  __typename?: 'Mutation'
+  cartCreate?:
+    | {
+        __typename?: 'CartCreatePayload'
+        cart?:
+          | {__typename: 'Cart'; id: string; checkoutUrl: any}
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
+export type CartFieldsFragment = {
+  __typename?: 'Cart'
+  checkoutUrl: any
+  estimatedCost: {
+    __typename?: 'CartEstimatedCost'
+    totalAmount: {__typename?: 'MoneyV2'; amount: any}
+  }
+  lines: {
+    __typename?: 'CartLineConnection'
+    edges: Array<{
+      __typename?: 'CartLineEdge'
+      node: {
+        __typename?: 'CartLine'
+        quantity: number
+        estimatedCost: {
+          __typename?: 'CartLineEstimatedCost'
+          subtotalAmount: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+          totalAmount: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+        merchandise: {
+          __typename?: 'ProductVariant'
+          title: string
+          product: {__typename?: 'Product'; title: string}
+          priceV2: {
+            __typename?: 'MoneyV2'
+            amount: any
+            currencyCode: CurrencyCode
+          }
+        }
+      }
+    }>
+  }
 }
 
 export type CollectionFieldsFragment = {
@@ -6762,6 +6826,118 @@ export type ProductsShortInfoBySearchQueryQuery = {
   }
 }
 
+export type GetCartQueryVariables = Exact<{
+  cartID: Scalars['ID']
+}>
+
+export type GetCartQuery = {
+  __typename?: 'QueryRoot'
+  cart?:
+    | {
+        __typename?: 'Cart'
+        checkoutUrl: any
+        estimatedCost: {
+          __typename?: 'CartEstimatedCost'
+          totalAmount: {__typename?: 'MoneyV2'; amount: any}
+        }
+        lines: {
+          __typename?: 'CartLineConnection'
+          edges: Array<{
+            __typename?: 'CartLineEdge'
+            node: {
+              __typename?: 'CartLine'
+              quantity: number
+              estimatedCost: {
+                __typename?: 'CartLineEstimatedCost'
+                subtotalAmount: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+                totalAmount: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+              }
+              merchandise: {
+                __typename?: 'ProductVariant'
+                title: string
+                product: {__typename?: 'Product'; title: string}
+                priceV2: {
+                  __typename?: 'MoneyV2'
+                  amount: any
+                  currencyCode: CurrencyCode
+                }
+              }
+            }
+          }>
+        }
+      }
+    | null
+    | undefined
+}
+
+export type AddToCartMutationVariables = Exact<{
+  cartId: Scalars['ID']
+  variantId: Scalars['ID']
+  quantity: Scalars['Int']
+}>
+
+export type AddToCartMutation = {
+  __typename?: 'Mutation'
+  cartLinesAdd?:
+    | {
+        __typename?: 'CartLinesAddPayload'
+        cart?:
+          | {
+              __typename?: 'Cart'
+              checkoutUrl: any
+              estimatedCost: {
+                __typename?: 'CartEstimatedCost'
+                totalAmount: {__typename?: 'MoneyV2'; amount: any}
+              }
+              lines: {
+                __typename?: 'CartLineConnection'
+                edges: Array<{
+                  __typename?: 'CartLineEdge'
+                  node: {
+                    __typename?: 'CartLine'
+                    quantity: number
+                    estimatedCost: {
+                      __typename?: 'CartLineEstimatedCost'
+                      subtotalAmount: {
+                        __typename?: 'MoneyV2'
+                        amount: any
+                        currencyCode: CurrencyCode
+                      }
+                      totalAmount: {
+                        __typename?: 'MoneyV2'
+                        amount: any
+                        currencyCode: CurrencyCode
+                      }
+                    }
+                    merchandise: {
+                      __typename?: 'ProductVariant'
+                      title: string
+                      product: {__typename?: 'Product'; title: string}
+                      priceV2: {
+                        __typename?: 'MoneyV2'
+                        amount: any
+                        currencyCode: CurrencyCode
+                      }
+                    }
+                  }
+                }>
+              }
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
+}
+
 export type ProductOptionsFieldsFragment = {
   __typename: 'ProductOption'
   id: string
@@ -6806,6 +6982,45 @@ export type ProductShortInfoFieldsFragment = {
   handle: string
 }
 
+export const CartFieldsFragmentDoc = gql`
+  fragment CartFields on Cart {
+    checkoutUrl
+    estimatedCost {
+      totalAmount {
+        amount
+      }
+    }
+    lines(first: 100) {
+      edges {
+        node {
+          quantity
+          estimatedCost {
+            subtotalAmount {
+              amount
+              currencyCode
+            }
+            totalAmount {
+              amount
+              currencyCode
+            }
+          }
+          merchandise {
+            ... on ProductVariant {
+              title
+              product {
+                title
+              }
+              priceV2 {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
 export const CollectionFieldsFragmentDoc = gql`
   fragment CollectionFields on Collection {
     __typename
@@ -6957,6 +7172,17 @@ export const ProductShortInfoFieldsFragmentDoc = gql`
     id
     title
     handle
+  }
+`
+export const CartCreateDocument = gql`
+  mutation CartCreate {
+    cartCreate {
+      cart {
+        __typename
+        id
+        checkoutUrl
+      }
+    }
   }
 `
 export const CollectionProductsByHandleDocument = gql`
@@ -7124,6 +7350,27 @@ export const ProductsShortInfoBySearchQueryDocument = gql`
   ${ProductShortInfoFieldsFragmentDoc}
   ${ImageSmallFieldsFragmentDoc}
 `
+export const GetCartDocument = gql`
+  query GetCart($cartID: ID!) {
+    cart(id: $cartID) {
+      ...CartFields
+    }
+  }
+  ${CartFieldsFragmentDoc}
+`
+export const AddToCartDocument = gql`
+  mutation AddToCart($cartId: ID!, $variantId: ID!, $quantity: Int!) {
+    cartLinesAdd(
+      cartId: $cartId
+      lines: [{quantity: $quantity, merchandiseId: $variantId}]
+    ) {
+      cart {
+        ...CartFields
+      }
+    }
+  }
+  ${CartFieldsFragmentDoc}
+`
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -7137,6 +7384,19 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
+    CartCreate(
+      variables?: CartCreateMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<CartCreateMutation> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<CartCreateMutation>(CartCreateDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'CartCreate',
+      )
+    },
     CollectionProductsByHandle(
       variables: CollectionProductsByHandleQueryVariables,
       requestHeaders?: Dom.RequestInit['headers'],
@@ -7233,6 +7493,32 @@ export function getSdk(
             {...requestHeaders, ...wrappedRequestHeaders},
           ),
         'ProductsShortInfoBySearchQuery',
+      )
+    },
+    GetCart(
+      variables: GetCartQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<GetCartQuery> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<GetCartQuery>(GetCartDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'GetCart',
+      )
+    },
+    AddToCart(
+      variables: AddToCartMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers'],
+    ): Promise<AddToCartMutation> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.request<AddToCartMutation>(AddToCartDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'AddToCart',
       )
     },
   }

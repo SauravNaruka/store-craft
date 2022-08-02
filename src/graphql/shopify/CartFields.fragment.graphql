@@ -1,0 +1,37 @@
+fragment CartFields on Cart {
+  checkoutUrl
+  estimatedCost {
+    totalAmount {
+      amount
+    }
+  }
+  lines(first: 100) {
+    edges {
+      node {
+        quantity
+        estimatedCost {
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+          totalAmount {
+            amount
+            currencyCode
+          }
+        }
+        merchandise {
+          ... on ProductVariant {
+            title
+            product {
+              title
+            }
+            priceV2 {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+  }
+}
