@@ -1,11 +1,11 @@
 import * as React from 'react'
 import cx from 'classnames'
-import CartIcon from '@components/icons/CartIcon'
 import {SearchBar} from '@components/search/SearchBar'
 import {HeaderNavigation} from '@components/header/HeaderNavigation'
 import type {Header as HeaderType} from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
 import headerStyles from '@styles/header.module.css'
+import {CartLink} from '@components/checkout/CartLink'
 
 type PropType = {
   header: HeaderType
@@ -36,7 +36,7 @@ export function Header({header}: PropType) {
         onFocus={() => setSeacrchActiveStatus(true)}
         onBackClick={() => setSeacrchActiveStatus(false)}
       />
-      {!isSearchActive && <CartIcon name={'Shopping Cart'} />}
+      {!isSearchActive && <CartLink />}
     </header>
   )
 }

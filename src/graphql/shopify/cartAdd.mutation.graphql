@@ -1,0 +1,10 @@
+mutation AddToCart($cartId: ID!, $variantId: ID!, $quantity: Int!) {
+  cartLinesAdd(
+    cartId: $cartId
+    lines: [{quantity: $quantity, merchandiseId: $variantId}]
+  ) {
+    cart {
+      ...CartFields
+    }
+  }
+}
