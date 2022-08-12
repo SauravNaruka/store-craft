@@ -43,9 +43,7 @@ export default function Home({
   return (
     <>
       <Head>
-        {/* <meta name="robots" content="INDEX,FOLLOW" /> */}
-        {/*  TODO: Remove noindex meta tag */}
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="INDEX,FOLLOW" />
         <title>Crafty Wing</title>
         <meta
           name="description"

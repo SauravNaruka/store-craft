@@ -22,6 +22,7 @@ export default function Cart({header, footer}: PropType) {
   return (
     <div className={commonStyles.container}>
       <Head>
+        <meta name="robots" content="noindex, nofollow" />
         <title>Crafty Wing</title>
         <meta
           name="description"
