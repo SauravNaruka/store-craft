@@ -22,6 +22,7 @@ import type {
   Header as HeaderType,
 } from '@generated/cms.types'
 import styles from '@styles/common.module.css'
+import {getOrganizationJsonLd, getWebsiteJsonLd} from '@helpers/jsonLd.helper'
 
 export type PropType = {
   productNavigationAndCollectionsByID: NavigationAndCollectionsByID
@@ -44,10 +45,23 @@ export default function Home({
     <>
       <Head>
         <meta name="robots" content="INDEX,FOLLOW" />
-        <title>Crafty Wing</title>
+        <title>
+          Furniture store: Buy best wooden furniture for home in Jaipur India |
+          CraftyWing
+        </title>
         <meta
           name="description"
-          content="Luxury Wood Furniture Online. Buy Hardwood furniture Online or from store near you in Jaipur. Get Sheesham furniture for the homes of your dream."
+          content="Top furniture store in Jaipur. Luxuries Hardwood furniture. Exclusive Sheesham wood furniture. Quality Solid wood furniture for Bedroom, Dining Room and Living Room | CraftyWing Jaipur."
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getOrganizationJsonLd({footer})}
+          key="organization-jsonld"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getWebsiteJsonLd()}
+          key="website-jsonld"
         />
       </Head>
       <Header header={header} />
