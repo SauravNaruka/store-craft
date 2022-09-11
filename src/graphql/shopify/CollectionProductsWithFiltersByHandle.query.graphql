@@ -17,6 +17,9 @@ query CollectionProductsWithFiltersByHandle(
           featuredImage {
             ...ImageFields
           }
+          seo {
+            ...SEOFields
+          }
         }
       }
       filters {

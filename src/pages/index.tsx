@@ -44,7 +44,6 @@ export default function Home({
   return (
     <>
       <Head>
-        <meta name="robots" content="INDEX,FOLLOW" />
         <title>
           Furniture store: Buy best wooden furniture for home in Jaipur India |
           CraftyWing
@@ -63,6 +62,7 @@ export default function Home({
           dangerouslySetInnerHTML={getWebsiteJsonLd()}
           key="website-jsonld"
         />
+        <meta name="robots" content="INDEX,FOLLOW" />
       </Head>
       <Header header={header} />
       <main className={styles.main}>

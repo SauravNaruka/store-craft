@@ -1,0 +1,4 @@
+fragment SEOFields on SEO {
+  title
+  description
+}

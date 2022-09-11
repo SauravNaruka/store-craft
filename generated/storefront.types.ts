@@ -17,55 +17,11 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  /**
-   * Represents an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-encoded date and time string.
-   * For example, 3:50 pm on September 7, 2019 in the time zone of UTC (Coordinated Universal Time) is
-   * represented as `"2019-09-07T15:50:00Z`".
-   *
-   */
   DateTime: any
-  /**
-   * A signed decimal number, which supports arbitrary precision and is serialized as a string.
-   *
-   * Example values: `"29.99"`, `"29.999"`.
-   *
-   */
   Decimal: any
-  /**
-   * A string containing HTML code. Refer to the [HTML spec](https://html.spec.whatwg.org/#elements-3) for a
-   * complete list of HTML elements.
-   *
-   * Example value: `"<p>Grey cotton knit sweater.</p>"`.
-   *
-   */
   HTML: any
-  /**
-   * A [JSON](https://www.json.org/json-en.html) object.
-   *
-   * Example value:
-   * `{
-   *   "product": {
-   *     "id": "gid://shopify/Product/1346443542550",
-   *     "title": "White T-shirt",
-   *     "options": [{
-   *       "name": "Size",
-   *       "values": ["M", "L"]
-   *     }]
-   *   }
-   * }`
-   *
-   */
   JSON: any
-  /** A monetary value string without a currency symbol or code. Example value: `"100.57"`. */
   Money: any
-  /**
-   * Represents an [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) and
-   * [RFC 3987](https://datatracker.ietf.org/doc/html/rfc3987)-compliant URI string.
-   *
-   * For example, `"https://johns-apparel.myshopify.com"` is a valid URL. It includes a scheme (`https`) and a host
-   * (`johns-apparel.myshopify.com`).
-   *
-   */
   URL: any
 }
 
@@ -789,7 +745,7 @@ export type Checkout = Node & {
    * @deprecated Use `paymentDueV2` instead
    */
   paymentDue: Scalars['Money']
-  /** The amount left to be paid. This is equal to the cost of the line items, duties, taxes and shipping minus discounts and gift cards. */
+  /** The amount left to be paid. This is equal to the cost of the line items, duties, taxes, and shipping, minus discounts and gift cards. */
   paymentDueV2: MoneyV2
   /**
    * Whether or not the Checkout is ready and can be completed. Checkouts may
@@ -815,7 +771,7 @@ export type Checkout = Node & {
    * @deprecated Use `subtotalPriceV2` instead
    */
   subtotalPrice: Scalars['Money']
-  /** Price of the checkout before duties, shipping and taxes. */
+  /** The price at checkout before duties, shipping, and taxes. */
   subtotalPriceV2: MoneyV2
   /** Whether the checkout is tax exempt. */
   taxExempt: Scalars['Boolean']
@@ -828,7 +784,7 @@ export type Checkout = Node & {
    * @deprecated Use `totalPriceV2` instead
    */
   totalPrice: Scalars['Money']
-  /** The sum of all the prices of all the items in the checkout, duties, taxes and discounts included. */
+  /** The sum of all the prices of all the items in the checkout, including duties, taxes, and discounts. */
   totalPriceV2: MoneyV2
   /**
    * The sum of all the taxes applied to the line items and shipping lines in the checkout.
@@ -1056,7 +1012,7 @@ export type CheckoutCreateInput = {
    * The three-letter currency code of one of the shop's enabled presentment currencies.
    * Including this field creates a checkout in the specified currency. By default, new
    * checkouts are created in the shop's primary currency.
-   *  This argument is deprecated: Use `country` field instead.
+   *  This argument is deprecated: Use the `buyerIdentity.countryCode` field instead.
    */
   presentmentCurrencyCode?: InputMaybe<CurrencyCode>
   /** The shipping address to where the line items will be shipped. */
@@ -1248,6 +1204,8 @@ export enum CheckoutErrorCode {
   GiftCardUnusable = 'GIFT_CARD_UNUSABLE',
   /** The input value should be greater than or equal to the minimum value allowed. */
   GreaterThanOrEqualTo = 'GREATER_THAN_OR_EQUAL_TO',
+  /** Higher value discount applied. */
+  HigherValueDiscountApplied = 'HIGHER_VALUE_DISCOUNT_APPLIED',
   /** The input value is invalid. */
   Invalid = 'INVALID',
   /** Cannot specify country and presentment currency code. */
@@ -1272,6 +1230,8 @@ export enum CheckoutErrorCode {
   LineItemNotFound = 'LINE_ITEM_NOT_FOUND',
   /** Checkout is locked. */
   Locked = 'LOCKED',
+  /** Maximum number of discount codes limit reached. */
+  MaximumDiscountCodeLimitReached = 'MAXIMUM_DISCOUNT_CODE_LIMIT_REACHED',
   /** Missing payment input. */
   MissingPaymentInput = 'MISSING_PAYMENT_INPUT',
   /** Not enough in stock. */
@@ -1692,7 +1652,7 @@ export type Country = {
 
 /**
  * The code designating a country/region, which generally follows ISO 3166-1 alpha-2 guidelines.
- * If a territory doesn't have a country code value in the `CountryCode` enum, it might be considered a subdivision
+ * If a territory doesn't have a country code value in the `CountryCode` enum, then it might be considered a subdivision
  * of another country. For example, the territories associated with Spain are represented by the country code `ES`,
  * and the territories associated with the United States of America are represented by the country code `US`.
  *
@@ -3414,11 +3374,18 @@ export type ImageEdge = {
 /**
  * The available options for transforming an image.
  *
- * All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
+ * All transformation options are considered best effort. Any transformation that the original image type doesn't support will be ignored.
  *
  */
 export type ImageTransformInput = {
-  /** Crop the image according to the specified region. */
+  /**
+   * The region of the image to remain after cropping.
+   * Must be used in conjunction with the `maxWidth` and/or `maxHeight` fields, where the `maxWidth` and `maxHeight` aren't equal.
+   * The `crop` argument should coincide with the smaller value. A smaller `maxWidth` indicates a `LEFT` or `RIGHT` crop, while
+   * a smaller `maxHeight` indicates a `TOP` or `BOTTOM` crop. For example, `{ maxWidth: 5, maxHeight: 10, crop: LEFT }` will result
+   * in an image with a width of 5 and height of 10, where the right side of the image is removed.
+   *
+   */
   crop?: InputMaybe<CropRegion>
   /**
    * Image height in pixels between 1 and 5760.
@@ -4043,9 +4010,10 @@ export type Mutation = {
    */
   customerAccessTokenCreate?: Maybe<CustomerAccessTokenCreatePayload>
   /**
-   * Creates a customer access token using a multipass token instead of email and password.
-   * A customer record is created if customer does not exist. If a customer record already
-   * exists but the record is disabled, then it's enabled.
+   * Creates a customer access token using a
+   * [multipass token](https://shopify.dev/api/multipass) instead of email and
+   * password. A customer record is created if the customer doesn't exist. If a customer
+   * record already exists but the record is disabled, then the customer record is enabled.
    *
    */
   customerAccessTokenCreateWithMultipass?: Maybe<CustomerAccessTokenCreateWithMultipassPayload>
@@ -4073,11 +4041,20 @@ export type Mutation = {
   customerCreate?: Maybe<CustomerCreatePayload>
   /** Updates the default address of an existing customer. */
   customerDefaultAddressUpdate?: Maybe<CustomerDefaultAddressUpdatePayload>
-  /** Sends a reset password email to the customer, as the first step in the reset password process. */
+  /**
+   * "Sends a reset password email to the customer. The reset password email contains a reset password URL and token that you can pass to the [`customerResetByUrl`](https://shopify.dev/api/storefront/latest/mutations/customerResetByUrl) or [`customerReset`](https://shopify.dev/api/storefront/latest/mutations/customerReset) mutation to reset the customer password."
+   *
+   */
   customerRecover?: Maybe<CustomerRecoverPayload>
-  /** Resets a customer’s password with a token received from `CustomerRecover`. */
+  /**
+   * "Resets a customer’s password with the token received from a reset password email. You can send a reset password email with the [`customerRecover`](https://shopify.dev/api/storefront/latest/mutations/customerRecover) mutation."
+   *
+   */
   customerReset?: Maybe<CustomerResetPayload>
-  /** Resets a customer’s password with the reset password url received from `CustomerRecover`. */
+  /**
+   * "Resets a customer’s password with the reset password URL received from a reset password email. You can send a reset password email with the [`customerRecover`](https://shopify.dev/api/storefront/latest/mutations/customerRecover) mutation."
+   *
+   */
   customerResetByUrl?: Maybe<CustomerResetByUrlPayload>
   /** Updates an existing customer. */
   customerUpdate?: Maybe<CustomerUpdatePayload>
@@ -4825,7 +4802,7 @@ export type Payment = Node & {
   idempotencyKey?: Maybe<Scalars['String']>
   /** The URL where the customer needs to be redirected so they can complete the 3D Secure payment flow. */
   nextActionUrl?: Maybe<Scalars['URL']>
-  /** Whether or not the payment is still processing asynchronously. */
+  /** Whether the payment is still processing asynchronously. */
   ready: Scalars['Boolean']
   /** A flag to indicate if the payment is to be done in test mode for gateways that support it. */
   test: Scalars['Boolean']
@@ -5391,7 +5368,7 @@ export type QueryRoot = {
   blogByHandle?: Maybe<Blog>
   /** List of the shop's blogs. */
   blogs: BlogConnection
-  /** Find a cart by its ID. */
+  /** Retrieve a cart by its ID. For more information, refer to [Manage a cart with the Storefront API](https://shopify.dev/api/examples/cart). */
   cart?: Maybe<Cart>
   /** Fetch a specific `Collection` by one of its unique attributes. */
   collection?: Maybe<Collection>
@@ -5659,7 +5636,7 @@ export type SellingPlan = {
   id: Scalars['ID']
   /** The name of the selling plan. For example, '6 weeks of prepaid granola, delivered weekly'. */
   name: Scalars['String']
-  /** The selling plan options available in the drop-down list in the storefront. For example, 'Delivery every week' or 'Delivery every 2 weeks' specifies the delivery frequency options for the product. */
+  /** The selling plan options available in the drop-down list in the storefront. For example, 'Delivery every week' or 'Delivery every 2 weeks' specifies the delivery frequency options for the product. Individual selling plans contribute their options to the associated selling plan group. For example, a selling plan group might have an option called `option1: Delivery every`. One selling plan in that group could contribute `option1: 2 weeks` with the pricing for that option, and another selling plan could contribute `option1: 4 weeks`, with different pricing. */
   options: Array<SellingPlanOption>
   /** The price adjustments that a selling plan makes when a variant is purchased with a selling plan. */
   priceAdjustments: Array<SellingPlanPriceAdjustment>
@@ -5797,7 +5774,11 @@ export type SellingPlanGroupEdge = {
   node: SellingPlanGroup
 }
 
-/** Represents an option on a selling plan group that's available in the drop-down list in the storefront. */
+/**
+ * Represents an option on a selling plan group that's available in the drop-down list in the storefront.
+ *
+ * Individual selling plans contribute their options to the associated selling plan group. For example, a selling plan group might have an option called `option1: Delivery every`. One selling plan in that group could contribute `option1: 2 weeks` with the pricing for that option, and another selling plan could contribute `option1: 4 weeks`, with different pricing.
+ */
 export type SellingPlanGroupOption = {
   __typename?: 'SellingPlanGroupOption'
   /** The name of the option. For example, 'Delivery every'. */
@@ -5822,12 +5803,12 @@ export type SellingPlanPercentagePriceAdjustment = {
   adjustmentPercentage: Scalars['Int']
 }
 
-/** Represents by how much the price of a variant associated with a selling plan is adjusted. Each variant can have up to two price adjustments. */
+/** Represents by how much the price of a variant associated with a selling plan is adjusted. Each variant can have up to two price adjustments. If a variant has multiple price adjustments, then the first price adjustment applies when the variant is initially purchased. The second price adjustment applies after a certain number of orders (specified by the `orderCount` field) are made. If a selling plan doesn't have any price adjustments, then the unadjusted price of the variant is the effective price. */
 export type SellingPlanPriceAdjustment = {
   __typename?: 'SellingPlanPriceAdjustment'
   /** The type of price adjustment. An adjustment value can have one of three types: percentage, amount off, or a new price. */
   adjustmentValue: SellingPlanPriceAdjustmentValue
-  /** The number of orders that the price adjustment applies to If the price adjustment always applies, then this field is `null`. */
+  /** The number of orders that the price adjustment applies to. If the price adjustment always applies, then this field is `null`. */
   orderCount?: Maybe<Scalars['Int']>
 }
 
@@ -5872,7 +5853,7 @@ export type Shop = HasMetafields & {
   name: Scalars['String']
   /** Settings related to payments. */
   paymentSettings: PaymentSettings
-  /** The shop’s primary domain. */
+  /** The primary domain of the shop’s Online Store. */
   primaryDomain: Domain
   /** The shop’s privacy policy. */
   privacyPolicy?: Maybe<ShopPolicy>
@@ -5946,7 +5927,7 @@ export type ShopPolicyWithDefault = {
  */
 export type StoreAvailability = {
   __typename?: 'StoreAvailability'
-  /** Whether or not this product variant is in-stock at this location. */
+  /** Whether the product variant is in-stock at this location. */
   available: Scalars['Boolean']
   /** The location where this product variant is stocked at. */
   location: Location
@@ -6356,6 +6337,11 @@ export type CollectionProductsByHandleQuery = {
                   }
                 | null
                 | undefined
+              seo: {
+                __typename?: 'SEO'
+                title?: string | null | undefined
+                description?: string | null | undefined
+              }
               compareAtPriceRange: {
                 __typename?: 'ProductPriceRange'
                 maxVariantPrice: {
@@ -6436,6 +6422,11 @@ export type CollectionProductsWithFiltersByHandleQuery = {
                   }
                 | null
                 | undefined
+              seo: {
+                __typename?: 'SEO'
+                title?: string | null | undefined
+                description?: string | null | undefined
+              }
               compareAtPriceRange: {
                 __typename?: 'ProductPriceRange'
                 maxVariantPrice: {
@@ -6982,6 +6973,12 @@ export type ProductShortInfoFieldsFragment = {
   handle: string
 }
 
+export type SeoFieldsFragment = {
+  __typename?: 'SEO'
+  title?: string | null | undefined
+  description?: string | null | undefined
+}
+
 export const CartFieldsFragmentDoc = gql`
   fragment CartFields on Cart {
     checkoutUrl
@@ -7174,6 +7171,12 @@ export const ProductShortInfoFieldsFragmentDoc = gql`
     handle
   }
 `
+export const SeoFieldsFragmentDoc = gql`
+  fragment SEOFields on SEO {
+    title
+    description
+  }
+`
 export const CartCreateDocument = gql`
   mutation CartCreate {
     cartCreate {
@@ -7205,6 +7208,9 @@ export const CollectionProductsByHandleDocument = gql`
             featuredImage {
               ...ImageFields
             }
+            seo {
+              ...SEOFields
+            }
           }
         }
       }
@@ -7214,6 +7220,7 @@ export const CollectionProductsByHandleDocument = gql`
   ${ProductShortInfoFieldsFragmentDoc}
   ${ProductPriceFieldsFragmentDoc}
   ${ImageFieldsFragmentDoc}
+  ${SeoFieldsFragmentDoc}
 `
 export const CollectionProductsWithFiltersByHandleDocument = gql`
   query CollectionProductsWithFiltersByHandle(
@@ -7235,6 +7242,9 @@ export const CollectionProductsWithFiltersByHandleDocument = gql`
             featuredImage {
               ...ImageFields
             }
+            seo {
+              ...SEOFields
+            }
           }
         }
         filters {
@@ -7247,6 +7257,7 @@ export const CollectionProductsWithFiltersByHandleDocument = gql`
   ${ProductShortInfoFieldsFragmentDoc}
   ${ProductPriceFieldsFragmentDoc}
   ${ImageFieldsFragmentDoc}
+  ${SeoFieldsFragmentDoc}
   ${FilterFieldsFragmentDoc}
 `
 export const CollectionWithImageByIdDocument = gql`
