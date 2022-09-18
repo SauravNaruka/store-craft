@@ -1,0 +1,32 @@
+/** @type {import('next-sitemap').IConfig} */
+module.exports = {
+  siteUrl: 'https://www.craftylive.com',
+  generateRobotsTxt: true,
+  robotsTxtOptions: {
+    policies: [
+      {userAgent: '*', allow: '/'},
+      {userAgent: '*', disallow: '/cart'},
+      {userAgent: '*', disallow: '/search'},
+      {userAgent: 'Scrapy', disallow: '/'},
+      {userAgent: 'Teleport', disallow: '/'},
+      {userAgent: 'TeleportPro', disallow: '/'},
+      {userAgent: 'EmailCollector', disallow: '/'},
+      {userAgent: 'EmailSiphon', disallow: '/'},
+      {userAgent: 'WebBandit', disallow: '/'},
+      {userAgent: 'WebZIP', disallow: '/'},
+      {userAgent: 'WebReaper', disallow: '/'},
+      {userAgent: 'WebStripper', disallow: '/'},
+      {userAgent: 'Web Downloader', disallow: '/'},
+      {userAgent: 'WebCopier', disallow: '/'},
+      {userAgent: 'Offline Explorer Pro', disallow: '/'},
+      {userAgent: 'HTTrack Website Copier', disallow: '/'},
+      {userAgent: 'Offline Commander', disallow: '/'},
+      {userAgent: 'Leech', disallow: '/'},
+      {userAgent: 'WebSnake', disallow: '/'},
+      {userAgent: 'BlackWidow', disallow: '/'},
+      {userAgent: 'HTTP Weazel', disallow: '/'},
+      {userAgent: 'Extreme Picture Finder', disallow: '/'},
+    ],
+  },
+  exclude: ['/cart', '/search'],
+}

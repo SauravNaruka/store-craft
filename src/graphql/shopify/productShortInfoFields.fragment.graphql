@@ -2,5 +2,6 @@ fragment ProductShortInfoFields on Product {
   __typename
   id
   title
+  description
   handle
 }

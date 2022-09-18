@@ -13,6 +13,8 @@ import type {
   Header as HeaderType,
 } from '@generated/cms.types'
 import commonStyles from '@styles/common.module.css'
+import {getProductJsonLd, getWebsiteJsonLd} from '@helpers/jsonLd.helper'
+import {useVariantSelector} from '@hooks/useVariantSelector'
 
 export type PropType = {
   header: HeaderType
@@ -22,18 +24,34 @@ export type PropType = {
 }
 
 export default function ProductPage({header, footer, product, slug}: PropType) {
+  const variant = useVariantSelector(product.variants)
+
   return (
     <div className={commonStyles.container}>
       <Head>
-        <title>Crafty Wing</title>
-        <meta
-          name="description"
-          content="Luxury Wood Furniture Online. Buy Hardwood furniture Online or from store near you in Jaipur. Get Sheesham furniture for the homes of your dream."
+        <title>{product.title}</title>
+        <meta name="description" content={product.description} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getWebsiteJsonLd()}
+          key="website-jsonld"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getProductJsonLd({
+            title: `${product.title} ${variant.title}`,
+            description: product.description,
+            sku: variant.sku,
+            imageURL: variant.image,
+            slug: slug,
+            price: variant.priceV2,
+          })}
+          key="product-jsonld"
         />
       </Head>
       <Header header={header} />
       <main className={commonStyles.main}>
-        <ProductPageDetails product={product} slug={slug} />
+        <ProductPageDetails product={product} variant={variant} slug={slug} />
       </main>
       <Footer data={footer} />
     </div>

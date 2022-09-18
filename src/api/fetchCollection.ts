@@ -73,6 +73,7 @@ function getCollectionFromCollectionQuery(
 ) {
   const collection = collectionQuery.collection
   if (collection) {
+    console.log(JSON.stringify(collection))
     return collection as Collection
   }
 

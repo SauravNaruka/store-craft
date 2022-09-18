@@ -2,17 +2,16 @@ import * as React from 'react'
 import {ProductCarousel} from '@components/carousel/ProductCarousel'
 import {ProductOptions} from '@components/product/ProductOptions'
 import {useVariantSelector} from '@hooks/useVariantSelector'
-import type {Product} from '@generated/storefront.types'
+import type {Product, ProductVariant} from '@generated/storefront.types'
 import {addToCart} from '@helpers/cart.helper'
 
 export type PropType = {
   product: Product
+  variant: ProductVariant
   slug: string
 }
 
-export function ProductPageDetails({product, slug}: PropType) {
-  const variant = useVariantSelector(product.variants)
-
+export function ProductPageDetails({product, variant, slug}: PropType) {
   return (
     <>
       <h1>

@@ -24,6 +24,7 @@ import type {
 import cardStyles from '@styles/card.module.css'
 import commonStyles from '@styles/common.module.css'
 import navigationStyles from '@styles/navigation.module.css'
+import {getBreadCrumbJsonLd, getWebsiteJsonLd} from '@helpers/jsonLd.helper'
 
 const style = {
   rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
@@ -35,6 +36,7 @@ export type PropType = {
   header: HeaderType
   footer: FooterType
   title: string
+  description: string
   slug: string
   products: Product[]
   filters: Filter[]
@@ -44,6 +46,7 @@ export default function CollectionPage({
   header,
   footer,
   title: pageTitle,
+  description,
   slug,
   products: initialProducts,
   filters,
@@ -61,12 +64,24 @@ export default function CollectionPage({
   return (
     <div className={commonStyles.container}>
       <Head>
-        <title>Crafty Wing</title>
-        <meta
-          name="description"
-          content="Luxury Wood Furniture Online. Buy Hardwood furniture Online or from store near you in Jaipur. Get Sheesham furniture for the homes of your dream."
+        <title>{pageTitle}</title>
+        <meta name="description" content={description} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getWebsiteJsonLd()}
+          key="website-jsonld"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getBreadCrumbJsonLd([
+            {name: 'home', slug: ''},
+            {name: pageTitle, slug},
+          ])}
+          key="bread-crumb-jsonld"
+        />
+        <meta name="robots" content="INDEX,FOLLOW" />
       </Head>
+
       <Header header={header} />
       <main className={commonStyles.main}>
         <Filters filters={filters} search={search} />
@@ -134,7 +149,16 @@ export const getStaticProps = async ({params}: StaticProps) => {
       numberOfProducts: 25,
     }),
   ])
+
+  if (!collection.title || !collection.description) {
+    const error = new Error(
+      `Missing details for the collection ${collection.title}, url: ${params.collection}, description: ${collection.description}`,
+    )
+    logger.error(error)
+  }
+
   const title = collection.title
+  const description = collection.description ?? ''
   const products = getNodesFromConnection<Product>(collection.products)
   const filters = parseFilters(collection.products.filters)
 
@@ -143,6 +167,7 @@ export const getStaticProps = async ({params}: StaticProps) => {
       header,
       footer,
       title,
+      description,
       slug: params.collection,
       products,
       filters,
@@ -155,7 +180,7 @@ async function searchCollection(
   filterString: string,
 ): Promise<Maybe<Product[]>> {
   try {
-    const {collection} = await restClient(
+    const collection: unknown = await restClient(
       `/api/searchCollection?collection=${encodeURIComponent(
         slug,
       )}&filter=${encodeURIComponent(filterString)}`,

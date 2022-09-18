@@ -6,6 +6,9 @@ query CollectionProductsByHandle(
 ) {
   collection(handle: $handle) {
     ...CollectionFields
+    seo {
+      ...SEOFields
+    }
     products(first: $numberOfProducts, after: $cursor, filters: $filters) {
       __typename
       edges {
