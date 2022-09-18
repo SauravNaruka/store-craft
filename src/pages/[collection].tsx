@@ -24,11 +24,7 @@ import type {
 import cardStyles from '@styles/card.module.css'
 import commonStyles from '@styles/common.module.css'
 import navigationStyles from '@styles/navigation.module.css'
-import {
-  getBreadCrumbJsonLd,
-  getOrganizationJsonLd,
-  getWebsiteJsonLd,
-} from '@helpers/jsonLd.helper'
+import {getBreadCrumbJsonLd, getWebsiteJsonLd} from '@helpers/jsonLd.helper'
 
 const style = {
   rootClass: `${cardStyles.glassmorphicCard} ${commonStyles.backgroundGlassmorphic} ${commonStyles.shadowSmallLightSpread}`,
@@ -72,21 +68,16 @@ export default function CollectionPage({
         <meta name="description" content={description} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={getOrganizationJsonLd({footer})}
-          key="organization-jsonld"
-        />
-        <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={getWebsiteJsonLd()}
           key="website-jsonld"
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={getBreadCrumbJsonLd([
-            {name: 'home', slug: '/'},
+            {name: 'home', slug: ''},
             {name: pageTitle, slug},
           ])}
-          key="website-jsonld"
+          key="bread-crumb-jsonld"
         />
         <meta name="robots" content="INDEX,FOLLOW" />
       </Head>
@@ -158,8 +149,16 @@ export const getStaticProps = async ({params}: StaticProps) => {
       numberOfProducts: 25,
     }),
   ])
+
+  if (!collection.title || !collection.description) {
+    const error = new Error(
+      `Missing details for the collection ${collection.title}, url: ${params.collection}, description: ${collection.description}`,
+    )
+    logger.error(error)
+  }
+
   const title = collection.title
-  const description = collection.description
+  const description = collection.description ?? ''
   const products = getNodesFromConnection<Product>(collection.products)
   const filters = parseFilters(collection.products.filters)
 

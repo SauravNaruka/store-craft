@@ -24,5 +24,8 @@ query ProductByHandle(
         }
       }
     }
+    seo {
+      ...SEOFields
+    }
   }
 }
